@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.florim.thirremjeshtrin.Main2Activity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_plumbing_logo"
+        android:layout_marginTop="23dp"
+        android:id="@+id/imgPlumber"
+        android:layout_below="@+id/txtSearch1"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_1f69e2541d499b6455e1b01a68d2926c"
+        android:id="@+id/imgAuto"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/txtSearch1"
+        android:singleLine="true"
+        android:selectAllOnFocus="false"
+        android:text="@string/txtSearch"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:layout_alignStart="@+id/imageView10"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_energy_lightning_power_electric_electricity_logo_b"
+        android:id="@+id/imageView10"
+        android:layout_below="@+id/imgPlumber"
+        android:layout_toStartOf="@+id/imgAuto"
+        android:layout_marginTop="12dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_wrench_png_19773"
+        android:id="@+id/imgWrench"
+        android:layout_marginTop="28dp"
+        android:layout_alignTop="@+id/imgPlumber"
+        android:layout_toEndOf="@+id/imgPlumber"
+        android:layout_marginStart="13dp" />
+
+</RelativeLayout>

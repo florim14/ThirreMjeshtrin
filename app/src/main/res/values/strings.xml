@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Thirre Mjeshtrin</string>
+    <string name="txtSearch">Search</string>
+    <string name="txtSearch1">Search</string>
 </resources>
