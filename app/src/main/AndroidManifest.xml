@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".Main2Activity" />
         <activity android:name=".ListSearch"></activity>
+
     </application>
 
 </manifest>

@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">Thirre Mjeshtrin</string>
     <string name="txtSearch">Search</string>
+    <string-array name="array_country">
+        <item>Kosova</item>
+        <item>Canada</item>
+        <item>US</item>
+        <item>Norway</item>
+        <item>China</item>
+        <item>Japan</item>
+        <item>Germany</item>
+    </string-array>
     <string name="txtSearch1">Search</string>
+    <string name="profile">Profile</string>
+    <string name="message">Message</string>
+    <string name="notification">Notification</string>
 </resources>
