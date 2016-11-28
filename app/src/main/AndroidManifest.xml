@@ -16,7 +16,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main2Activity" />
-        <activity android:name=".ListSearch"></activity>
+        <activity
+            android:name=".ListSearch"
+            android:exported="true"
+            android:label="" />
+        <activity android:name=".FragmentConn"
+            android:exported="true"
+            />
+        <activity android:name=".item_map_activity"></activity>
     </application>
 
 </manifest>
