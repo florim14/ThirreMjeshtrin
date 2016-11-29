@@ -59,11 +59,13 @@ public class ThirreMjeshtrinDb extends SQLiteOpenHelper {
         public static final String COLUMN_USERNAME = "Username";
         public static final String COLUMN_EMAIL = "Email";
         public static final String COLUMN_USERID = "UserID";
+        public static final String COLUMN_TOKEN = "Token";
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( "
                         + _ID +
                         " INTEGER PRIMARY KEY , " + COLUMN_USERNAME + " VARCHAR(30) ," +
-                        COLUMN_EMAIL + " VARCHAR(50)," + COLUMN_USERID + " INT(11)) ";
+                        COLUMN_EMAIL + " VARCHAR(50)," + COLUMN_USERID + " INT(11), "+
+                        COLUMN_TOKEN + "  TEXT ) ";
 
 
         private static final String SQL_DELETE_ENTRIES =
@@ -186,8 +188,8 @@ public class ThirreMjeshtrinDb extends SQLiteOpenHelper {
      */
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Inbox.SQL_CREATE_TABLE);
-        db.execSQL(Inbox.SQL_CREATE_TABLE);
-        db.execSQL(Inbox.SQL_CREATE_TABLE);
+        db.execSQL(Profile.SQL_CREATE_TABLE);
+        db.execSQL(RepairmanProfile.SQL_CREATE_TABLE);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

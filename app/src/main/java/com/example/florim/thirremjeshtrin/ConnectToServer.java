@@ -1,19 +1,33 @@
 package com.example.florim.thirremjeshtrin;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.JsonReader;
+import android.util.Log;
+import android.util.StringBuilderPrinter;
+import android.widget.Toast;
 
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +43,15 @@ public class ConnectToServer {
     /**
      * The url to initiate the HTTP connection to
      */
-    public String url;
+    private String url;
     /**
      * The parameters to be sent with the HTTP request by POST method
      */
-    private String urlParameters;
+    private Map<String,String> urlParameters;
     /**
      * The data returned from the HTTP responsed, parsed from JSON
      */
+    private ProgressDialog pDialog;
     public List<Map<String, String>> results;
 
     /**
@@ -45,70 +60,61 @@ public class ConnectToServer {
      * @param url           the url that the object will communicate via HTTP with
      * @param urlParameters the parameters that will be sent with the HTTP request
      */
-    public ConnectToServer(String url, String urlParameters) {
+    public void sendRequest(Context context, String url, Map<String,String> urlParameters) {
         this.url = url;
-        this.urlParameters = urlParameters;
-        new NetworkTask().execute(this);
-
+        this.urlParameters=urlParameters;
+        pDialog=new ProgressDialog(context);
+        this.getResponse();
     }
 
-    /**
-     * A subclass of Asynctask that makes network communication possible in the background
-     */
-    private class NetworkTask extends AsyncTask<ConnectToServer, Void, Void> {
 
-        @Override
-        protected Void doInBackground(ConnectToServer... requestContents) {
-
-
-            for (ConnectToServer request : requestContents) {
-
-                getResponse(request);
-            }
-            return null;
-
-        }
 
         /**
          * Method that creates a URL Connection via HTTP, sends a request by POST method and saves the response as a result variable of the
          * ConnectToServer object
-         *
-         * @param request The ConnectToServer object that is used to get the URL, the URL Parameters and then save the response data
          */
-        private void getResponse(ConnectToServer request) {
-            JsonReader jReader;
+        private void getResponse() {
+
+            pDialog.setCancelable(false);
+            pDialog.setMessage("Loading ...");
+            showDialog();
             try {
-                URL url = new URL(request.url);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
-                urlConnection.setDoOutput(true);
-                urlConnection.setDoInput(true);
-                urlConnection.setRequestMethod("POST");
+                new StringRequest(Request.Method.POST,
+                        this.url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JsonReader jReader = new JsonReader(new StringReader(response));
+                            ConnectToServer.this.results = ConnectToServer.this.ParseJson(jReader);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                , new Response.ErrorListener() {
 
-                byte[] postData = request.urlParameters.getBytes(StandardCharsets.UTF_8);
-                int postDataLength = postData.length;
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        hideDialog();
+                    }
+                }) {
 
-                urlConnection.connect();
+                    @Override
+                    protected Map<String, String> getParams() {
 
-                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                urlConnection.setRequestProperty("charset", "utf-8");
-                urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-                urlConnection.setUseCaches(false);
-                urlConnection.getOutputStream().write(postData);
+                        Map<String, String> params =urlParameters;
 
+                        return params;
+                    }
 
-                InputStream is = urlConnection.getInputStream();
-                jReader = new JsonReader(new InputStreamReader(is, "UTF-8"));
-                urlConnection.disconnect();
-
-                request.results = ParseJson(jReader);
-
-            } catch (Exception e) {
+                };
+            }
+            catch(Exception e){
                 e.printStackTrace();
             }
+                }
 
-
-        }
 
         /**
          * Method that parses a JSON Array into a Map List
@@ -141,6 +147,16 @@ public class ConnectToServer {
                 return null;
             }
         }
-
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
     }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
+
+
+
 }
