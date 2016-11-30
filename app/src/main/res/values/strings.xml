@@ -25,4 +25,8 @@
     <string name="welcome">Welcome</string>
     <string name="btn_logout">LOGOUT</string>
     <string name="name">Fullname</string>
+    <string name="permission_rationale">The app needs this permission in order to run</string>
+    <string name="request_enable_gps">Please enable your GPS.</string>
+    <string name="no_connectivity">You don\'t seem to be connected to the internet</string>
+    <string name="auth_type">User</string>
 </resources>

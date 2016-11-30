@@ -40,6 +40,7 @@ import java.util.Map;
  * and get the data returned as a response
  */
 public class ConnectToServer {
+    public static final String LOG_IN="http://200.6.254.247/thirremjeshtrin/login.php";
     /**
      * The url to initiate the HTTP connection to
      */
