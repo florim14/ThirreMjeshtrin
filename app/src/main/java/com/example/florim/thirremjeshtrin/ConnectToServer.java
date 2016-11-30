@@ -25,6 +25,11 @@ import java.util.Map;
  * and get the data returned as a response
  */
 public class ConnectToServer {
+<<<<<<< HEAD
+=======
+    public static final String LOG_IN="http://200.6.254.247/thirremjeshtrin/login.php";
+    public static final String REGISTER="http://200.6.254.247/thirremjeshtrin/register.php";
+>>>>>>> 5b53b56d4d9b9221dfd186cac6d05322d63939d0
     /**
      * The url to initiate the HTTP connection to
      */
