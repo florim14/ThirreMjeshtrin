@@ -41,6 +41,7 @@ import java.util.Map;
  */
 public class ConnectToServer {
     public static final String LOG_IN="http://200.6.254.247/thirremjeshtrin/login.php";
+    public static final String REGISTER="http://200.6.254.247/thirremjeshtrin/register.php";
     /**
      * The url to initiate the HTTP connection to
      */
