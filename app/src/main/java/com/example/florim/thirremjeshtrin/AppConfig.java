@@ -6,8 +6,8 @@ package com.example.florim.thirremjeshtrin;
 
 public class AppConfig {
     // Server user login url
-    public static String URL_LOGIN = "http://192.168.0.102/android_login_api/login.php";
+    public static String URL_LOGIN = "http://200.6.254.247/thirremjeshtrin/login.php";
 
     // Server user register url
-    public static String URL_REGISTER = "http://192.168.0.102/android_login_api/register.php";
+    public static String URL_REGISTER = "http://200.6.254.247/thirremjeshtrin/register.php";
 }

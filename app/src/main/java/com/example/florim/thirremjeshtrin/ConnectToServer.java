@@ -2,32 +2,17 @@ package com.example.florim.thirremjeshtrin;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.util.JsonReader;
-import android.util.Log;
-import android.util.StringBuilderPrinter;
-import android.widget.Toast;
-
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +25,6 @@ import java.util.Map;
  * and get the data returned as a response
  */
 public class ConnectToServer {
-    public static final String LOG_IN="http://200.6.254.247/thirremjeshtrin/login.php";
     /**
      * The url to initiate the HTTP connection to
      */
