@@ -20,6 +20,7 @@ public class register extends AppCompatActivity {
     private EditText inputFullName;
     private EditText inputEmail;
     private EditText inputPassword;
+    private EditText inputConfirmPassword;
     private ProgressDialog pDialog;
     private static final String TAG = register.class.getSimpleName();
 
@@ -37,6 +38,7 @@ public class register extends AppCompatActivity {
         inputFullName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
+        inputConfirmPassword = (EditText) findViewById(R.id.confirmpassword);
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
 
@@ -71,11 +73,13 @@ public class register extends AppCompatActivity {
                 String name = inputFullName.getText().toString().trim();
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-
+                String confirmPassword = inputConfirmPassword.getText().toString().trim();
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-
-                    registerUser(name, email, password);
-
+                    if(password.equals(confirmPassword)) {
+                        registerUser(name, email, password);
+                    }else{
+                        inputConfirmPassword.setError("Incorrect confirm password!");
+                    }
                     //initVolleyCallback();
                     //mVolleyService = new VolleyService(mResultCallback,getApplicationContext());
                     //mVolleyService.postDataVolley(AppConfig.URL_REGISTER, params);
@@ -88,6 +92,9 @@ public class register extends AppCompatActivity {
                     }
                     if(password.isEmpty()){
                         inputPassword.setError("Password field cannot be empty!");
+                    }
+                    if(confirmPassword.isEmpty()){
+                        inputConfirmPassword.setError("Confirm Password field cannot be empry");
                     }
                 }
             }

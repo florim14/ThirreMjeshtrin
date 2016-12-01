@@ -10,6 +10,117 @@
         <item>Japan</item>
         <item>Germany</item>
     </string-array>
+    <string-array name="array_category">
+        <item>Select a category</item>
+        <item>Automechanic</item>
+        <item>Plumber</item>
+        <item>Electrician</item>
+        <item>General</item>
+    </string-array>
+    <string-array name="array_city">
+        <item>Select your city</item>
+        <item>Arendal</item>
+        <item>Bergen</item>
+        <item>Bodø</item>
+        <item>Drammen</item>
+        <item>Egersund</item>
+        <item>Farsund</item>
+        <item>Flekkefjord</item>
+        <item>Florø</item>
+        <item>Fredrikstad</item>
+        <item>Gjøvik</item>
+        <item>Grimstad</item>
+        <item>Halden</item>
+        <item>Hamar</item>
+        <item>Hammerfest</item>
+        <item>Harstad</item>
+        <item>Haugesund</item>
+        <item>Holmestrand</item>
+        <item>Horten</item>
+        <item>Hønefoss</item>
+        <item>Kongsberg</item>
+        <item>Kongsvinger</item>
+        <item>Kristiansand</item>
+        <item>Kristiansund</item>
+        <item>Larvik</item>
+        <item>Lillehammer</item>
+        <item>Mandal</item>
+        <item>Molde</item>
+        <item>Moss</item>
+        <item>Namsos</item>
+        <item>Narvik</item>
+        <item>Notodden</item>
+        <item>Oslo</item>
+        <item>Risør</item>
+        <item>Sandefjord</item>
+        <item>Sandnes</item>
+        <item>Sarpsborg</item>
+        <item>Skien</item>
+        <item>Stavanger</item>
+        <item>Steinkjer</item>
+        <item>Søgne</item>
+        <item>Tromsø</item>
+        <item>Trondheim</item>
+        <item>Tønsberg</item>
+        <item>Vadsø</item>
+        <item>Vardø</item>
+        <item>Vennesla</item>
+        <item>Ålesund</item>
+        <item>Alta</item>
+        <item>Askim</item>
+        <item>Brekstad</item>
+        <item>Brevik</item>
+        <item>Brumunddal</item>
+        <item>Bryne</item>
+        <item>Brekstad</item>
+        <item>Brønnøysund</item>
+        <item>Drøbak</item>
+        <item>Elverum</item>
+        <item>Fauske</item>
+        <item>Fagernes</item>
+        <item>Finnsnes</item>
+        <item>Fosnavåg</item>
+        <item>Førde</item>
+        <item>Hokksund</item>
+        <item>Honningsvåg</item>
+        <item>Jessheim</item>
+        <item>Jørpeland</item>
+        <item>Kirkenes</item>
+        <item>Kolvereid</item>
+        <item>Kopervik</item>
+        <item>Kragerø</item>
+        <item>Langesund</item>
+        <item>Leirvik</item>
+        <item>Leknes</item>
+        <item>Levanger</item>
+        <item>Lillesand</item>
+        <item>Lillestrøm</item>
+        <item>Lyngdal</item>
+        <item>Mo i Rana</item>
+        <item>Mosjøen</item>
+        <item>Mysen</item>
+        <item>Måløy</item>
+        <item>Odda</item>
+        <item>Orkanger</item>
+        <item>Otta</item>
+        <item>Rjukan</item>
+        <item>Sandnessjøen</item>
+        <item>Sandvika</item>
+        <item>Sauda</item>
+        <item>Ski</item>
+        <item>Skudeneshavn</item>
+        <item>Sortland</item>
+        <item>Stathelle</item>
+        <item>Stavern</item>
+        <item>Stjørdalshalsen</item>
+        <item>Tananger</item>
+        <item>Ulsteinvik</item>
+        <item>Verdalsøra</item>
+        <item>Vinstra</item>
+        <item>Åkrehamn</item>
+        <item>Åndalsnes</item>
+    </string-array>
+
     <string name="txtSearch1">Search</string>
     <string name="profile">Profile</string>
     <string name="message">Message</string>
@@ -17,6 +128,10 @@
 
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
+    <string name="hint_confirmpassword">Confirm Password</string>
+    <string name="hint_tel">Tel</string>
+    <string name="hint_radius">Radius</string>
+    <string name="hint_location">Location</string>
     <string name="hint_name">Username</string>
     <string name="btn_login">LOGIN</string>
     <string name="btn_registerAsUser">REGISTER AS A USER</string>
