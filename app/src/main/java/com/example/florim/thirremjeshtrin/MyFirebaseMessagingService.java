@@ -10,6 +10,7 @@ import com.google.firebase.messaging.RemoteMessage;
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    private static String TAG="FirebaseMsgService";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // TODO(developer): Handle FCM messages here.

@@ -85,7 +85,7 @@ public class register extends AppCompatActivity {
 
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),
-                        login.class);
+                        Login.class);
                 startActivity(i);
                 finish();
             }
@@ -135,7 +135,7 @@ public class register extends AppCompatActivity {
                         // Launch login activity
                         Intent intent = new Intent(
                                 register.this,
-                                login.class);
+                                Login.class);
                         startActivity(intent);
                         finish();
                     } else {
