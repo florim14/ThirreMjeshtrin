@@ -16,7 +16,7 @@ import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_USERDATA;
 
 public class Authenticator extends AbstractAccountAuthenticator {
-    public static  String ACCOUNT_TYPE="User";
+    public static  String ACCOUNT_TYPE="com.example.florim.thirremjeshtrin";
     public static String AUTHTOKEN_TYPE="User";
     public static String AUTHTOKEN_TYPE_LABEL="Registered user of ThirreMjeshtrin";
     private String TAG = "Authenticator";
