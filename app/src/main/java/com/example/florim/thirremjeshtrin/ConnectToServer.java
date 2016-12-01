@@ -2,18 +2,17 @@ package com.example.florim.thirremjeshtrin;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.JsonReader;
-import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +20,9 @@ import java.util.Map;
  * Created by Gresa on 28-Nov-16.
  */
 
-/**
- * Class that provides the interface needed to create a connection to the network via HTTP, send requests
- * and get the data returned as a response
- */
 public class ConnectToServer {
+    public static final String LOG_IN = "http://200.6.254.247/thirremjeshtrin/login.php";
+    public static final String REGISTER = "http://200.6.254.247/thirremjeshtrin/register.php";
     /**
      * The url to initiate the HTTP connection to
      */
@@ -46,104 +43,119 @@ public class ConnectToServer {
      * @param url           the url that the object will communicate via HTTP with
      * @param urlParameters the parameters that will be sent with the HTTP request
      */
-    public List<Map<String, String>> sendRequest(Context context, String url, Map<String, String> urlParameters) {
+    public void sendRequest(Context context, String url, Map<String, String> urlParameters)  {
         this.url = url;
         this.urlParameters = urlParameters;
-        pDialog = new ProgressDialog(context);
-        return this.getResponse();
-    }
 
-
-    /**
-     * Method that creates a URL Connection via HTTP, sends a request by POST method and saves the response as a result variable of the
-     * ConnectToServer object
-     */
-    public List<Map<String, String>> getResponse() {
-
-        pDialog.setCancelable(false);
-        pDialog.setMessage("Loading ...");
-        showDialog();
         try {
-
-            StringRequest strReq = new StringRequest(Request.Method.GET,
-                    this.url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.d("Debug", response.toString());
-                    try {
-                        JsonReader jReader = new JsonReader(new StringReader(response));
-                        //ConnectToServer.this.results = ConnectToServer.this.ParseJson(jReader);
-                        results = ConnectToServer.this.ParseJson(jReader);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-                    , new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    hideDialog();
-                }
-            }) {
-
-                @Override
-                protected Map<String, String> getParams() {
-
-                    Map<String, String> params = urlParameters;
-
-                    return params;
-                }
-
-            };
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(strReq);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            this.results = new NetworkTask().execute(this).get();
+        }catch(Exception ex){
+            ex.printStackTrace();
         }
-        return results;
+
     }
 
-
     /**
-     * Method that parses a JSON Array into a Map List
-     *
-     * @param jsonReader The object that contains unparsed JSON data
-     * @return The JSON data, parsed
+     * A subclass of Asynctask that makes network communication possible in the background
      */
-    private List<Map<String, String>> ParseJson(JsonReader jsonReader) {
-        try {
-            List<Map<String, String>> results = new ArrayList<>();
-            Map<String, String> row;
-            if (jsonReader != null) {
-                jsonReader.beginArray();
-                while (jsonReader.hasNext()) {
+    private class NetworkTask extends AsyncTask<ConnectToServer,Void,List<Map<String,String>>> {
 
+        @Override
+        protected List<Map<String,String>> doInBackground(ConnectToServer... requestContents) {
+            List<Map<String,String>> response=null;
+            for (ConnectToServer request : requestContents) {
+
+                response= getResponse(request);
+            }
+
+            return response;
+        }
+        /**
+         * Method that creates a URL Connection via HTTP, sends a request by POST method and saves the response as a result variable of the
+         */
+        private List<Map<String,String>> getResponse(ConnectToServer request) {
+            JsonReader jReader;
+            try {
+                URL url = new URL(request.url);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestMethod("POST");
+
+                byte[] postData = request.urlParameters().getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                urlConnection.setRequestProperty("charset", "utf-8");
+                urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                urlConnection.setUseCaches(false);
+                urlConnection.getOutputStream().write(postData);
+
+                urlConnection.connect();
+
+
+
+                InputStream is = urlConnection.getInputStream();
+                jReader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+                urlConnection.disconnect();
+
+                return ParseJson(jReader);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+
+        /**
+         * Method that parses a JSON Array into a Map List
+         *
+         * @param jsonReader The object that contains unparsed JSON data
+         * @return The JSON data, parsed
+         */
+        private List<Map<String, String>> ParseJson(JsonReader jsonReader) {
+            try {
+                List<Map<String, String>> results = new ArrayList<>();
+                Map<String, String> row;
+                if (jsonReader != null) {
                     jsonReader.beginObject();
-                    row = new HashMap<String, String>();
+                    String name=jsonReader.nextName();
                     while (jsonReader.hasNext()) {
-                        row.put(jsonReader.nextName(), jsonReader.nextString());
+                        jsonReader.beginObject();
+                        row = new HashMap<String, String>();
+                        while (jsonReader.hasNext()) {
+                            row.put(jsonReader.nextName(), jsonReader.nextString());
+                        }
+                        results.add(row);
+                        jsonReader.endObject();
+
                     }
-                    results.add(row);
                     jsonReader.endObject();
                 }
-                jsonReader.endArray();
+                return results;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return null;
             }
-            return results;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
         }
+
+
     }
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
+    private String urlParameters() {
+        StringBuilder parameters = new StringBuilder();
+        Iterator entries = urlParameters.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+            parameters.append(thisEntry.getKey()).append("=").append(thisEntry.getValue());
+            if (entries.hasNext()) {
+                parameters.append("&");
+            }
 
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+        }
+        return parameters.toString();
     }
 }
+

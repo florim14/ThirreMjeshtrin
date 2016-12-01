@@ -4,16 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.android.volley.VolleyError;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,14 +73,12 @@ public class register extends AppCompatActivity {
                 String password = inputPassword.getText().toString().trim();
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    //registerUser(name, email, password);
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("username", name);
-                    params.put("email", email);
-                    params.put("password", password);
-                    initVolleyCallback();
-                    mVolleyService = new VolleyService(mResultCallback,getApplicationContext());
-                    mVolleyService.postDataVolley(AppConfig.URL_REGISTER, params);
+
+                    registerUser(name, email, password);
+
+                    //initVolleyCallback();
+                    //mVolleyService = new VolleyService(mResultCallback,getApplicationContext());
+                    //mVolleyService.postDataVolley(AppConfig.URL_REGISTER, params);
                 } else {
                     if(name.isEmpty()){
                         inputFullName.setError("Username field cannot be empty!");
@@ -113,7 +105,7 @@ public class register extends AppCompatActivity {
         });
 
     }
-
+    /*
     private void initVolleyCallback() {
         mResultCallback = new IResult() {
             @Override
@@ -155,11 +147,12 @@ public class register extends AppCompatActivity {
             }
         };
     }
-
+    */
     /**
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
      * */
+
     private void registerUser(final String username, final String email,
                               final String password) {
 
@@ -168,10 +161,13 @@ public class register extends AppCompatActivity {
         params.put("email", email);
         params.put("username", username);
 
-        ConnectToServer connectToServer = new ConnectToServer();
+        ConnectToServer connectToServer=new ConnectToServer();
 
-        List<Map<String, String>> result = connectToServer.sendRequest(this, AppConfig.URL_REGISTER, params);
-        Map<String, String> success = result.get(0);
+        connectToServer.sendRequest(this,ConnectToServer.REGISTER, params);
+
+        List<Map<String,String>> response=connectToServer.results;
+
+        Map<String, String> success = response.get(0);
         String successful = success.get("registration");
 
         if(successful.equals("Successful")){
@@ -184,6 +180,7 @@ public class register extends AppCompatActivity {
                     successful, Toast.LENGTH_LONG).show();
         }
     }
+
     /**
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url

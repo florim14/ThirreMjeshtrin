@@ -56,8 +56,10 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
 
         mAccountManager = AccountManager.get(getBaseContext());
 
+        authtoken=FirebaseInstanceId.getInstance().getToken();
+        //Log.d("TOKEN",authtoken);
+
         // If this is a first time adding, then this will be null
-        authtoken=getIntent().getStringExtra(REFRESH_TOKEN);
         accountType=getIntent().getStringExtra(ACCOUNT_TYPE);
         accountName = getIntent().getStringExtra(ACCOUNT_NAME);
         mAuthTokenType = getIntent().getStringExtra(AUTH_TYPE);
@@ -65,9 +67,14 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         if(accountData!=null){
 
             Toast.makeText(this, mAuthTokenType + ", accountName : " + accountName, Toast.LENGTH_LONG);
-            if(authtoken!=null){
-                sendRegistrationToServer(authtoken,accountData);
+            for(Map.Entry<String,String>  entry:accountData.entrySet()){
+                if(entry.getKey().equals("Token")){
+                    if(entry.getValue().equals(authtoken)){
+                        sendRegistrationToServer(authtoken,accountData);
+                    }
+                }
             }
+
             finish();
         }
 
@@ -97,7 +104,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
 
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),
-                        RegisterAs.class);
+                        register.class);
                 startActivity(i);
                 finish();
             }
@@ -113,10 +120,10 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         authtoken=FirebaseInstanceId.getInstance().getToken();
         ConnectToServer connectToServer=new ConnectToServer();
         Map<String,String> parameters=new HashMap<String,String>();
-        parameters.put("name",accountName);
+        parameters.put("account",accountName);
         parameters.put("password",password);
         parameters.put("token",authtoken);
-        //connectToServer.sendRequest(this,ConnectToServer.LOG_IN,parameters);
+        connectToServer.sendRequest(this,ConnectToServer.LOG_IN,parameters);
 
         List<Map<String,String>> response=connectToServer.results;
 
@@ -127,6 +134,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         {
             if(entry.getKey()=="error") {
                 switch(Integer.valueOf(entry.getValue())){
+                    case 0: message="Incorrect password!"; break;
                     case 1: message="User doesn't exist!"; break;
                     case 2: message="Credentials missing."; break;
 
@@ -193,8 +201,6 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
 
 
 }
-
-
 
 
 

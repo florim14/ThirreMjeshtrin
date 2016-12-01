@@ -65,7 +65,7 @@ public class WelcomeScreen extends AppCompatActivity {
         //db.deleteUsers();
 
         // Launching the login activity
-        Intent intent = new Intent(getApplicationContext(), Login.class);
+        Intent intent = new Intent(WelcomeScreen.this, Login.class);
         startActivity(intent);
         finish();
     }
