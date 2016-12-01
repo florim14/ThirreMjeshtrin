@@ -68,7 +68,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             if(authtoken!=null){
                 sendRegistrationToServer(authtoken,accountData);
             }
-            finish();h
+            finish();
         }
 
         // Login button Click Event
@@ -116,7 +116,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         parameters.put("name",accountName);
         parameters.put("password",password);
         parameters.put("token",authtoken);
-        connectToServer.sendRequest(this,ConnectToServer.LOG_IN,parameters);
+        //connectToServer.sendRequest(this,ConnectToServer.LOG_IN,parameters);
 
         List<Map<String,String>> response=connectToServer.results;
 
@@ -124,18 +124,18 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         String UserID="";
 
         for (Map.Entry<String, String> entry : response.get(0).entrySet())
-            {
-                if(entry.getKey()=="error") {
-                    switch(Integer.valueOf(entry.getValue())){
-                        case 1: message="User doesn't exist!"; break;
-                        case 2: message="Credentials missing."; break;
+        {
+            if(entry.getKey()=="error") {
+                switch(Integer.valueOf(entry.getValue())){
+                    case 1: message="User doesn't exist!"; break;
+                    case 2: message="Credentials missing."; break;
 
-                    }
-                    if(entry.getKey()=="UserID"){
-                     UserID=entry.getValue();
-                    }
+                }
+                if(entry.getKey()=="UserID"){
+                    UserID=entry.getValue();
+                }
             }
-            }
+        }
 
 
         if (message.equals("")) {
@@ -179,16 +179,16 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
 
     }
     private void sendRegistrationToServer(String newToken,Map<String,String> Account){
-            Map<String, String> params = new HashMap<>();
-            for (Map.Entry<String, String> entry : Account.entrySet()) {
-                if (entry.getKey().equals("UserID"))
-                    params.put("UserID", entry.getValue());
-            }
-            params.put("Token", newToken);
-            String url = "http://200.6.254.247/thirremjeshtrin/updatetoken.php";
-            ConnectToServer connectToServer = new ConnectToServer();
-            connectToServer.sendRequest(this, url, params);
+        Map<String, String> params = new HashMap<>();
+        for (Map.Entry<String, String> entry : Account.entrySet()) {
+            if (entry.getKey().equals("UserID"))
+                params.put("UserID", entry.getValue());
         }
+        params.put("Token", newToken);
+        String url = "http://200.6.254.247/thirremjeshtrin/updatetoken.php";
+        ConnectToServer connectToServer = new ConnectToServer();
+        connectToServer.sendRequest(this, url, params);
+    }
 
 
 
