@@ -118,6 +118,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         // the authentication token here.
         // For demo, I have hard-coded it
         authtoken=FirebaseInstanceId.getInstance().getToken();
+        mAuthTokenType=Authenticator.ACCOUNT_TYPE;
         ConnectToServer connectToServer=new ConnectToServer();
         Map<String,String> parameters=new HashMap<String,String>();
         parameters.put("account",accountName);
@@ -139,7 +140,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                     case 2: message="Credentials missing."; break;
 
                 }
-                if(entry.getKey()=="UserID"){
+                if(entry.getKey().toString()=="UserID"){
                     UserID=entry.getValue();
                 }
             }
