@@ -26,23 +26,24 @@ abstract class PermissionUtils  {
     public static final int LOCATION_REQUEST_PERMISSION = 2;
 
 
-    public static boolean checkPermission(Context context, String permission, int requestId) {
+    public static boolean checkPermission(Activity activity, String permission, int requestId) {
 
-        if (ContextCompat.checkSelfPermission(context,
+        if (ContextCompat.checkSelfPermission(activity,
                 permission)
-                != PackageManager.PERMISSION_GRANTED && (Activity)context!=null) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity)context,permission)) {
+                != PackageManager.PERMISSION_GRANTED ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,permission)) {
 
 
-                Toast.makeText((Activity)context, R.string.permission_rationale, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.permission_rationale, Toast.LENGTH_SHORT).show();
 
             }
 
             // Permission has not been granted yet, request it.
-            ActivityCompat.requestPermissions((Activity)context, new String[]{permission}, requestId);
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
             return false;
 
         }
+
         return true;
 
     }

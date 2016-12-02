@@ -124,7 +124,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         parameters.put("account",accountName);
         parameters.put("password",password);
         parameters.put("token",authtoken);
-        connectToServer.sendRequest(this,ConnectToServer.LOG_IN,parameters);
+        connectToServer.sendRequest(ConnectToServer.LOG_IN,parameters);
 
         List<Map<String,String>> response=connectToServer.results;
 
@@ -202,7 +202,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         params.put("Token", newToken);
         String url = "http://200.6.254.247/thirremjeshtrin/updatetoken.php";
         ConnectToServer connectToServer = new ConnectToServer();
-        connectToServer.sendRequest(this, url, params);
+        connectToServer.sendRequest(url, params);
     }
 
 

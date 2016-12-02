@@ -23,6 +23,7 @@ import java.util.Map;
 public class ConnectToServer {
     public static final String LOG_IN = "http://200.6.254.247/thirremjeshtrin/login.php";
     public static final String REGISTER = "http://200.6.254.247/thirremjeshtrin/register.php";
+    public static final String SEARCH = "http://200.6.254.247/thirremjeshtrin/get-list.php";
     /**
      * The url to initiate the HTTP connection to
      */
@@ -43,7 +44,7 @@ public class ConnectToServer {
      * @param url           the url that the object will communicate via HTTP with
      * @param urlParameters the parameters that will be sent with the HTTP request
      */
-    public void sendRequest(Context context, String url, Map<String, String> urlParameters)  {
+    public void sendRequest(String url, Map<String, String> urlParameters)  {
         this.url = url;
         this.urlParameters = urlParameters;
 

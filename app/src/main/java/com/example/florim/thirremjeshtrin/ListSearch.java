@@ -14,15 +14,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ListSearch extends Fragment{
 
     ArrayList<String> listItems;
-    ArrayAdapter<String> adapter;
+    SimpleAdapter adapter;
     String[] array;
     ListView listView;
+    List<Map<String,String>> results;
 
     OnItemClickListener onItemClickListener;
 
@@ -30,6 +35,15 @@ public class ListSearch extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        String category=String.valueOf(getArguments().getInt("category"));
+        String lat=String.valueOf(getArguments().getDouble("lat"));
+        String lon=String.valueOf(getArguments().getDouble("lon"));
+        results=searchFromServer(category,lat,lon);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("location", getLocation(results));
+        MapsActivity fragobj = new MapsActivity();
+        fragobj.setArguments(bundle);
+
     }
 
     @Nullable
@@ -39,7 +53,7 @@ public class ListSearch extends Fragment{
         listView = (ListView)view.findViewById(R.id.lstView);
         array = getResources().getStringArray(R.array.array_country);
         //listItems.addAll(Arrays.asList(array));
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.headline_list_layout, R.id.row_item, array);
+        adapter = new SimpleAdapter(getActivity(),results,listView,"Username",);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -81,5 +95,34 @@ public class ListSearch extends Fragment{
                 return false;
             }
         });
+    }
+    private List<Map<String,String>> searchFromServer(String cat, String lat,String lon){
+        ConnectToServer connectToServer=new ConnectToServer();
+        Map<String,String> params=new HashMap<>();
+        params.put("Cat",cat);
+        params.put("Lat",lat);
+        params.put("Lon",lon);
+        connectToServer.sendRequest(ConnectToServer.SEARCH,params);
+        return connectToServer.results;
+    }
+    private HashMap<String,String> getLocation(List<Map<String,String>> list){
+        HashMap<String,String> location=new HashMap<>();
+        String Lat="";
+        String Lon="";
+        for(Map<String,String>map:list){
+            for(Map.Entry<String,String> entry:map.entrySet()){
+                if(entry.getKey().equals("Lat")){
+                    Lat=entry.getValue();
+                }
+                if(entry.getKey().equals("Lon")){
+                    Lon=entry.getValue();
+                }
+                if(!Lat.equals("")&& !Lon.equals("")){
+                    location.put(Lat,Lon);
+                }
+
+            }
+        }
+        return location;
     }
 }

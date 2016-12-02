@@ -263,7 +263,7 @@ public class RegisterAsRepairman extends AppCompatActivity {
 
         ConnectToServer connectToServer=new ConnectToServer();
 
-        connectToServer.sendRequest(this, ConnectToServer.REGISTER, params);
+        connectToServer.sendRequest(ConnectToServer.REGISTER, params);
 
         List<Map<String,String>> response=connectToServer.results;
 

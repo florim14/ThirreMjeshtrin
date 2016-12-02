@@ -5,7 +5,9 @@ import android.accounts.*;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -120,7 +122,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
         return null;
     }
     public static Map<String,String> findAccount(AccountManager mAccountManager,Context context) {
-        boolean hasPermission=PermissionUtils.checkPermission(context, android.Manifest.permission.GET_ACCOUNTS, PermissionUtils.ACCOUNTS_REQUEST_PERMISSION);
+        boolean hasPermission= ContextCompat.checkSelfPermission(context, android.Manifest.permission.GET_ACCOUNTS)== PackageManager.PERMISSION_GRANTED;
         if(hasPermission) {
             for (Account account : mAccountManager.getAccounts())
                 if (TextUtils.equals(account.type, Authenticator.ACCOUNT_TYPE)) {
