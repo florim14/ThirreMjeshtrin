@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_USERDATA;
 
@@ -60,7 +63,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
         // the server for an appropriate AuthToken.
         final AccountManager am = AccountManager.get(mContext);
 
-        String authToken = am.peekAuthToken(account, authTokenType);
+        String authToken = FirebaseInstanceId.getInstance().getToken();
 
         Log.d("Thirremjshtrin", TAG + "> peekAuthToken returned - " + authToken);
 
@@ -123,7 +126,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
                 if (TextUtils.equals(account.type, Authenticator.ACCOUNT_TYPE)) {
                     Map<String,String> accountData=new HashMap<>();
                     accountData.put("Name",account.name);
-                    accountData.put("Token",mAccountManager.peekAuthToken(account,Authenticator.AUTHTOKEN_TYPE));
+                    accountData.put("Token",mAccountManager.getUserData(account,KEY_AUTHTOKEN));
                     accountData.put("UserID",mAccountManager.getUserData(account,KEY_USERDATA));
                     return accountData;
                 }

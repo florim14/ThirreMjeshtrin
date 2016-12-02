@@ -30,5 +30,5 @@
     <string name="permission_rationale">The app needs this permission in order to run</string>
     <string name="request_enable_gps">Please enable your GPS.</string>
     <string name="no_connectivity">You don\'t seem to be connected to the internet</string>
-    <string name="auth_type">User</string>
+    <string name="auth_type">com.example.florim.thirremjeshtrin</string>
 </resources>

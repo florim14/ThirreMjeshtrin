@@ -62,14 +62,14 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         // If this is a first time adding, then this will be null
         accountType=getIntent().getStringExtra(ACCOUNT_TYPE);
         accountName = getIntent().getStringExtra(ACCOUNT_NAME);
-        mAuthTokenType = getIntent().getStringExtra(AUTH_TYPE);
+        mAuthTokenType = Authenticator.ACCOUNT_TYPE;
         Map<String,String> accountData=Authenticator.findAccount(mAccountManager,this);
         if(accountData!=null){
 
             Toast.makeText(this, mAuthTokenType + ", accountName : " + accountName, Toast.LENGTH_LONG);
             for(Map.Entry<String,String>  entry:accountData.entrySet()){
                 if(entry.getKey().equals("Token")){
-                    if(entry.getValue().equals(authtoken)){
+                    if(!entry.getValue().equals(authtoken)){
                         sendRegistrationToServer(authtoken,accountData);
                     }
                 }
@@ -134,17 +134,24 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         for (Map.Entry<String, String> entry : response.get(0).entrySet())
         {
             if(entry.getKey()=="error") {
-                switch(Integer.valueOf(entry.getValue())){
-                    case 0: message="Incorrect password!"; break;
-                    case 1: message="User doesn't exist!"; break;
-                    case 2: message="Credentials missing."; break;
+                switch (Integer.valueOf(entry.getValue())) {
+                    case 0:
+                        message = "Incorrect password!";
+                        break;
+                    case 1:
+                        message = "User doesn't exist!";
+                        break;
+                    case 2:
+                        message = "Credentials missing.";
+                        break;
 
                 }
-                if(entry.getKey().toString()=="UserID"){
+            }
+                if(entry.getKey().toString().equals("UserID")){
                     UserID=entry.getValue();
                 }
             }
-        }
+
 
 
         if (message.equals("")) {
@@ -153,10 +160,9 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
             data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
             data.putString(AccountManager.KEY_PASSWORD, password);
+            data.putString(AccountManager.KEY_USERDATA, UserID);
             // Some extra data about the user
-            Bundle userData = new Bundle();
-            userData.putString("UserID", UserID);
-            data.putBundle(AccountManager.KEY_USERDATA, userData);
+
 
             //Make it an intent to be passed back to the Android Authenticator
             final Intent res = new Intent();
@@ -167,7 +173,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
 
 
             //Add the account to the Android System
-            if (mAccountManager.addAccountExplicitly(account, password, userData)) {
+            if (mAccountManager.addAccountExplicitly(account, password, data)) {
                 // worked
                 Log.d(TAG, "Account added");
                 mAccountManager.setAuthToken(account, mAuthTokenType, authtoken);
