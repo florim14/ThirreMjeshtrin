@@ -1,8 +1,10 @@
 package com.example.florim.thirremjeshtrin;
 
-import android.*;
-import android.accounts.*;
-import android.app.Activity;
+import android.accounts.AbstractAccountAuthenticator;
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
+import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -128,6 +130,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
                     accountData.put("Name",account.name);
                     accountData.put("Token",mAccountManager.getUserData(account,KEY_AUTHTOKEN));
                     accountData.put("UserID",mAccountManager.getUserData(account,KEY_USERDATA));
+                    accountData.put("Email",mAccountManager.getUserData(account,"Email"));
                     return accountData;
                 }
         }

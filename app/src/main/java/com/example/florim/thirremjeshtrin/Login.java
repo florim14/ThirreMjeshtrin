@@ -13,10 +13,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Login extends AccountAuthenticatorActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -42,6 +52,9 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
     public static final String KEY_ERROR_MESSAGE = "ERR_MSG";
     public static String REFRESH_TOKEN="Refresh";
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +71,25 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
 
         authtoken=FirebaseInstanceId.getInstance().getToken();
         //Log.d("TOKEN",authtoken);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // [START_EXCLUDE]
+                // TODO updateUI(user);
+                // [END_EXCLUDE]
+            }
+        };
 
         // If this is a first time adding, then this will be null
         accountType=getIntent().getStringExtra(ACCOUNT_TYPE);
@@ -130,6 +162,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
 
         String message="";
         String UserID="";
+        String Email="";
 
         for (Map.Entry<String, String> entry : response.get(0).entrySet())
         {
@@ -150,6 +183,9 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 if(entry.getKey().toString().equals("UserID")){
                     UserID=entry.getValue();
                 }
+                if(entry.getKey().toString().equals("Email")){
+                    Email=entry.getValue();
+                }
             }
 
 
@@ -161,6 +197,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
             data.putString(AccountManager.KEY_PASSWORD, password);
             data.putString(AccountManager.KEY_USERDATA, UserID);
+            data.putString("Email",Email);
             // Some extra data about the user
 
 
@@ -171,7 +208,6 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             //Create the new account with Account Name and TYPE
             final Account account = new Account(accountName, mAuthTokenType);
 
-
             //Add the account to the Android System
             if (mAccountManager.addAccountExplicitly(account, password, data)) {
                 // worked
@@ -179,13 +215,47 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 mAccountManager.setAuthToken(account, mAuthTokenType, authtoken);
                 setAccountAuthenticatorResult(data);
                 setResult(RESULT_OK, res);
-                finish();
+                // TODO: firebase login`
+                mAuth.signInWithEmailAndPassword(Email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Logger.getLogger(Login.class.getName()).log(Level.ALL, "signInWithEmail:onComplete:" + task.isSuccessful());
+                                //loginProgressDlg.dismiss();
+                                if (!task.isSuccessful()) {
+                                    Logger.getLogger(Login.class.getName()).log(Level.ALL, "signInWithEmail", task.getException());
+                                    Toast.makeText(Login.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    ArrayList<String> defaultRoom = new ArrayList<String>();
+                                    defaultRoom.add("home");
+                                    UserList.user = new ChatUser(task.getResult().getUser().getUid(),task.getResult().getUser().getDisplayName(), task.getResult().getUser().getEmail(),true,defaultRoom);
+                                    //startActivity(new Intent(Login.this, UserList.class));
+                                    finish();
+                                }
+
+                            }
+                        });
             } else {
                 // guess not
                 Log.d(TAG, "Account NOT added");
             }
 
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -204,9 +274,6 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         ConnectToServer connectToServer = new ConnectToServer();
         connectToServer.sendRequest(this, url, params);
     }
-
-
-
 }
 
 
