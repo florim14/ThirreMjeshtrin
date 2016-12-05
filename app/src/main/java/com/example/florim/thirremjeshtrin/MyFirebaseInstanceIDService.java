@@ -44,7 +44,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             params.put("Token", newToken);
             String url = "http://200.6.254.247/thirremjeshtrin/updatetoken.php";
             ConnectToServer connectToServer = new ConnectToServer();
-            connectToServer.sendRequest(this, url, params);
+            connectToServer.sendRequest(url, params);
         }
         else{
             showNotification(newToken);

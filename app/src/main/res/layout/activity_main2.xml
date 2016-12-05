@@ -36,7 +36,8 @@
         android:id="@+id/imgElectrician"
         android:tag="3"
         android:layout_alignTop="@+id/imgAuto"
-        android:layout_marginTop="68dp" />
+        android:layout_marginTop="68dp"
+        android:onClick="onImageClick" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -45,7 +46,8 @@
         android:id="@+id/imgAuto"
         android:tag="2"
         android:layout_below="@+id/frameLayout2"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="onImageClick" />
 
     <ImageView
         android:layout_width="251dp"
@@ -56,6 +58,7 @@
         android:baselineAlignBottom="true"
         android:layout_below="@+id/imgAuto"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp" />
+        android:layout_marginTop="29dp"
+        android:onClick="onImageClick" />
 
 </RelativeLayout>

@@ -32,28 +32,7 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {
 
-            mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        if (mLocation == null) {
-            Criteria c = new Criteria();
-            c.setAccuracy(Criteria.ACCURACY_FINE);
-            c.setPowerRequirement(Criteria.POWER_LOW);
-            String bestProvider = mLocationManager.getBestProvider(c, true);
-            mLocation = mLocationManager.getLastKnownLocation(bestProvider);
-            mLocationManager.requestLocationUpdates(bestProvider, 5000, 100, this);
-        } else {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, this);
-        }
-        if (mLocation != null) {
-            locLat = mLocation.getLatitude();
-            locLong = mLocation.getLongitude();
-
-        } else {
-            Toast.makeText(this,R.string.no_provider_error,Toast.LENGTH_SHORT).show();
-
-        }
     }
 
     @Override
@@ -77,20 +56,43 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
 
     }
     public void onImageClick(View v){
+        getLocation();
         if(locLat!=-1 && locLong!=-1){
             int category=Integer.valueOf(v.getTag().toString());
-            Bundle bundle = new Bundle();
-            bundle.putInt("category", category);
-            bundle.putDouble("lat", locLat);
-            bundle.putDouble("lon", locLong);
-            ListSearch fragobj = new ListSearch();
-            fragobj.setArguments(bundle);
-            Intent i= new Intent(this,FragmentConn.class);
-            startActivity(i);
+
+           Intent i= new Intent(this,FragmentConn.class);
+            i.putExtra("category", category);
+            i.putExtra("lat", locLat);
+            i.putExtra("lon", locLong);
+           startActivity(i);
 
 
         }
 
+    }
+    private void getLocation(){
+        if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {
+
+            mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+        if (mLocation == null) {
+            Criteria c = new Criteria();
+            c.setAccuracy(Criteria.ACCURACY_COARSE);
+            c.setPowerRequirement(Criteria.POWER_LOW);
+            String bestProvider = mLocationManager.getBestProvider(c, true);
+            mLocation = mLocationManager.getLastKnownLocation(bestProvider);
+            mLocationManager.requestLocationUpdates(bestProvider, 5000, 100, this);
+        } else {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, this);
+        }
+        if (mLocation != null) {
+            locLat = mLocation.getLatitude();
+            locLong = mLocation.getLongitude();
+
+        } else {
+            Toast.makeText(this,R.string.no_provider_error,Toast.LENGTH_SHORT).show();
+
+        }
     }
 
 }

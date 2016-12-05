@@ -35,25 +35,26 @@ public class ListSearch extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        String category=String.valueOf(getArguments().getInt("category"));
-        String lat=String.valueOf(getArguments().getDouble("lat"));
-        String lon=String.valueOf(getArguments().getDouble("lon"));
-        results=searchFromServer(category,lat,lon);
+
         Bundle bundle = new Bundle();
-        bundle.putSerializable("location", getLocation(results));
-        MapsActivity fragobj = new MapsActivity();
-        fragobj.setArguments(bundle);
+        //bundle.putSerializable("location", getLocation(results));
+        //MapsActivity fragobj = new MapsActivity();
+       //fragobj.setArguments(bundle);
 
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        String category= String.valueOf(getActivity().getIntent().getIntExtra("category",-1));
+        String lat=  String.valueOf(getActivity().getIntent().getDoubleExtra("lat",-1));
+        String lon= String.valueOf( getActivity().getIntent().getDoubleExtra("lon",-1));
+        dataToShow(category,lat,lon);
         View view = inflater.inflate(R.layout.activity_list_search, container, false);
         listView = (ListView)view.findViewById(R.id.lstView);
-        array = getResources().getStringArray(R.array.array_country);
-        //listItems.addAll(Arrays.asList(array));
-        adapter = new SimpleAdapter(getActivity(),results,listView,"Username",);
+        adapter = new SimpleAdapter(getActivity(),results,android.R.layout.simple_list_item_1, new String[]{"Username","Email","Phone"},
+                new int[] { android.R.id.text1 });
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -62,6 +63,7 @@ public class ListSearch extends Fragment{
                 onItemClickListener.itemSelected(item);
             }
         });
+        
         return view;
     }
 
@@ -124,5 +126,8 @@ public class ListSearch extends Fragment{
             }
         }
         return location;
+    }
+    public void dataToShow(String category,String lat,String lon){
+        results=searchFromServer(category,lat,lon);
     }
 }
