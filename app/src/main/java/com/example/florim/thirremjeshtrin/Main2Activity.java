@@ -74,24 +74,25 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
         if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {
 
             mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        if (mLocation == null) {
-            Criteria c = new Criteria();
-            c.setAccuracy(Criteria.ACCURACY_COARSE);
-            c.setPowerRequirement(Criteria.POWER_LOW);
-            String bestProvider = mLocationManager.getBestProvider(c, true);
-            mLocation = mLocationManager.getLastKnownLocation(bestProvider);
-            mLocationManager.requestLocationUpdates(bestProvider, 5000, 100, this);
-        } else {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, this);
-        }
-        if (mLocation != null) {
-            locLat = mLocation.getLatitude();
-            locLong = mLocation.getLongitude();
 
-        } else {
-            Toast.makeText(this,R.string.no_provider_error,Toast.LENGTH_SHORT).show();
+            if (mLocation == null) {
+                Criteria c = new Criteria();
+                c.setAccuracy(Criteria.ACCURACY_COARSE);
+                c.setPowerRequirement(Criteria.POWER_LOW);
+                String bestProvider = mLocationManager.getBestProvider(c, true);
+                mLocation = mLocationManager.getLastKnownLocation(bestProvider);
+                mLocationManager.requestLocationUpdates(bestProvider, 5000, 100, this);
+            } else {
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, this);
+            }
+            if (mLocation != null) {
+                locLat = mLocation.getLatitude();
+                locLong = mLocation.getLongitude();
 
+            } else {
+                Toast.makeText(this, R.string.no_provider_error, Toast.LENGTH_SHORT).show();
+
+            }
         }
     }
 

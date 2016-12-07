@@ -1,9 +1,11 @@
 package com.example.florim.thirremjeshtrin;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,19 +17,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ListSearch extends Fragment{
+public class ListSearch extends android.app.Fragment {
 
     ArrayList<String> listItems;
     SimpleAdapter adapter;
     String[] array;
     ListView listView;
-    List<Map<String,String>> results;
+    TextView txtNoData;
+    public List<Map<String,String>> results;
 
     OnItemClickListener onItemClickListener;
 
@@ -46,23 +50,72 @@ public class ListSearch extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        String category= String.valueOf(getActivity().getIntent().getIntExtra("category",-1));
-        String lat=  String.valueOf(getActivity().getIntent().getDoubleExtra("lat",-1));
-        String lon= String.valueOf( getActivity().getIntent().getDoubleExtra("lon",-1));
-        dataToShow(category,lat,lon);
-        View view = inflater.inflate(R.layout.activity_list_search, container, false);
+        View view = inflater.inflate(R.layout.activity_list_search, container,false);
         listView = (ListView)view.findViewById(R.id.lstView);
-        adapter = new SimpleAdapter(getActivity(),results,android.R.layout.simple_list_item_1, new String[]{"Username","Email","Phone"},
-                new int[] { android.R.id.text1 });
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = array[i];
-                onItemClickListener.itemSelected(item);
-            }
-        });
+        listView.setVisibility(View.INVISIBLE);
+
+
+        if(results!=null) {
+            adapter = new SimpleAdapter(getActivity(), results, android.R.layout.simple_expandable_list_item_2, new String[]{"Username", "Email"},
+                    new int[]{android.R.id.text1, android.R.id.text2});
+            listView.setAdapter(adapter);
+            listView.setVisibility(View.VISIBLE);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    //String item = array[i];
+                    //onItemClickListener.itemSelected(item);
+                    String Username="";
+                    String Email="";
+                    String UserID="";
+                    String Phone="";
+                    String Lat="";
+                    String Lon="";
+                    String Radius="";
+                    for(Map.Entry<String,String> entry:results.get((int)l).entrySet()){
+                        if(entry.getKey().equals("Username")){
+                            Username=entry.getValue();
+                        }
+                        if(entry.getKey().equals("ID")){
+                            UserID=entry.getValue();
+                        }
+                        if(entry.getKey().equals("Email")){
+                            Email=entry.getValue();
+                        }
+                        if(entry.getKey().equals("Phone")){
+                            Phone=entry.getValue();
+                        }
+                        if(entry.getKey().equals("Lat")){
+                            Lat=entry.getValue();
+                        }
+                        if(entry.getKey().equals("Lon")){
+                            Lon=entry.getValue();
+                        }
+                        if(entry.getKey().equals("Radius")){
+                            Radius=entry.getValue();
+                        }
+
+                    }
+
+
+                    Intent intent=new Intent(getActivity(),Profile.class);
+                    intent.putExtra("UserID",UserID);
+                    intent.putExtra("Username",Username);
+                    intent.putExtra("Lat",Lat);
+                    intent.putExtra("Lon",Lon);
+                    intent.putExtra("Radius",Radius);
+                    intent.putExtra("Phone",Phone);
+                    intent.putExtra("Email" ,Email);
+                    startActivity(intent);
+
+
+                }
+            });
+        }
+        else{
+
+            listView.setVisibility(View.INVISIBLE);
+        }
         
         return view;
     }
@@ -98,15 +151,7 @@ public class ListSearch extends Fragment{
             }
         });
     }
-    private List<Map<String,String>> searchFromServer(String cat, String lat,String lon){
-        ConnectToServer connectToServer=new ConnectToServer();
-        Map<String,String> params=new HashMap<>();
-        params.put("Cat",cat);
-        params.put("Lat",lat);
-        params.put("Lon",lon);
-        connectToServer.sendRequest(ConnectToServer.SEARCH,params);
-        return connectToServer.results;
-    }
+
     private HashMap<String,String> getLocation(List<Map<String,String>> list){
         HashMap<String,String> location=new HashMap<>();
         String Lat="";
@@ -127,7 +172,5 @@ public class ListSearch extends Fragment{
         }
         return location;
     }
-    public void dataToShow(String category,String lat,String lon){
-        results=searchFromServer(category,lat,lon);
-    }
+
 }

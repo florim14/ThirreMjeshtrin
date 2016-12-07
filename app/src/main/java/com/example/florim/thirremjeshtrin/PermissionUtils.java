@@ -31,12 +31,6 @@ abstract class PermissionUtils  {
         if (ContextCompat.checkSelfPermission(activity,
                 permission)
                 != PackageManager.PERMISSION_GRANTED ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,permission)) {
-
-
-                Toast.makeText(activity, R.string.permission_rationale, Toast.LENGTH_SHORT).show();
-
-            }
 
             // Permission has not been granted yet, request it.
             ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);

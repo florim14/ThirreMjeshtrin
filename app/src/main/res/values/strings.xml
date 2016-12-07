@@ -125,7 +125,6 @@
     <string name="profile">Profile</string>
     <string name="message">Message</string>
     <string name="notification">Notification</string>
-
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirmpassword">Confirm Password</string>
@@ -173,4 +172,16 @@
     <string name="delivered_text">Delivered</string>
     <string name="sending_text">Sending...</string>
     <string name="failed_text">Failed</string>
+    <string name="no_provider_error">No Location Provider Available</string>
+    <string name="no_data_available">No data is available for your search.</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="not_registered">You need to be registered to use this feature.</string>
+    <string name="acount_permission_needed">Thirre Mjeshtrin needs access to accounts in order to run.</string>
+    <string name="only_characters">Full Name must contain only characters</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_password">The password must contain at least 8 alfanumeric characters</string>
+    <string name="only_numbers">Only numbers allowed in this field.</string>
+    <string name="invalid_username">Must start with an alfanumeric character, can contain underscore or dash</string>
+    <string name="invalid_username_or_email">Invalid Username of Email format.</string>
+    <string name="one_account_allowed">One account is already registered.</string>
 </resources>

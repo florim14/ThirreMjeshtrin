@@ -1,10 +1,14 @@
 package com.example.florim.thirremjeshtrin;
 
+import android.*;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +32,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class register extends AppCompatActivity {
+public class register extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+
 
     private Button btnRegister;
     private Button btnLinkToLogin;
@@ -37,6 +43,7 @@ public class register extends AppCompatActivity {
     private EditText inputConfirmPassword;
     private ProgressDialog pDialog;
     private static final String TAG = register.class.getSimpleName();
+    private boolean isDataValid;
 
     IResult mResultCallback = null;
     VolleyService mVolleyService;
@@ -78,47 +85,46 @@ public class register extends AppCompatActivity {
             }
         };
 
-        // Session manager
-        //session = new SessionManager(getApplicationContext());
-
-        //initVolleyCallback();
-        //mVolleyService = new VolleyService(mResultCallback,getApplicationContext());
         
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
 
-        // SQLite database handler
-        //db = new SQLiteHandler(getApplicationContext());
-
-        // Check if user is already logged in or not
-        /*
-        if (session.isLoggedIn()) {
-            // User is already logged in. Take him to main activity
-            Intent intent = new Intent(register.this,
-                    WelcomeScreen.class);
-            startActivity(intent);
-            finish();
-        }
-        */
-
         // Register Button Click event
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                isDataValid=true;
                 String name = inputFullName.getText().toString().trim();
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 String confirmPassword = inputConfirmPassword.getText().toString().trim();
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     if(password.equals(confirmPassword)) {
-                        registerUser(name, email, password);
-                    }else{
+
+                        if(!Validation.validateData(name,Validation.USERNAME_REGEX)){
+                            inputFullName.setError(getString(R.string.invalid_username));
+                            isDataValid=false;
+                        }
+
+                        if(!Validation.validateData(email,Validation.EMAIL_REGEX)){
+                            inputEmail.setError(getString(R.string.invalid_email));
+                            isDataValid=false;
+                        }
+
+                        if(!Validation.validateData(password,Validation.PASSWORD_REGEX)){
+                            inputPassword.setError(getString(R.string.invalid_password));
+                            isDataValid=false;
+                        }
+
+                            if(isDataValid) {
+                                registerUser(name, email, password);
+                            }
+
+                    }
+                    else{
                         inputConfirmPassword.setError("Incorrect confirm password!");
                     }
-                    //initVolleyCallback();
-                    //mVolleyService = new VolleyService(mResultCallback,getApplicationContext());
-                    //mVolleyService.postDataVolley(AppConfig.URL_REGISTER, params);
                 } else {
                     if(name.isEmpty()){
                         inputFullName.setError("Username field cannot be empty!");
@@ -162,49 +168,7 @@ public class register extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-    /*
-    private void initVolleyCallback() {
-        mResultCallback = new IResult() {
-            @Override
-            public void notifySuccess(String response) {
-                Log.d(TAG, "Register Response: " + response.toString());
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    String success = jObj.getString("registration");
 
-                    if (success.equals("Successful")) {
-                        // User successfully stored in
-                        // Now store the user in sqlite
-
-                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-
-                        // Launch login activity
-                        Intent intent = new Intent(
-                                register.this,
-                                Login.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        // Error occurred in registration. Get the error
-                        // message
-
-                        Toast.makeText(getApplicationContext(),
-                                success, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void notifyError(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        };
-    }
-    */
     /**
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
@@ -217,7 +181,7 @@ public class register extends AppCompatActivity {
         params.put("username", username);
 
         ConnectToServer connectToServer=new ConnectToServer();
-        connectToServer.sendRequest(this,ConnectToServer.REGISTER, params);
+        connectToServer.sendRequest(ConnectToServer.REGISTER, params);
         List<Map<String,String>> response=connectToServer.results;
 
         Map<String, String> success = response.get(0);
@@ -259,7 +223,8 @@ public class register extends AppCompatActivity {
                                             // Setup link to users database
                                             FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(UserList.user);
                                             // startActivity(new Intent(register.this, UserList.class));
-                                            Intent i = new Intent(register.this, Login.class);
+
+                                           Intent i = new Intent(register.this, Login.class);
                                             startActivity(i);
                                             finish();
                                         }
@@ -273,97 +238,5 @@ public class register extends AppCompatActivity {
         }
     }
 
-    /**
-     * Function to store user in MySQL database will post params(tag, name,
-     * email, password) to register url
-     * */
-/*
-    private void registerUser(final String name, final String email,
-                              final String password) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_register";
 
-        pDialog.setMessage("Registering ...");
-        showDialog();
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_REGISTER, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response.toString());
-                hideDialog();
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-
-                    String success = jObj.getString("registration");
-
-                    //boolean error = jObj.getBoolean("error");
-                    if (success.equals("Successful")) {
-                        // User successfully stored in
-                        // Now store the user in sqlite
-
-
-                        // Inserting row in users table
-                        //db.addUser(name, email, uid, created_at);
-
-                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-
-                        // Launch login activity
-                        Intent intent = new Intent(
-                                register.this,
-                                Login.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-
-                        // Error occurred in registration. Get the error
-                        // message
-                        //String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                success, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", name);
-                params.put("email", email);
-                params.put("password", password);
-
-                return params;
-            }
-
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
-*/
 }
