@@ -6,7 +6,7 @@
 
 
     <ImageView
-        app:srcCompat="@drawable/ic_energy_lightning_power_electric_electricity_logo_b"
+        android:src="@drawable/ic_energy_lightning_power_electric_electricity_logo_b"
         android:id="@+id/imgProfile"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="100dp"
@@ -18,7 +18,7 @@
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:srcCompat="@drawable/location_icon"
+        android:src="@drawable/ic_location_icon"
         android:id="@+id/imgLocation_icon"
         android:layout_below="@+id/imgTelefon_icon"
         android:layout_alignStart="@+id/imgTelefon_icon"
@@ -28,7 +28,7 @@
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:srcCompat="@drawable/telefon_icon"
+        android:src="@drawable/ic_telefon_icon"
         android:id="@+id/imgTelefon_icon"
         android:layout_marginStart="18dp"
         android:layout_marginTop="23dp"
@@ -38,7 +38,7 @@
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:srcCompat="@drawable/profile_icon"
+        android:src="@drawable/ic_profile_icon"
         android:id="@+id/imgUser_icon"
         android:layout_marginLeft="0dp"
         android:layout_below="@+id/imgProfile"
@@ -46,7 +46,7 @@
 
     <ImageView
         android:layout_width="30dp"
-        app:srcCompat="@drawable/email_icon"
+        android:src="@drawable/ic_email_icon"
         android:id="@+id/imgEmail_icon"
         android:layout_height="30dp"
         android:layout_marginLeft="0dp"
@@ -116,7 +116,7 @@
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:srcCompat="@drawable/radius_icon"
+        android:src="@drawable/ic_radius_icon"
         android:id="@+id/imgRadius_icon"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/imgLocation_icon"
