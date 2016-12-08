@@ -62,7 +62,7 @@ import java.util.Map;
             /*
       The pending intent that is triggered when the alarm fires.
      */
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context,Integer.valueOf(ID), intent, 0);
 
         /*
          * The call below specifies the alarm type, the trigger time, the interval at
@@ -76,7 +76,7 @@ import java.util.Map;
         // Set the alarm to fire after 30 minutes, according to the device's
         // clock.
         alarmMgr.set(AlarmManager.RTC,
-                System.currentTimeMillis() + (60*60), alarmIntent);
+                System.currentTimeMillis() + 30*(60*1000), alarmIntent);
 
 
     }

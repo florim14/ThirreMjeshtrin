@@ -48,10 +48,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("from", from);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Message", remoteMessage.getNotification().getBody() + ID);
-                pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+                pIntent = PendingIntent.getActivity(this, Integer.valueOf(ID), intent, PendingIntent.FLAG_CANCEL_CURRENT);
             }
         }
-        
+
 
 
 
