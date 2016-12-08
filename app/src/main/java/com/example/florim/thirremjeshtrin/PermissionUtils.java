@@ -52,14 +52,12 @@ abstract class PermissionUtils  {
 
     }
 
-    public static boolean connectivityCheck(ConnectivityManager cm, Activity app) {
+    public static boolean connectivityCheck(ConnectivityManager cm) {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         if (!isConnected) {
-
-            Toast.makeText(app, R.string.no_connectivity, Toast.LENGTH_SHORT).show();
 
             return false;
         }

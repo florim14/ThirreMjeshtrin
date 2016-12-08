@@ -184,4 +184,6 @@
     <string name="invalid_username">Must start with an alfanumeric character, can contain underscore or dash</string>
     <string name="invalid_username_or_email">Invalid Username of Email format.</string>
     <string name="one_account_allowed">One account is already registered.</string>
+    <string name="btnAccept">ACCEPT</string>
+    <string name="btnRefuse">REFUSE</string>
 </resources>

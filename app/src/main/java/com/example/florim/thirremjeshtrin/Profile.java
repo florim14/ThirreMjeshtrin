@@ -42,7 +42,30 @@ public class Profile extends AppCompatActivity {
         textView.setText(Username + " " + Email + " " + Phone + " " + Radius);
         textView2 = (TextView) findViewById(R.id.textView2);
         textView2.setText(getLocation(Lat, Lon));
-
+        btnRequest= (Button) findViewById( R.id.button2);
+    btnRequest.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(accountData!=null) {
+                String UserID="";
+                for(Map.Entry<String,String> entry:accountData.entrySet()) {
+                    if (entry.getKey().equals("UserID")) {
+                        UserID = entry.getValue();
+                    }
+                }
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",UserID);
+                params.put("otherID",RepairmanID);
+                params.put("action","request");
+                Toast.makeText(Profile.this,UserID+"  "+ RepairmanID,Toast.LENGTH_LONG).show();
+                ConnectToServer connectToServer=new ConnectToServer();
+                connectToServer.sendRequest(ConnectToServer.REQUEST,params);
+            }
+            else{
+                Toast.makeText(Profile.this,R.string.not_registered,Toast.LENGTH_LONG).show();
+            }
+        }
+    });
 
     }
 
@@ -73,24 +96,5 @@ public class Profile extends AppCompatActivity {
         super.onStop();
 
     }
-    public void onRequestClick(View v) {
-        if(accountData!=null) {
-            String UserID="";
-            for(Map.Entry<String,String> entry:accountData.entrySet()) {
-                if (entry.getKey().equals("UserID")) {
-                    UserID = entry.getValue();
-                }
-            }
-            Map<String, String> params = new HashMap<>();
-            params.put("UserID",UserID);
-            params.put("OtherID",RepairmanID);
-            params.put("Action","request");
-            Toast.makeText(this,UserID+"  "+ RepairmanID,Toast.LENGTH_LONG).show();
-            ConnectToServer connectToServer=new ConnectToServer();
-            connectToServer.sendRequest(ConnectToServer.REQUEST,params);
-        }
-        else{
-            Toast.makeText(this,R.string.not_registered,Toast.LENGTH_LONG).show();
-    }
-}
+
 }

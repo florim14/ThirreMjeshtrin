@@ -83,9 +83,10 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                          finish();
                      }
                  }
-                isUserRegistered();
+
 
                 authtoken = FirebaseInstanceId.getInstance().getToken();
+
 
                 mAuth = FirebaseAuth.getInstance();
 
@@ -105,6 +106,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                         // [END_EXCLUDE]
                     }
                 };
+                   isUserRegistered();
 
 
 
@@ -349,6 +351,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 if (entry.getKey().equals("Token")) {
                     if (!entry.getValue().equals(authtoken)) {
                         sendRegistrationToServer(authtoken, accountData);
+                        entry.setValue(authtoken);
                     }
                 }
             }

@@ -25,6 +25,7 @@ public class ConnectToServer {
     public static final String REGISTER = "http://200.6.254.247/thirremjeshtrin/register.php";
     public static final String SEARCH = "http://200.6.254.247/thirremjeshtrin/get-list.php";
     public static final String REQUEST = "http://200.6.254.247/thirremjeshtrin/request.php";
+    public static final String CHECKREQUEST = "http://200.6.254.247/thirremjeshtrin/checkrequest.php";
     /**
      * The url to initiate the HTTP connection to
      */
