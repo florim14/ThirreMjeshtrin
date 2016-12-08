@@ -18,8 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 public class Profile extends AppCompatActivity {
-    TextView textView;
-    TextView textView2;
+    TextView txtUser;
+    TextView txtEmail;
+    TextView txtTelefon;
+    TextView txtLocation;
+    TextView txtRadius;
     Button btnRequest;
     Button btnFeedback;
     Map<String ,String> accountData;
@@ -28,7 +31,7 @@ public class Profile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.profile);
         AccountManager am= AccountManager.get(this);
         accountData=Authenticator.findAccount(am,this);
         String Username = getIntent().getStringExtra("Username");
@@ -38,11 +41,18 @@ public class Profile extends AppCompatActivity {
         String Lon = getIntent().getStringExtra("Lon");
         String Radius = getIntent().getStringExtra("Radius");
          RepairmanID= getIntent().getStringExtra("UserID");
-        textView = (TextView) findViewById(R.id.textView);
-        textView.setText(Username + " " + Email + " " + Phone + " " + Radius);
-        textView2 = (TextView) findViewById(R.id.textView2);
-        textView2.setText(getLocation(Lat, Lon));
-        btnRequest= (Button) findViewById( R.id.button2);
+        txtUser = (TextView) findViewById(R.id.txtUser);
+        txtEmail = (TextView) findViewById(R.id.txtEmail);
+        txtLocation = (TextView) findViewById(R.id.txtLocation);
+        txtTelefon = (TextView) findViewById(R.id.txtTelefon);
+        txtRadius = (TextView) findViewById(R.id.txtRadius);
+
+        txtUser.setText(Username);
+        txtRadius.setText(Radius + " km");
+        txtTelefon.setText(Phone);
+        txtEmail.setText(Email);
+        txtLocation.setText(getLocation(Lat, Lon));
+        btnRequest= (Button) findViewById( R.id.btnSendRequest);
     btnRequest.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {

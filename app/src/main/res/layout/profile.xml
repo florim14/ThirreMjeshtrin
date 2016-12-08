@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        app:srcCompat="@drawable/ic_energy_lightning_power_electric_electricity_logo_b"
+        android:id="@+id/imgProfile"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="0dp"
+        android:layout_height="120dp"
+        android:layout_width="120dp"
+        android:paddingBottom="20dp" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/location_icon"
+        android:id="@+id/imgLocation_icon"
+        android:layout_below="@+id/imgTelefon_icon"
+        android:layout_alignStart="@+id/imgTelefon_icon"
+        android:layout_marginTop="31dp" />
+
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/telefon_icon"
+        android:id="@+id/imgTelefon_icon"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/imgEmail_icon"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/profile_icon"
+        android:id="@+id/imgUser_icon"
+        android:layout_marginLeft="0dp"
+        android:layout_below="@+id/imgProfile"
+        android:layout_alignStart="@+id/imgEmail_icon" />
+
+    <ImageView
+        android:layout_width="30dp"
+        app:srcCompat="@drawable/email_icon"
+        android:id="@+id/imgEmail_icon"
+        android:layout_height="30dp"
+        android:layout_marginLeft="0dp"
+        android:layout_below="@+id/imgUser_icon"
+        android:layout_alignStart="@+id/imgTelefon_icon"
+        android:layout_marginTop="37dp" />
+
+    <TextView
+        android:text=""
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="59dp"
+        android:id="@+id/txtUser"
+        android:layout_alignBottom="@+id/imgUser_icon"
+        android:layout_toEndOf="@+id/imgUser_icon"
+        android:layout_below="@+id/imgProfile" />
+
+    <TextView
+        android:text=""
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imgEmail_icon"
+        android:layout_alignStart="@+id/txtUser"
+        android:id="@+id/txtEmail" />
+
+    <TextView
+        android:text=""
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/imgTelefon_icon"
+        android:layout_alignStart="@+id/txtEmail"
+        android:id="@+id/txtTelefon" />
+
+    <TextView
+        android:text=""
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/imgLocation_icon"
+        android:layout_alignStart="@+id/txtTelefon"
+        android:id="@+id/txtLocation" />
+
+    <TextView
+        android:text=""
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:id="@+id/txtRadius"
+        android:layout_alignBottom="@+id/imgRadius_icon"
+        android:layout_alignStart="@+id/txtLocation" />
+
+    <Button
+        android:text="Send Request"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/imgRadius_icon"
+        android:layout_marginBottom="27dp"
+        android:id="@+id/btnSendRequest" />
+
+    <Button
+        android:text="Feedback"
+        android:layout_width="120dp"
+        android:id="@+id/btnFeedback"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/btnSendRequest"
+        android:layout_toEndOf="@+id/imgProfile" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/radius_icon"
+        android:id="@+id/imgRadius_icon"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/imgLocation_icon"
+        android:layout_alignStart="@+id/imgLocation_icon" />
+
+
+</RelativeLayout>
