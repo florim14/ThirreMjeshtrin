@@ -15,10 +15,9 @@
     <ImageView
         android:layout_width="226dp"
         android:layout_height="180dp"
-        app:srcCompat="@drawable/ic_image2vector"
+        android:src="@drawable/ic_image2vector"
         android:id="@+id/imageView2"
         android:layout_marginTop="65dp"
-        android:layout_below="@+id/frameLayout"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="46dp" />
 

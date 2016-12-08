@@ -70,7 +70,6 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         isPermissionGranted = false;
         mAccountManager=AccountManager.get(this);
 
-
                 inputEmail = (EditText) findViewById(R.id.email);
                 inputPassword = (EditText) findViewById(R.id.password);
                 btnLogin = (Button) findViewById(R.id.btnLogin);

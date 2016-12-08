@@ -12,10 +12,9 @@
     </string-array>
     <string-array name="array_category">
         <item>Select a category</item>
-        <item>Automechanic</item>
         <item>Plumber</item>
+        <item>Mechanic</item>
         <item>Electrician</item>
-        <item>General</item>
     </string-array>
     <string-array name="array_city">
         <item>Select your city</item>
