@@ -65,52 +65,26 @@ public class ListSearch extends android.app.Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     //String item = array[i];
                     //onItemClickListener.itemSelected(item);
-                    String Username="";
-                    String Email="";
-                    String UserID="";
-                    String Phone="";
-                    String Lat="";
-                    String Lon="";
-                    String Radius="";
-                    for(Map.Entry<String,String> entry:results.get((int)l).entrySet()){
-                        if(entry.getKey().equals("Username")){
-                            Username=entry.getValue();
-                        }
-                        if(entry.getKey().equals("ID")){
-                            UserID=entry.getValue();
-                        }
-                        if(entry.getKey().equals("Email")){
-                            Email=entry.getValue();
-                        }
-                        if(entry.getKey().equals("Phone")){
-                            Phone=entry.getValue();
-                        }
-                        if(entry.getKey().equals("Lat")){
-                            Lat=entry.getValue();
-                        }
-                        if(entry.getKey().equals("Lon")){
-                            Lon=entry.getValue();
-                        }
-                        if(entry.getKey().equals("Radius")){
-                            Radius=entry.getValue();
-                        }
+                    String Username = results.get(i).get("Username");
+                    String Email = results.get(i).get("Email");
+                    String UserID = results.get(i).get("ID");
+                    String Phone = results.get(i).get("Phone");
+                    String Lat = results.get(i).get("Lat");
+                    String Lon = results.get(i).get("Lon");
+                    String Radius = results.get(i).get("Radius");
 
-                    }
-
-
-                    Intent intent=new Intent(getActivity(),Profile.class);
-                    intent.putExtra("UserID",UserID);
-                    intent.putExtra("Username",Username);
-                    intent.putExtra("Lat",Lat);
-                    intent.putExtra("Lon",Lon);
-                    intent.putExtra("Radius",Radius);
-                    intent.putExtra("Phone",Phone);
-                    intent.putExtra("Email" ,Email);
+                    Intent intent = new Intent(getActivity(), Profile.class);
+                    intent.putExtra("UserID", UserID);
+                    intent.putExtra("Username", Username);
+                    intent.putExtra("Lat", Lat);
+                    intent.putExtra("Lon", Lon);
+                    intent.putExtra("Radius", Radius);
+                    intent.putExtra("Phone", Phone);
+                    intent.putExtra("Email", Email);
                     startActivity(intent);
-
-
                 }
-            });
+
+        });
         }
         else{
 

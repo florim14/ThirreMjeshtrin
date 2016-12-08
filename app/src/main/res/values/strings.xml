@@ -185,4 +185,6 @@
     <string name="one_account_allowed">One account is already registered.</string>
     <string name="btnAccept">ACCEPT</string>
     <string name="btnRefuse">REFUSE</string>
+    <string name="log_out">Log Out</string>
+    <string name="btnRequest">Send Request</string>
 </resources>
