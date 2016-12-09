@@ -12,10 +12,9 @@
     </string-array>
     <string-array name="array_category">
         <item>Select a category</item>
-        <item>Automechanic</item>
         <item>Plumber</item>
+        <item>Mechanic</item>
         <item>Electrician</item>
-        <item>General</item>
     </string-array>
     <string-array name="array_city">
         <item>Select your city</item>
@@ -125,12 +124,11 @@
     <string name="profile">Profile</string>
     <string name="message">Message</string>
     <string name="notification">Notification</string>
-
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirmpassword">Confirm Password</string>
     <string name="hint_tel">Tel</string>
-    <string name="hint_radius">Radius</string>
+    <string name="hint_radius">Radius(km)</string>
     <string name="hint_location">Location</string>
     <string name="hint_name">Username</string>
     <string name="btn_login">LOGIN</string>
@@ -146,5 +144,47 @@
     <string name="request_enable_gps">Please enable your GPS.</string>
     <string name="no_connectivity">You don\'t seem to be connected to the internet</string>
     <string name="auth_type">com.example.florim.thirremjeshtrin</string>
-    <string name="title_activity_maps">Map</string>
+
+    <string name="type_msg">Type message</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="or">or</string>
+    <string name="email">Email</string>
+    <string name="displayName">Display Name</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="log_in">Log in</string>
+    <string name="forgot_my_pwd">I’ve forgotten my password?</string>
+    <string name="my_chats">My Chats</string>
+    <string name="all_chats">All Chats</string>
+    <string name="search">Search</string>
+    <string name="to">To:</string>
+    <string name="edit">Edit</string>
+    <string name="new_chat">New Chat</string>
+    <string name="alert_wait">Please wait...</string>
+    <string name="err_fields_empty">Please fill all the fields.</string>
+    <string name="err_singup">Error occurred while signup:</string>
+    <string name="err_login">Error occurred while login:</string>
+    <string name="err_users">Error occurred while finding users:</string>
+    <string name="alert_loading">Loading...</string>
+    <string name="msg_no_user_found">No users found for chat!</string>
+    <string name="delivered_text">Delivered</string>
+    <string name="sending_text">Sending...</string>
+    <string name="failed_text">Failed</string>
+    <string name="no_provider_error">No Location Provider Available</string>
+    <string name="no_data_available">No data is available for your search.</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="not_registered">You need to be registered to use this feature.</string>
+    <string name="acount_permission_needed">Thirre Mjeshtrin needs access to accounts in order to run.</string>
+    <string name="only_characters">Full Name must contain only characters</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_password">The password must contain at least 8 alfanumeric characters</string>
+    <string name="only_numbers">Only numbers allowed in this field.</string>
+    <string name="invalid_username">Must start with an alfanumeric character, can contain underscore or dash</string>
+    <string name="invalid_username_or_email">Invalid Username of Email format.</string>
+    <string name="one_account_allowed">One account is already registered.</string>
+    <string name="btnAccept">ACCEPT</string>
+    <string name="btnRefuse">REFUSE</string>
+    <string name="log_out">Log Out</string>
+    <string name="btnRequest">Send Request</string>
 </resources>
