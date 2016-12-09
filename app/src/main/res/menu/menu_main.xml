@@ -2,23 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/profile"
-        android:icon="@drawable/profile"
+        android:icon="@drawable/ic_profile_icon"
         android:title="Profile"
         android:alphabeticShortcut="p">
         </item>
 
     <item
-        android:id="@+id/message"
-        android:icon="@drawable/message"
-        android:title="Message"
+        android:id="@+id/inbox"
+        android:icon="@drawable/ic_email_icon"
+        android:title="Inbox"
         android:alphabeticShortcut="m">
     </item>
 
-    <item
-        android:id="@+id/notification"
-        android:icon="@drawable/notification"
-        android:title="Notification"
-        android:alphabeticShortcut="n">
-    </item>
 
 </menu>
