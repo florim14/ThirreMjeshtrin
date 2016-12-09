@@ -9,6 +9,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,13 +27,14 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
     private double locLat=-1;
     private LocationManager mLocationManager;
     private Location mLocation;
+    ConnectivityManager cm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
+        cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     @Override
@@ -71,7 +73,9 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
 
     }
     private void getLocation(){
-        if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {
+        if (PermissionUtils.connectivityCheck(cm)) {
+
+            if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {
 
             mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -93,6 +97,10 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
                 Toast.makeText(this, R.string.no_provider_error, Toast.LENGTH_SHORT).show();
 
             }
+        }
+        }
+        else{
+            Toast.makeText(Main2Activity.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
         }
     }
 

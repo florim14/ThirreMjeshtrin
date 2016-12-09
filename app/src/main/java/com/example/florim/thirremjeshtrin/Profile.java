@@ -1,16 +1,20 @@
 package com.example.florim.thirremjeshtrin;
 
 import android.*;
+import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.test.mock.MockApplication;
@@ -21,6 +25,8 @@ import android.widget.Toast;
 
 
 import java.io.IOException;
+import java.security.Permission;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +42,15 @@ public class Profile extends AppCompatActivity {
     Map<String ,String> accountData;
     String RepairmanID;
     AccountManager am;
+    ConnectivityManager cm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
         am = AccountManager.get(this);
+        cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         accountData = Authenticator.findAccount(am, this);
         String Username = getIntent().getStringExtra("Username");
         String Email = getIntent().getStringExtra("Email");
@@ -83,30 +92,33 @@ public class Profile extends AppCompatActivity {
                                 UserID = entry.getValue();
                             }
                         }
-                        Map<String, String> params = new HashMap<>();
-                        params.put("userID", UserID);
-                        params.put("otherID", RepairmanID);
-                        params.put("action", "request");
-                        ProgressDialog progressDialog=new ProgressDialog(Profile.this,ProgressDialog.STYLE_SPINNER);
-                        progressDialog.show();
-                        ConnectToServer connectToServer = new ConnectToServer();
-                        connectToServer.sendRequest(ConnectToServer.REQUEST, params,false);
-                        List<Map<String,String>> result=connectToServer.results;
-                        String ID="";
-                        if(result.get(0).get("ID")!=null) {
-                            ID = result.get(0).get("ID");
+
+                        if (PermissionUtils.connectivityCheck(cm)) {
+
+                            Map<String, String> params = new HashMap<>();
+                            params.put("userID", UserID);
+                            params.put("otherID", RepairmanID);
+                            params.put("action", "request");
+                            ProgressDialog progressDialog = new ProgressDialog(Profile.this, ProgressDialog.STYLE_SPINNER);
+                            progressDialog.show();
+                            ConnectToServer connectToServer = new ConnectToServer();
+                            connectToServer.sendRequest(ConnectToServer.REQUEST, params, false);
+                            List<Map<String, String>> result = connectToServer.results;
+                            String ID = "";
+                            if (result.get(0).get("ID") != null) {
+                                ID = result.get(0).get("ID");
+                            }
+                            AlarmReceiver alarmReceiver = new AlarmReceiver();
+                            alarmReceiver.setAlarm(Profile.this, ID);
+                            progressDialog.hide();
+                        } else{
+                            Toast.makeText(Profile.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
                         }
-                        AlarmReceiver alarmReceiver = new AlarmReceiver();
-                        alarmReceiver.setAlarm(Profile.this,ID);
-                        progressDialog.hide();
-                    } else {
-                        Toast.makeText(Profile.this, R.string.not_registered, Toast.LENGTH_LONG).show();
-                    }
                 }
 
+            }
             });
-
-        }
+        };
     }
 
     private String getLocation(String Lat, String Lon) {
