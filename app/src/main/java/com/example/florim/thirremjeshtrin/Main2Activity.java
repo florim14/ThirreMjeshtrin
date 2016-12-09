@@ -66,6 +66,7 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
             i.putExtra("category", category);
             i.putExtra("lat", locLat);
             i.putExtra("lon", locLong);
+            i.putExtra("number",1);
            startActivity(i);
 
 
