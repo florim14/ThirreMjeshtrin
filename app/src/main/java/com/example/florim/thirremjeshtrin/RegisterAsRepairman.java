@@ -1,10 +1,17 @@
 package com.example.florim.thirremjeshtrin;
 
+import android.*;
+import android.Manifest;
+import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegisterAsRepairman extends AppCompatActivity {
+public class RegisterAsRepairman extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private Button btnRegister;
     private Button btnLinkToLogin;
@@ -40,9 +47,11 @@ public class RegisterAsRepairman extends AppCompatActivity {
     private String[] array;
     private String[] arrayCat;
     String selectedCountry;
-    String selectedCat;
+    int selectedCat;
     Double longitude;
     Double latitude;
+    boolean isDataValid;
+
 
 
 
@@ -51,7 +60,6 @@ public class RegisterAsRepairman extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_as_repairman);
-
         inputFullName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
@@ -166,7 +174,7 @@ public class RegisterAsRepairman extends AppCompatActivity {
                     Toast.makeText
                             (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
                             .show();
-                    selectedCat = (String) adapterView.getItemAtPosition(i);
+                    selectedCat = i;
 
                 }
                 else{
@@ -183,19 +191,41 @@ public class RegisterAsRepairman extends AppCompatActivity {
         // Register Button Click event
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                isDataValid=true;
                 String name = inputFullName.getText().toString().trim();
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 String confirmPassword = inputConfirmPassword.getText().toString().trim();
                 String radius = inputRadius.getText().toString().trim();
                 String tel = inputTelephone.getText().toString().trim();
-
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && !radius.isEmpty() && !tel.isEmpty()) {
                     if(password.equals(confirmPassword)) {
-                        if(Geocoder.isPresent()){
+
+                        if(!Validation.validateData(name,Validation.USERNAME_REGEX)){
+                            inputFullName.setError(getString(R.string.invalid_username));
+                            isDataValid=false;
+                        }
+                        if(!Validation.validateData(email,Validation.EMAIL_REGEX)){
+                            inputEmail.setError(getString(R.string.invalid_email));
+                            isDataValid=false;
+                        }
+                        if(!Validation.validateData(password,Validation.PASSWORD_REGEX)){
+                            inputPassword.setError(getString(R.string.invalid_password));
+                            isDataValid=false;
+                        }
+                        if(!Validation.validateData(tel,Validation.NUMBER_REGEX)){
+                            inputTelephone.setError(getString(R.string.only_numbers));
+                            isDataValid=false;
+                        }
+                        if(!Validation.validateData(tel,Validation.NUMBER_REGEX)){
+                            inputRadius.setError(getString(R.string.only_numbers));
+                            isDataValid=false;
+                        }
+
+
                             try {
-                                Geocoder gc = new Geocoder(getApplication());
-                                List<Address> addresses= gc.getFromLocationName(selectedCountry, 5); // get the found Address Objects
+                                Geocoder gc = new Geocoder(RegisterAsRepairman.this);
+                                List<Address> addresses= gc.getFromLocationName(selectedCountry, 5);
 
                                 Address address = addresses.get(0);
 
@@ -205,14 +235,22 @@ public class RegisterAsRepairman extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.d("error", e.toString());
                             }
-                        }
-                        registerUser(name, email, password, longitude, latitude, radius, tel);
-                    }else{
+                        ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                        boolean connectivity=PermissionUtils.connectivityCheck(cm);
+
+                            if(isDataValid && connectivity) {
+                                registerUser(name, email, password, latitude, longitude, radius, tel, selectedCat);
+                            }
+                            else {
+                                Toast.makeText(RegisterAsRepairman.this,R.string.no_connectivity,Toast.LENGTH_LONG).show();
+                            }
+
+
+                    }
+                    else{
                         inputConfirmPassword.setError("Incorrect confirm password!");
                     }
-                    //initVolleyCallback();
-                    //mVolleyService = new VolleyService(mResultCallback,getApplicationContext());
-                    //mVolleyService.postDataVolley(AppConfig.URL_REGISTER, params);
+
                 } else {
                     if(name.isEmpty()){
                         inputFullName.setError("Username field cannot be empty!");
@@ -249,7 +287,7 @@ public class RegisterAsRepairman extends AppCompatActivity {
 
     }
     private void registerUser(final String username, final String email,
-                              final String password, final Double latitude, final Double longitude, String radius, String tel) {
+                              final String password, final Double latitude, final Double longitude, String radius, String tel,int category) {
 
         Map<String,String> params = new HashMap<String, String>();
         params.put("password", password);
@@ -259,16 +297,16 @@ public class RegisterAsRepairman extends AppCompatActivity {
         params.put("Lat", Double.toString(latitude));
         params.put("Phone", tel);
         params.put("Radius", radius);
-        //params.put("category", category);
+        params.put("Category", String.valueOf(category));
 
         ConnectToServer connectToServer=new ConnectToServer();
 
-        connectToServer.sendRequest(this, ConnectToServer.REGISTER, params);
+        connectToServer.sendRequest(ConnectToServer.REGISTER, params,false);
 
         List<Map<String,String>> response=connectToServer.results;
 
         Map<String, String> success = response.get(0);
-        String successful = success.get("repairman");
+        String successful = success.get("registration");
 
         if(successful.equals("Successful")){
             Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
@@ -280,26 +318,7 @@ public class RegisterAsRepairman extends AppCompatActivity {
                     successful, Toast.LENGTH_LONG).show();
         }
     }
-    /*
-    private void getLongLatFromCity(String city){
-        double longitude;
-        double latitude;
 
-        if(Geocoder.isPresent()){
-            try {
-                String location = "theNameOfTheLocation";
-                Geocoder gc = new Geocoder(this);
-                List<Address> addresses= gc.getFromLocationName(city, 5); // get the found Address Objects
 
-                Address address = addresses.get(0);
 
-                longitude = address.getLongitude();
-                latitude = address.getLatitude();
-
-            } catch (IOException e) {
-
-            }
-        }
-    }
-    */
 }

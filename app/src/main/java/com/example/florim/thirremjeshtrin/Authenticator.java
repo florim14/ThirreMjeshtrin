@@ -1,11 +1,15 @@
 package com.example.florim.thirremjeshtrin;
 
-import android.*;
-import android.accounts.*;
-import android.app.Activity;
+import android.accounts.AbstractAccountAuthenticator;
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
+import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -19,6 +23,7 @@ import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_USERDATA;
 
 public class Authenticator extends AbstractAccountAuthenticator {
+
     public static  String ACCOUNT_TYPE="com.example.florim.thirremjeshtrin";
     public static String AUTHTOKEN_TYPE="User";
     public static String AUTHTOKEN_TYPE_LABEL="Registered user of ThirreMjeshtrin";
@@ -120,7 +125,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
         return null;
     }
     public static Map<String,String> findAccount(AccountManager mAccountManager,Context context) {
-        boolean hasPermission=PermissionUtils.checkPermission(context, android.Manifest.permission.GET_ACCOUNTS, PermissionUtils.ACCOUNTS_REQUEST_PERMISSION);
+        boolean hasPermission= ContextCompat.checkSelfPermission(context, android.Manifest.permission.GET_ACCOUNTS)== PackageManager.PERMISSION_GRANTED;
         if(hasPermission) {
             for (Account account : mAccountManager.getAccounts())
                 if (TextUtils.equals(account.type, Authenticator.ACCOUNT_TYPE)) {
@@ -128,9 +133,17 @@ public class Authenticator extends AbstractAccountAuthenticator {
                     accountData.put("Name",account.name);
                     accountData.put("Token",mAccountManager.getUserData(account,KEY_AUTHTOKEN));
                     accountData.put("UserID",mAccountManager.getUserData(account,KEY_USERDATA));
+                    accountData.put("Email",mAccountManager.getUserData(account,"Email"));
                     return accountData;
                 }
         }
         return null;
+    }
+    public static void updateToken(AccountManager accountManager,String Token,Context context){
+        boolean hasPermission= ContextCompat.checkSelfPermission(context, android.Manifest.permission.GET_ACCOUNTS)== PackageManager.PERMISSION_GRANTED;
+        if(hasPermission) {
+            Account account=accountManager.getAccountsByType(ACCOUNT_TYPE)[0];
+            accountManager.setAuthToken(account,AUTHTOKEN_TYPE,Token);
+        }
     }
 }

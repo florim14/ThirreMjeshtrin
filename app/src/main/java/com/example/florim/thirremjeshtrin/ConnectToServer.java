@@ -23,6 +23,10 @@ import java.util.Map;
 public class ConnectToServer {
     public static final String LOG_IN = "http://200.6.254.247/thirremjeshtrin/login.php";
     public static final String REGISTER = "http://200.6.254.247/thirremjeshtrin/register.php";
+    public static final String SEARCH = "http://200.6.254.247/thirremjeshtrin/get-list.php";
+    public static final String REQUEST = "http://200.6.254.247/thirremjeshtrin/request.php";
+    public static final String CHECKREQUEST = "http://200.6.254.247/thirremjeshtrin/checkrequest.php";
+    public static final String UPDATETOKEN = "http://200.6.254.247/thirremjeshtrin/updatetoken.php";
     /**
      * The url to initiate the HTTP connection to
      */
@@ -32,9 +36,8 @@ public class ConnectToServer {
      */
     private Map<String, String> urlParameters;
     /**
-     * The data returned from the HTTP responsed, parsed from JSON
+     * The data returned from the HTTP response, parsed from JSON
      */
-    private ProgressDialog pDialog;
     public List<Map<String, String>> results;
 
     /**
@@ -43,14 +46,18 @@ public class ConnectToServer {
      * @param url           the url that the object will communicate via HTTP with
      * @param urlParameters the parameters that will be sent with the HTTP request
      */
-    public void sendRequest(Context context, String url, Map<String, String> urlParameters)  {
+    public void sendRequest(String url, Map<String, String> urlParameters, boolean isAsync)  {
         this.url = url;
         this.urlParameters = urlParameters;
-
-        try {
-            this.results = new NetworkTask().execute(this).get();
-        }catch(Exception ex){
-            ex.printStackTrace();
+        if(!isAsync) {
+            try {
+                this.results = new NetworkTask().execute(this).get();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        else{
+            new NetworkTask().execute(this);
         }
 
     }
@@ -121,8 +128,9 @@ public class ConnectToServer {
                 Map<String, String> row;
                 if (jsonReader != null) {
                     jsonReader.beginObject();
-                    String name=jsonReader.nextName();
+
                     while (jsonReader.hasNext()) {
+                        String name=jsonReader.nextName();
                         jsonReader.beginObject();
                         row = new HashMap<String, String>();
                         while (jsonReader.hasNext()) {
