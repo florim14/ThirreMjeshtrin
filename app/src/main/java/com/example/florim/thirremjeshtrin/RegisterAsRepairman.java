@@ -7,7 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,8 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegisterAsRepairman extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
-
+public class RegisterAsRepairman extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, LocationListener {
+    private ImageButton btnLocation;
     private Button btnRegister;
     private Button btnLinkToLogin;
     private EditText inputFullName;
@@ -51,6 +56,9 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
     Double longitude;
     Double latitude;
     boolean isDataValid;
+    private LocationManager mLocationManager;
+    private Location mLocation;
+
 
 
 
@@ -68,6 +76,9 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
         inputRadius = (EditText) findViewById(R.id.radius);
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
+        btnLocation= (ImageButton) findViewById(R.id.btnLocation);
+
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         spinner = (Spinner) findViewById(R.id.spin);
         array = getResources().getStringArray(R.array.array_city);
@@ -225,12 +236,15 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
 
                             try {
                                 Geocoder gc = new Geocoder(RegisterAsRepairman.this);
-                                List<Address> addresses= gc.getFromLocationName(selectedCountry, 5);
+                                if(longitude==null && latitude==null) {
+                                    List<Address> addresses = gc.getFromLocationName(selectedCountry, 5);
+                                    Address address = addresses.get(0);
+                                    longitude = address.getLongitude();
+                                    latitude = address.getLatitude();
 
-                                Address address = addresses.get(0);
+                                }
 
-                                longitude = address.getLongitude();
-                                latitude = address.getLatitude();
+
 
                             } catch (IOException e) {
                                 Log.d("error", e.toString());
@@ -318,7 +332,75 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                     successful, Toast.LENGTH_LONG).show();
         }
     }
+    public void onLocationClick(View v){
+        if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {
+
+            mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            if (mLocation == null) {
+                Criteria c = new Criteria();
+                c.setAccuracy(Criteria.ACCURACY_COARSE);
+                c.setPowerRequirement(Criteria.POWER_LOW);
+                String bestProvider = mLocationManager.getBestProvider(c, true);
+                mLocation = mLocationManager.getLastKnownLocation(bestProvider);
+                mLocationManager.requestLocationUpdates(bestProvider, 5000, 100, this);
+            } else {
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, this);
+            }
+            if (mLocation != null) {
+                latitude = mLocation.getLatitude();
+                longitude = mLocation.getLongitude();
+                Geocoder gc = new Geocoder(RegisterAsRepairman.this);
+                try{
+                List<Address> addresses = gc.getFromLocation(latitude,longitude,5);
+                Address address = addresses.get(0);
+                selectedCountry = address.getLocality();
+                spinner.setSelection(getIndex(spinner, selectedCountry));
+                } catch(IOException e){
+
+                }
 
 
+        } else {
+                Toast.makeText(this, R.string.no_provider_error, Toast.LENGTH_SHORT).show();
 
+            }
+        }
+    }
+
+
+    private int getIndex(Spinner spinner, String myString)
+    {
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
 }
