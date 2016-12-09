@@ -1,10 +1,13 @@
 package com.example.florim.thirremjeshtrin;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,10 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,6 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 public class RegisterAsRepairman extends AppCompatActivity {
+
+    private SimpleLocation mLocation;
+
 
     private Button btnRegister;
     private Button btnLinkToLogin;
@@ -51,6 +57,8 @@ public class RegisterAsRepairman extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_as_repairman);
+
+        mLocation = new SimpleLocation(this);
 
         inputFullName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
@@ -109,6 +117,35 @@ public class RegisterAsRepairman extends AppCompatActivity {
                             (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
                             .show();
                     selectedCountry = (String) adapterView.getItemAtPosition(i);
+                    if(selectedCountry.equals("Get my current location")){
+                        if (!mLocation.hasLocationEnabled()) {
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterAsRepairman.this);
+                            dialog.setMessage("GPS is not enabled! Click OK to go and enable it!");
+                            dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //this will navigate user to the device location settings screen
+                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivity(intent);
+                                }
+                            });
+                            dialog.setNegativeButton("Cancel!", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    selectSpinnerItemByValue(spinner, 0);
+                                }
+                            });
+                            dialog.setCancelable(false);
+                            AlertDialog alert = dialog.create();
+                            alert.show();
+                        }
+                        else {
+                            longitude = mLocation.getLongitude();
+                            latitude = mLocation.getLatitude();
+                        }
+                    }
                 }
             }
 
@@ -192,6 +229,7 @@ public class RegisterAsRepairman extends AppCompatActivity {
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && !radius.isEmpty() && !tel.isEmpty()) {
                     if(password.equals(confirmPassword)) {
+                        if(!selectedCountry.equals("Get my current location")){
                         if(Geocoder.isPresent()){
                             try {
                                 Geocoder gc = new Geocoder(getApplication());
@@ -205,8 +243,15 @@ public class RegisterAsRepairman extends AppCompatActivity {
                             } catch (IOException e) {
                                 Log.d("error", e.toString());
                             }
+                            registerUser(name, email, password, longitude, latitude, radius, tel);
                         }
-                        registerUser(name, email, password, longitude, latitude, radius, tel);
+                        else {
+                            Toast.makeText(getApplicationContext(), "Longitude and latitude could not be set, please try registering again!", Toast.LENGTH_LONG).show();
+                        }
+                        }
+                        else {
+
+                        }
                     }else{
                         inputConfirmPassword.setError("Incorrect confirm password!");
                     }
@@ -301,5 +346,22 @@ public class RegisterAsRepairman extends AppCompatActivity {
             }
         }
     }
+
+
+
+
+
+
+
+
     */
+    public static void selectSpinnerItemByValue(Spinner spnr, long value) {
+        SimpleCursorAdapter adapter = (SimpleCursorAdapter) spnr.getAdapter();
+        for (int position = 0; position < adapter.getCount(); position++) {
+            if(adapter.getItemId(position) == value) {
+                spnr.setSelection(position);
+                return;
+            }
+        }
+    }
 }

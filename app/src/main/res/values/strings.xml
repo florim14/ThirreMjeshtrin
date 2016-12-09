@@ -19,6 +19,7 @@
     </string-array>
     <string-array name="array_city">
         <item>Select your city</item>
+        <item>Get my current location</item>
         <item>Arendal</item>
         <item>Bergen</item>
         <item>Bodø</item>
