@@ -1,6 +1,7 @@
 package com.example.florim.thirremjeshtrin;
 
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,13 +19,16 @@ public class FragmentConn extends AppCompatActivity implements ListSearch.OnItem
    private List<Map<String,String>> results;
     private static String LIST_TAG="ListSearch";
     private ListSearch list;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String category= String.valueOf(getIntent().getIntExtra("category",-1));
         String lat=  String.valueOf(getIntent().getDoubleExtra("lat",-1));
         String lon= String.valueOf( getIntent().getDoubleExtra("lon",-1));
-        dataToShow(category,lat,lon);
+        progressDialog=new ProgressDialog(this,ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        getDataFromServer(category,lat,lon);
         super.onCreate(savedInstanceState);
 
 
@@ -33,7 +37,7 @@ public class FragmentConn extends AppCompatActivity implements ListSearch.OnItem
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(android.R.id.content,list,LIST_TAG).disallowAddToBackStack().commit();
         setContentView(R.layout.activity_fragment_conn);
-
+        progressDialog.hide();
 
 
 
@@ -57,10 +61,10 @@ public class FragmentConn extends AppCompatActivity implements ListSearch.OnItem
         params.put("Cat",cat);
         params.put("Lat",lat);
         params.put("Lon",lon);
-        connectToServer.sendRequest(ConnectToServer.SEARCH,params);
+        connectToServer.sendRequest(ConnectToServer.SEARCH,params,false);
         return connectToServer.results;
     }
-    private void dataToShow(String category,String lat,String lon){
+    private void getDataFromServer(String category,String lat,String lon){
         results=searchFromServer(category,lat,lon);
     }
     public List<Map<String,String>> getData(){

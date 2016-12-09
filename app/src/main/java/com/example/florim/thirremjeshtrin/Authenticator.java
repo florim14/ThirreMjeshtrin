@@ -139,4 +139,11 @@ public class Authenticator extends AbstractAccountAuthenticator {
         }
         return null;
     }
+    public static void updateToken(AccountManager accountManager,String Token,Context context){
+        boolean hasPermission= ContextCompat.checkSelfPermission(context, android.Manifest.permission.GET_ACCOUNTS)== PackageManager.PERMISSION_GRANTED;
+        if(hasPermission) {
+            Account account=accountManager.getAccountsByType(ACCOUNT_TYPE)[0];
+            accountManager.setAuthToken(account,AUTHTOKEN_TYPE,Token);
+        }
+    }
 }

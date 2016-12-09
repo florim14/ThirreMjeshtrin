@@ -3,10 +3,12 @@ package com.example.florim.thirremjeshtrin;
 import android.*;
 import android.Manifest;
 import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -233,10 +235,16 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                             } catch (IOException e) {
                                 Log.d("error", e.toString());
                             }
+                        ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                        boolean connectivity=PermissionUtils.connectivityCheck(cm);
 
-                            if(isDataValid) {
+                            if(isDataValid && connectivity) {
                                 registerUser(name, email, password, latitude, longitude, radius, tel, selectedCat);
                             }
+                            else {
+                                Toast.makeText(RegisterAsRepairman.this,R.string.no_connectivity,Toast.LENGTH_LONG).show();
+                            }
+
 
                     }
                     else{
@@ -293,7 +301,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
 
         ConnectToServer connectToServer=new ConnectToServer();
 
-        connectToServer.sendRequest(ConnectToServer.REGISTER, params);
+        connectToServer.sendRequest(ConnectToServer.REGISTER, params,false);
 
         List<Map<String,String>> response=connectToServer.results;
 

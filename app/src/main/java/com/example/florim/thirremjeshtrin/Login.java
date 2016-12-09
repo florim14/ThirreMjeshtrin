@@ -196,9 +196,8 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 params.put("UserID", entry.getValue());
         }
         params.put("Token", newToken);
-        String url = "http://200.6.254.247/thirremjeshtrin/updatetoken.php";
         ConnectToServer connectToServer = new ConnectToServer();
-        connectToServer.sendRequest(url, params);
+        connectToServer.sendRequest(ConnectToServer.UPDATETOKEN, params, true);
     }
     private void userSignIn() {
 
@@ -210,7 +209,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             parameters.put("account", accountName);
             parameters.put("password", password);
             parameters.put("token", authtoken);
-            connectToServer.sendRequest(ConnectToServer.LOG_IN, parameters);
+            connectToServer.sendRequest(ConnectToServer.LOG_IN, parameters,false);
 
             List<Map<String, String>> response = connectToServer.results;
 
@@ -223,9 +222,10 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             String Category = "";
             String Location = "";
 
-            for (Map.Entry<String, String> entry : response.get(0).entrySet()) {
-                if (entry.getKey() == "error") {
-                    switch (Integer.valueOf(entry.getValue())) {
+            if(!response.isEmpty()){
+                Map<String,String> data=response.get(0);
+                if (data.get("error") != null) {
+                    switch (Integer.valueOf(data.get("error"))) {
                         case 0:
                             message = "Incorrect password!";
                             break;
@@ -238,25 +238,24 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
 
                     }
                 }
-                if (entry.getKey().toString().equals("UserID")) {
-                    UserID = entry.getValue();
+                if (data.get("UserID")!=null) {
+                    UserID = data.get("UserID");
                 }
-                if (entry.getKey().toString().equals("Email")) {
-                    Email = entry.getValue();
+                if (data.get("Email")!=null) {
+                    Email = data.get("Email");
                 }
-                if (entry.getKey().toString().equals("Lat")) {
-                    Lat = entry.getValue();
+                if (data.get("Lat")!=null) {
+                    Lat = data.get("Lat");
                 }
-                if (entry.getKey().toString().equals("Lon")) {
-                    Lon = entry.getValue();
+                if (data.get("Lon")!=null) {
+                    Lon = data.get("Lon");
                 }
-                if (entry.getKey().toString().equals("Phone")) {
-                    Phone = entry.getValue();
+                if (data.get("Phone")!=null) {
+                    Phone = data.get("Phone");
                 }
-                if (entry.getKey().toString().equals("Category")) {
-                    Category = entry.getValue();
+                if (data.get("Category")!=null) {
+                    Category= data.get("Category");
                 }
-
 
             }
 
@@ -324,7 +323,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
     private String getLocation(String lat, String lon) {
         Geocoder g = new Geocoder(this);
         try {
-            List<Address> address = g.getFromLocation(Double.valueOf(lat), Double.valueOf(lon), 1);
+            List<Address> address = g.getFromLocation(Double.valueOf(lat), Double.valueOf(lon), 5);
             if (address.isEmpty()) {
                 return "";
             }
@@ -337,6 +336,9 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.GET_ACCOUNTS)
                 != PackageManager.PERMISSION_GRANTED ) {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.GET_ACCOUNTS)){
+                Toast.makeText(this,R.string.permission_rationale,Toast.LENGTH_LONG).show();
+            }
             // Permission has not been granted yet, request it.
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.GET_ACCOUNTS}, 1);
         }
@@ -350,7 +352,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 if (entry.getKey().equals("Token")) {
                     if (!entry.getValue().equals(authtoken)) {
                         sendRegistrationToServer(authtoken, accountData);
-                        entry.setValue(authtoken);
+                        Authenticator.updateToken(mAccountManager,authtoken,this);
                     }
                 }
             }

@@ -38,7 +38,7 @@ import java.util.Map;
 
                ConnectToServer connectToServer=new ConnectToServer();
 
-                connectToServer.sendRequest(ConnectToServer.CHECKREQUEST,params);
+                connectToServer.sendRequest(ConnectToServer.CHECKREQUEST,params,true);
 
             }
         }

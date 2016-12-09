@@ -4,7 +4,9 @@ package com.example.florim.thirremjeshtrin;
 import android.accounts.AccountManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -42,27 +44,13 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
                     params.put("UserID", entry.getValue());
             }
             params.put("Token", newToken);
-            String url = "http://200.6.254.247/thirremjeshtrin/updatetoken.php";
-            ConnectToServer connectToServer = new ConnectToServer();
-            connectToServer.sendRequest(url, params);
-        }
-        else{
-            showNotification(newToken);
+            ConnectivityManager cm= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            boolean connectivity=PermissionUtils.connectivityCheck(cm);
+            if(connectivity) {
+                ConnectToServer connectToServer = new ConnectToServer();
+                connectToServer.sendRequest(ConnectToServer.UPDATETOKEN, params, true);
+            }
         }
 
-    }
-    private void showNotification(String newToken) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_energy_lightning_power_electric_electricity_logo_b)// notification icon
-                .setContentTitle("Notification!") // title for notification
-                .setContentText("Hello word") // message for notification
-                .setAutoCancel(true); // clear notification after click
-        Intent intent = new Intent(this, Login.class);
-        intent.putExtra(Login.REFRESH_TOKEN,newToken);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
-        mBuilder.setContentIntent(pi);
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-        mNotificationManager.notify(0, mBuilder.build());
     }
 }

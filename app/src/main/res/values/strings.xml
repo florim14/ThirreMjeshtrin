@@ -128,7 +128,7 @@
     <string name="hint_password">Password</string>
     <string name="hint_confirmpassword">Confirm Password</string>
     <string name="hint_tel">Tel</string>
-    <string name="hint_radius">Radius</string>
+    <string name="hint_radius">Radius(km)</string>
     <string name="hint_location">Location</string>
     <string name="hint_name">Username</string>
     <string name="btn_login">LOGIN</string>

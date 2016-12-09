@@ -100,9 +100,11 @@
 
             <!-- Link to Login Screen -->
 
+
+
             <Spinner
                 android:id="@+id/spin"
-                android:layout_width="fill_parent"
+                android:layout_width="169dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="@color/input_register_bg"
@@ -112,7 +114,14 @@
                 android:textColorHint="@color/input_register_hint"
                 android:entries="@array/array_city"
                 ></Spinner>
-
+            <Button
+                android:id="@+id/btnLocation"
+                android:layout_width="54dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:background="#ea4c88"
+                android:text="@string/btn_register"
+                android:textColor="@color/white" />
             <Spinner
                 android:id="@+id/spinCategory"
                 android:layout_width="fill_parent"

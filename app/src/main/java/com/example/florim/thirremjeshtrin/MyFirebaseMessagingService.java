@@ -42,8 +42,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pIntent=null;
         if(type!=null && ID!=null && from!=null) {
             if (type.equals("request")) {
-                AlarmReceiver alarmReceiver = new AlarmReceiver();
-                alarmReceiver.setAlarm(this, ID);
+
                 intent = new Intent(this, Request.class);
                 intent.putExtra("from", from);
                 intent.putExtra("ID", ID);

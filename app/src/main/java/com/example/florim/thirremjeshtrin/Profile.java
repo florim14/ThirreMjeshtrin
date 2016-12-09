@@ -2,6 +2,7 @@ package com.example.florim.thirremjeshtrin;
 
 import android.*;
 import android.accounts.AccountManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -12,6 +13,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.test.mock.MockApplication;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -85,9 +87,18 @@ public class Profile extends AppCompatActivity {
                         params.put("userID", UserID);
                         params.put("otherID", RepairmanID);
                         params.put("action", "request");
-                        Toast.makeText(Profile.this, UserID + "  " + RepairmanID, Toast.LENGTH_LONG).show();
+                        ProgressDialog progressDialog=new ProgressDialog(Profile.this,ProgressDialog.STYLE_SPINNER);
+                        progressDialog.show();
                         ConnectToServer connectToServer = new ConnectToServer();
-                        connectToServer.sendRequest(ConnectToServer.REQUEST, params);
+                        connectToServer.sendRequest(ConnectToServer.REQUEST, params,false);
+                        List<Map<String,String>> result=connectToServer.results;
+                        String ID="";
+                        if(result.get(0).get("ID")!=null) {
+                            ID = result.get(0).get("ID");
+                        }
+                        AlarmReceiver alarmReceiver = new AlarmReceiver();
+                        alarmReceiver.setAlarm(Profile.this,ID);
+                        progressDialog.hide();
                     } else {
                         Toast.makeText(Profile.this, R.string.not_registered, Toast.LENGTH_LONG).show();
                     }
@@ -129,6 +140,11 @@ public class Profile extends AppCompatActivity {
     public void logOut(View v){
         if(ContextCompat.checkSelfPermission(Profile.this, android.Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
             am.removeAccountExplicitly(am.getAccountsByType(Authenticator.ACCOUNT_TYPE)[0]);
+            Map<String,String> params=new HashMap<>();
+            params.put("UserID",accountData.get("UserID"));
+            params.put("Token","NULL");
+            ConnectToServer connectToServer= new ConnectToServer();
+            connectToServer.sendRequest(ConnectToServer.UPDATETOKEN,params,true);
             Intent intent=new Intent(this,Login.class);
             startActivity(intent);
         }
