@@ -1,10 +1,11 @@
-package layout;
+package com.example.florim.thirremjeshtrin;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import java.util.Map;
  * Use the {@link ListFeedback#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListFeedback extends Fragment {
+public class ListFeedback extends android.app.Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -43,7 +44,7 @@ public class ListFeedback extends Fragment {
     SimpleAdapter adapter;
     ListView listView;
     ConnectToServer connectToServer;
-    String RepairmanID;
+    public static String RepairmanID;
 
     public ListFeedback() {
         // Required empty public constructor
@@ -81,13 +82,11 @@ public class ListFeedback extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_feedback, container, false);
-        listView = (ListView) getView().findViewById(R.id.lstFeedback);
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            RepairmanID = bundle.getString("RepairmanID");
-        }
+        listView = (ListView) view.findViewById(R.id.lstFeedback);
+
         final Map<String, String> params = new HashMap<>();
         params.put("RepID", RepairmanID);
+        Log.d("ListFeedback:", RepairmanID);
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         final boolean connectivity = PermissionUtils.connectivityCheck(cm);
 
@@ -95,14 +94,17 @@ public class ListFeedback extends Fragment {
             connectToServer = new ConnectToServer();
             connectToServer.sendRequest(connectToServer.FEEDBACK, params, true);
             List<Map<String, String>> response = connectToServer.results;
-            if(!response.isEmpty()){
+            if(response!=null){
                 adapter = new SimpleAdapter(getActivity(), response, android.R.layout.simple_expandable_list_item_2, new String[]{"Username", "Rating"},
                         new int[]{android.R.id.text1, android.R.id.text2});
                 if(adapter != null){
-                listView.setAdapter(adapter);
+                    listView.setAdapter(adapter);
                 }else {
                     listView.setEmptyView(view.findViewById(R.id.empty));
                 }
+            }
+            else{
+                listView.setEmptyView(view.findViewById(R.id.empty));
             }
         }
         else {

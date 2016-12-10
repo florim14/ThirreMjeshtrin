@@ -1,4 +1,4 @@
-package layout;
+package com.example.florim.thirremjeshtrin;
 
 import android.accounts.AccountManager;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ import java.util.Map;
  * Use the {@link SendFeedback#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SendFeedback extends Fragment {
+public class SendFeedback extends android.app.Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,12 +47,12 @@ public class SendFeedback extends Fragment {
     SimpleAdapter adapter;
     ListView listView;
     ConnectToServer connectToServer;
-    String RepairmanID;
+    public static String RepairmanID;
+    public static String UserID;
 
     Map<String ,String> accountData;
     AccountManager am;
 
-    private OnFragmentInteractionListener mListener;
 
 
     public SendFeedback() {
@@ -93,23 +94,16 @@ public class SendFeedback extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.lstFeedback);
 
-        am = AccountManager.get(getActivity());
-        accountData = Authenticator.findAccount(am, getActivity());
-
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            RepairmanID = bundle.getString("RepairmanID");
-        }
         final Map<String, String> params = new HashMap<>();
-        params.put("UserID", accountData.get("UserID"));
+        params.put("UserID", UserID);
         params.put("RepID", RepairmanID);
-
+        Log.d("Send Feedback: ",UserID+" "+RepairmanID);
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         final boolean connectivity = PermissionUtils.connectivityCheck(cm);
 
         if (connectivity) {
             connectToServer = new ConnectToServer();
-            connectToServer.sendRequest(connectToServer.FEEDBACK, params, true);
+            connectToServer.sendRequest(connectToServer.FEEDBACK, params, false);
             final List<Map<String, String>> response = connectToServer.results;
             if(!response.isEmpty()){
                 adapter = new SimpleAdapter(getActivity(), response, android.R.layout.simple_expandable_list_item_2, new String[]{"Timestamp"},
@@ -119,19 +113,22 @@ public class SendFeedback extends Fragment {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            String RepairmanID = response.get(i).get("RepID");
+                            String RequestID = response.get(i).get("ID");
                             String UserID = response.get(i).get("UserID");
                             Intent intent = new Intent(getActivity(), GiveFeedback.class);
                             intent.putExtra("UserID", UserID);
-                            intent.putExtra("RepairmanID", RepairmanID);
-                            startActivity(intent);
-                            getActivity().finish();
-                        }
+                            intent.putExtra("RequestID", RequestID);
+                            startActivityForResult(intent,1);
+
+                                                    }
                     });
                 }else {
                     listView.setEmptyView(view.findViewById(R.id.empty));
                 }
 
+            }
+            else{
+                listView.setEmptyView(view.findViewById(R.id.empty));
             }
         }
         else{
@@ -140,29 +137,6 @@ public class SendFeedback extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
     /**
      * This interface must be implemented by activities that contain this

@@ -196,4 +196,5 @@
     <string name="btn_Location">Get Location</string>
     <string name="no_results">No resource available</string>
     <string name="txtProfile">Profile</string>
+    <string name="no_rating">Please choose a rating value!</string>
 </resources>

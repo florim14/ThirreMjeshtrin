@@ -37,23 +37,28 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
+                    mBottomBar.setDefaultTabPosition(1);
                    Intent i=new Intent(Main2Activity.this,Profile.class);
                     i.putExtra("isUser",true);
                     startActivity(i);
+
+                }
+                else if(menuItemId == R.id.inbox){
+                    mBottomBar.setDefaultTabPosition(1);
+                    Intent i = new Intent(Main2Activity.this, UserList.class);
+                    startActivity(i);
+
                 }
             }
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.inbox) {
-                    // The user reselected item number one, scroll your content to top.
-                    Intent i = new Intent(Main2Activity.this, UserList.class);
-                    startActivity(i);
-                }
+
             }
         });
 
         mBottomBar.mapColorForTab(0,"#F44346");
         mBottomBar.mapColorForTab(1,"#795548");
+
 
     }
     @Override
