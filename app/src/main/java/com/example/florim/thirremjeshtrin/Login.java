@@ -1,7 +1,6 @@
 package com.example.florim.thirremjeshtrin;
 
 
-import android.*;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
@@ -369,6 +368,19 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                     }
                 }
             }
+            // TODO: firebase login`
+            mAuth.signInWithEmailAndPassword(accountData.get("Email"), accountData.get("Password"))
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Logger.getLogger(Login.class.getName()).log(Level.ALL, "signInWithEmail:onComplete:" + task.isSuccessful());
+                            //loginProgressDlg.dismiss();
+                            if (!task.isSuccessful()) {
+                                Logger.getLogger(Login.class.getName()).log(Level.ALL, "signInWithEmail", task.getException());
+                                Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
             Intent i = new Intent(this, Main2Activity.class);
             startActivity(i);
         }
