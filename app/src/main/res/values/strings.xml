@@ -188,4 +188,5 @@
     <string name="log_out">Log Out</string>
     <string name="btnRequest">Send Request</string>
     <string name="btn_Location">Get Location</string>
+    <string name="no_results">No resource available</string>
 </resources>
