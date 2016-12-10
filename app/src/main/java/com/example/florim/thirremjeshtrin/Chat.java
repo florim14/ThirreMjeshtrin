@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,10 +33,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -72,6 +75,9 @@ public class Chat extends CustomActivity {
     /* (non-Javadoc)
      * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
      */
+
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +91,7 @@ public class Chat extends CustomActivity {
         list.setStackFromBottom(true);
 
         txt = (EditText) findViewById(R.id.txt);
-        txt.setInputType(InputType.TYPE_CLASS_TEXT
-                | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        txt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
         setTouchNClick(R.id.btnSend);
 
@@ -95,37 +100,30 @@ public class Chat extends CustomActivity {
         ActionBar actionBar = getActionBar();
         if(actionBar != null)
             actionBar.setTitle(buddy.getUsername());
-
+        Log.d("BUDDY: ",buddy.getUsername()+" "+buddy.getId());
+        mAuth = FirebaseAuth.getInstance();
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.FragmentActivity#onResume()
-     */
     @Override
     protected void onResume() {
         super.onResume();
         loadConversationList();
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.FragmentActivity#onPause()
-     */
     @Override
     protected void onPause() {
         super.onPause();
     }
 
-    /* (non-Javadoc)
-     * @see com.socialshare.custom.CustomFragment#onClick(android.view.View)
-     */
     @Override
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.btnSend) {
             sendMessage();
         }
-
     }
+
+
 
     /**
      * Call this method to Send message to opponent. It does nothing if the text
@@ -141,20 +139,15 @@ public class Chat extends CustomActivity {
 
         String s = txt.getText().toString();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = mAuth.getCurrentUser();
         if(user != null) {
             final Conversation conversation = new Conversation(s,
-                    Calendar.getInstance().getTime(),
-                    user.getUid(),
-                    buddy.getId(),
-                    "");
+                    Calendar.getInstance().getTime(),user.getUid(),buddy.getId(),"");
+            Log.d("Uid",user.getUid()+" buddy: "+buddy.getId());
             conversation.setStatus(Conversation.STATUS_SENDING);
             convList.add(conversation);
-            final String key = FirebaseDatabase.getInstance()
-                    .getReference("messages")
-                    .push().getKey();
-            FirebaseDatabase.getInstance().getReference("messages").child(key)
-                    .setValue(conversation)
+            final String key = FirebaseDatabase.getInstance().getReference("messages").push().getKey();
+            FirebaseDatabase.getInstance().getReference("messages").child(key).setValue(conversation)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                @Override
                                                public void onComplete(@NonNull Task<Void> task) {
@@ -166,8 +159,7 @@ public class Chat extends CustomActivity {
                                                    FirebaseDatabase.getInstance()
                                                            .getReference("messages")
                                                            .child(key).setValue(convList.get(convList.indexOf(conversation)))
-                                                           .addOnCompleteListener(new
-                                                                                          OnCompleteListener<Void>() {
+                                                           .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                               @Override
                                                                                               public void onComplete(@NonNull Task<Void> task) {
                                                                                                   adp.notifyDataSetChanged();
@@ -180,6 +172,12 @@ public class Chat extends CustomActivity {
         }
         adp.notifyDataSetChanged();
         txt.setText(null);
+        ConnectToServer connectToServer = new ConnectToServer();
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("userID", user.getEmail());
+        parameters.put("otherID", buddy.getEmail());
+        parameters.put("message", s);
+        connectToServer.sendRequest(ConnectToServer.CHAT, parameters, true);
     }
 
     /**
@@ -187,22 +185,19 @@ public class Chat extends CustomActivity {
      * message that will be used to load only recent new messages
      */
     private void loadConversationList() {
-
         FirebaseDatabase.getInstance().getReference("messages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseUser user = mAuth.getCurrentUser();
                 if(user != null) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         Conversation conversation = ds.getValue(Conversation.class);
-                        if (conversation.getReceiver().contentEquals(user.getUid()) || conversation.getSender().contentEquals(user.getUid())) {
+                        if (conversation.getReceiver().contentEquals(user.getUid()) && conversation.getSender().contentEquals(buddy.getId()) ||
+                                conversation.getReceiver().contentEquals(buddy.getId()) && conversation.getSender().contentEquals(user.getUid())) {
                             convList.add(conversation);
-                            if (lastMsgDate == null
-                                    || lastMsgDate.before(conversation.getDate()))
+                            if (lastMsgDate == null || lastMsgDate.before(conversation.getDate()))
                                 lastMsgDate = conversation.getDate();
-
                             adp.notifyDataSetChanged();
-
                         }
                     }
                 }
@@ -210,7 +205,7 @@ public class Chat extends CustomActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //Log.d("TAG", "DATABASE ERROR");
             }
         });
 

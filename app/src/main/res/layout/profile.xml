@@ -4,140 +4,215 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <ImageView
-        android:src="@drawable/ic_energy_lightning_power_electric_electricity_logo_b"
-        android:id="@+id/imgProfile"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="0dp"
-        android:layout_height="120dp"
-        android:layout_width="120dp"
-        android:paddingBottom="20dp" />
+        android:layout_alignParentStart="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_location_icon"
-        android:id="@+id/imgLocation_icon"
-        android:layout_below="@+id/imgTelefon_icon"
-        android:layout_alignStart="@+id/imgTelefon_icon"
-        android:layout_marginTop="31dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="15dp"
+                android:weightSum="1"
+                android:layout_weight="0.13"
+                android:background="@color/btn_login_bg">
+
+                <ImageView
+                    android:src="@drawable/ic_image2vector"
+                    android:id="@+id/imgProfile"
+                    android:layout_alignParentTop="true"
+                    android:layout_height="122dp"
+                    android:layout_width="100dp"
+                    android:paddingBottom="20dp"
+                    android:layout_gravity="center_vertical|clip_horizontal"
+                    android:layout_weight="0.08"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="20dp" />
+
+                <TextView
+                    android:text="@string/txtProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtProfile"
+                    android:layout_weight="0.08"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/pad_30dp"
+                    android:textColor="@color/btn_logut_bg"
+                    android:textStyle="normal|bold"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_marginTop="60dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:background="@color/btn_login_bg">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_profile_icon"
+                    android:id="@+id/imgUser_icon"
+                    android:layout_marginLeft="0dp"
+                    android:layout_below="@+id/imgProfile"
+                    android:layout_marginBottom="20dp"
+                    />
+                <TextView
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtUser"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:background="@color/btn_login_bg">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:src="@drawable/ic_email_icon"
+                    android:id="@+id/imgEmail_icon"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="20dp"
+                    />
+                <TextView
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imgEmail_icon"
+                    android:layout_alignStart="@+id/txtUser"
+                    android:id="@+id/txtEmail"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:background="@color/btn_login_bg">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_telefon_icon"
+                    android:id="@+id/imgTelefon_icon"
+                    android:layout_below="@+id/imgEmail_icon"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignTop="@+id/imgTelefon_icon"
+                    android:layout_alignStart="@+id/txtEmail"
+                    android:id="@+id/txtTelefon"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_vertical" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="15dp"
+                android:background="@color/btn_login_bg">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_location_icon"
+                    android:id="@+id/imgLocation_icon"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignTop="@+id/imgLocation_icon"
+                    android:layout_alignStart="@+id/txtTelefon"
+                    android:id="@+id/txtLocation"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:background="@color/btn_login_bg">
 
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_telefon_icon"
-        android:id="@+id/imgTelefon_icon"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="23dp"
-        android:layout_below="@+id/imgEmail_icon"
-        android:layout_alignParentStart="true" />
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_profile_icon"
-        android:id="@+id/imgUser_icon"
-        android:layout_marginLeft="0dp"
-        android:layout_below="@+id/imgProfile"
-        android:layout_alignStart="@+id/imgEmail_icon" />
-
-    <ImageView
-        android:layout_width="30dp"
-        android:src="@drawable/ic_email_icon"
-        android:id="@+id/imgEmail_icon"
-        android:layout_height="30dp"
-        android:layout_marginLeft="0dp"
-        android:layout_below="@+id/imgUser_icon"
-        android:layout_alignStart="@+id/imgTelefon_icon"
-        android:layout_marginTop="37dp" />
-
-    <TextView
-        android:text=""
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="59dp"
-        android:id="@+id/txtUser"
-        android:layout_alignBottom="@+id/imgUser_icon"
-        android:layout_toEndOf="@+id/imgUser_icon"
-        android:layout_below="@+id/imgProfile" />
-
-    <TextView
-        android:text=""
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imgEmail_icon"
-        android:layout_alignStart="@+id/txtUser"
-        android:id="@+id/txtEmail" />
-
-    <TextView
-        android:text=""
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_alignTop="@+id/imgTelefon_icon"
-        android:layout_alignStart="@+id/txtEmail"
-        android:id="@+id/txtTelefon" />
-
-    <TextView
-        android:text=""
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_alignTop="@+id/imgLocation_icon"
-        android:layout_alignStart="@+id/txtTelefon"
-        android:id="@+id/txtLocation" />
-
-    <TextView
-        android:text=""
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:id="@+id/txtRadius"
-        android:layout_alignBottom="@+id/imgRadius_icon"
-        android:layout_alignStart="@+id/txtLocation" />
-
-    <Button
-        android:text="Send Request"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/imgRadius_icon"
-        android:layout_marginBottom="27dp"
-        android:id="@+id/btnSendRequest" />
-
-    <Button
-        android:text="Feedback"
-        android:layout_width="120dp"
-        android:id="@+id/btnFeedback"
-        android:layout_height="50dp"
-        android:layout_alignTop="@+id/btnSendRequest"
-        android:layout_toEndOf="@+id/imgProfile" />
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_radius_icon"
-        android:id="@+id/imgRadius_icon"
-        android:layout_marginTop="18dp"
-        android:layout_below="@+id/imgLocation_icon"
-        android:layout_alignStart="@+id/imgLocation_icon" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_alignStart="@+id/imgProfile"
-        android:id="@+id/txtCategory"
-        android:layout_alignEnd="@+id/txtRadius"
-        android:layout_alignTop="@+id/imgCategory_icon" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_category_icon"
-        android:id="@+id/imgCategory_icon"
-        android:layout_above="@+id/btnSendRequest"
-        android:layout_alignEnd="@+id/imgRadius_icon" />
 
 
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_radius_icon"
+                    android:id="@+id/imgRadius_icon"
+                    android:layout_below="@+id/imgLocation_icon"
+                    android:layout_alignStart="@+id/imgLocation_icon" />
+                <TextView
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:id="@+id/txtRadius"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:background="@color/btn_login_bg">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_category_icon"
+                    android:id="@+id/imgCategory_icon"
+                    android:layout_above="@+id/btnSendRequest"
+                    android:layout_alignEnd="@+id/imgRadius_icon" />
+                <TextView
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:id="@+id/txtCategory"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="15dp">
+                <Button
+                    android:text="Send Request"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="27dp"
+                    android:id="@+id/btnSendRequest"
+                    android:background="@color/bg_login" />
+
+                <Button
+                    android:text="Feedback"
+                    android:layout_width="150dp"
+                    android:id="@+id/btnFeedback"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="50dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
