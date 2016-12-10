@@ -6,10 +6,12 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -51,6 +53,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
     String password;
     boolean isDataValid;
     Map<String, String> accountData;
+    ConnectivityManager cm;
 
     public final static String ACCOUNT_TYPE = "ACCOUNT_TYPE";
     public final static String AUTH_TYPE = "AUTH_TYPE";
@@ -69,7 +72,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         setContentView(R.layout.activity_login);
         isPermissionGranted = false;
         mAccountManager=AccountManager.get(this);
-
+        cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 inputEmail = (EditText) findViewById(R.id.email);
                 inputPassword = (EditText) findViewById(R.id.password);
                 btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -189,19 +192,23 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         isPermissionGranted = PermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
     }
-    private void sendRegistrationToServer(String newToken,Map<String,String> Account){
+    private void sendRegistrationToServer(String newToken,Map<String,String> Account) {
         Map<String, String> params = new HashMap<>();
         for (Map.Entry<String, String> entry : Account.entrySet()) {
             if (entry.getKey().equals("UserID"))
                 params.put("UserID", entry.getValue());
         }
         params.put("Token", newToken);
-        ConnectToServer connectToServer = new ConnectToServer();
-        connectToServer.sendRequest(ConnectToServer.UPDATETOKEN, params, true);
+        if (PermissionUtils.connectivityCheck(cm)) {
+            ConnectToServer connectToServer = new ConnectToServer();
+            connectToServer.sendRequest(ConnectToServer.UPDATETOKEN, params, true);
+        }
+        else{
+            Toast.makeText(Login.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
+        }
     }
     private void userSignIn() {
-
-
+        if (PermissionUtils.connectivityCheck(cm)) {
             authtoken = FirebaseInstanceId.getInstance().getToken();
             accountType = Authenticator.ACCOUNT_TYPE;
             ConnectToServer connectToServer = new ConnectToServer();
@@ -209,8 +216,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             parameters.put("account", accountName);
             parameters.put("password", password);
             parameters.put("token", authtoken);
-            connectToServer.sendRequest(ConnectToServer.LOG_IN, parameters,false);
-
+            connectToServer.sendRequest(ConnectToServer.LOG_IN, parameters, false);
             List<Map<String, String>> response = connectToServer.results;
 
             String message = "";
@@ -222,8 +228,8 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             String Category = "";
             String Location = "";
 
-            if(!response.isEmpty()){
-                Map<String,String> data=response.get(0);
+            if (!response.isEmpty()) {
+                Map<String, String> data = response.get(0);
                 if (data.get("error") != null) {
                     switch (Integer.valueOf(data.get("error"))) {
                         case 0:
@@ -238,23 +244,23 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
 
                     }
                 }
-                if (data.get("UserID")!=null) {
+                if (data.get("UserID") != null) {
                     UserID = data.get("UserID");
                 }
-                if (data.get("Email")!=null) {
+                if (data.get("Email") != null) {
                     Email = data.get("Email");
                 }
-                if (data.get("Lat")!=null) {
+                if (data.get("Lat") != null) {
                     Lat = data.get("Lat");
                 }
-                if (data.get("Lon")!=null) {
+                if (data.get("Lon") != null) {
                     Lon = data.get("Lon");
                 }
-                if (data.get("Phone")!=null) {
+                if (data.get("Phone") != null) {
                     Phone = data.get("Phone");
                 }
-                if (data.get("Category")!=null) {
-                    Category= data.get("Category");
+                if (data.get("Category") != null) {
+                    Category = data.get("Category");
                 }
 
             }
@@ -275,7 +281,6 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 data.putString("Phone", Phone);
                 data.putString("Location", Location);
                 data.putString("Category", Category);
-
 
 
                 //Make it an intent to be passed back to the Android Authenticator
@@ -318,8 +323,11 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 }
 
             }
-            }
-
+        }
+        else{
+            Toast.makeText(Login.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
+        }
+    }
     private String getLocation(String lat, String lon) {
         Geocoder g = new Geocoder(this);
         try {
