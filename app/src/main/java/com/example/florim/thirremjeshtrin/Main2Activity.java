@@ -1,27 +1,18 @@
 package com.example.florim.thirremjeshtrin;
 
-import android.*;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
-import com.roughike.bottombar.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Main2Activity extends AppCompatActivity implements LocationListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -48,11 +39,12 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
                     startActivity(i);
                 }
             }
-
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.inbox) {
                     // The user reselected item number one, scroll your content to top.
+                    Intent i = new Intent(Main2Activity.this, UserList.class);
+                    startActivity(i);
                 }
             }
         });
