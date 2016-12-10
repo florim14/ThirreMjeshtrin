@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,11 +23,11 @@ public class GiveFeedback extends AppCompatActivity {
     TextView info;
     RatingBar rb;
 
-    String RepairmanID;
+    String RequestID;
     String UserID;
     ConnectToServer connectToServer;
 
-    float ratingValue;
+    int ratingValue=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class GiveFeedback extends AppCompatActivity {
 
 
 
-            RepairmanID = getIntent().getStringExtra("RepairmanID");
+            RequestID = getIntent().getStringExtra("RequestID");
             UserID = getIntent().getStringExtra("UserID");
 
 
@@ -45,43 +46,45 @@ public class GiveFeedback extends AppCompatActivity {
         final boolean connectivity = PermissionUtils.connectivityCheck(cm);
 
         feedback = (EditText)findViewById(R.id.txtFeedback);
-        btnSendFeedback = (Button)findViewById(R.id.btnFeedback);
+        btnSendFeedback = (Button)findViewById(R.id.btnSendFeedback);
         info = (TextView)findViewById(R.id.txtInfo);
         rb = (RatingBar)findViewById(R.id.ratingBar);
             rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                    ratingValue = v;
+                    ratingValue = (int)v + 1;
                 }
             });
             btnSendFeedback.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String feed = feedback.getText().toString();
-                    if (!feed.isEmpty()) {
-                        final Map<String, String> params = new HashMap<>();
-                        params.put("UserID", UserID);
-                        params.put("RepID", RepairmanID);
-                        params.put("Feedback", feed);
-                        params.put("Rating", Float.toString(ratingValue));
-                        if(connectivity){
-                        connectToServer = new ConnectToServer();
-                        connectToServer.sendRequest(connectToServer.FEEDBACK, params, true);
-                        List<Map<String, String>> response = connectToServer.results;
-                        Map<String, String> result = new HashMap<String, String>();
-                        result = response.get(0);
-                        if (result.get("message") == "INSERTED") {
-                            Toast.makeText(getApplicationContext(), "SENT!", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "ERROR!", Toast.LENGTH_LONG).show();
-                        }
-                    }else {
-                            Toast.makeText(getApplicationContext(), R.string.no_connectivity, Toast.LENGTH_LONG).show();
-                        }
+                    if (ratingValue != -1) {
+                        String feed = feedback.getText().toString();
+
+                            final Map<String, String> params = new HashMap<>();
+                            params.put("UserID", UserID);
+                            params.put("ReqID", RequestID);
+                            params.put("Feedback", feed);
+                            params.put("Rating", String.valueOf(ratingValue));
+
+                            if (connectivity) {
+                                connectToServer = new ConnectToServer();
+                                connectToServer.sendRequest(connectToServer.FEEDBACK, params, false);
+                                List<Map<String, String>> response = connectToServer.results;
+                                Map<String, String> result = new HashMap<String, String>();
+                                result = response.get(0);
+                                if (result.get("message").equals("INSERTED")) {
+                                    Toast.makeText(getApplicationContext(), "SENT!", Toast.LENGTH_LONG).show();
+                                    finish();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "ERROR!", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), R.string.no_connectivity, Toast.LENGTH_LONG).show();
+                            }
+                        
                     } else {
-                        if (feed.isEmpty()) {
-                            feedback.setError("");
-                        }
+                        Toast.makeText(getApplicationContext(), R.string.no_rating, Toast.LENGTH_LONG).show();
                     }
                 }
             });

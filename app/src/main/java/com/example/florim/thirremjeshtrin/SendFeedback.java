@@ -113,19 +113,22 @@ public class SendFeedback extends android.app.Fragment {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            String RepairmanID = response.get(i).get("RepID");
+                            String RequestID = response.get(i).get("ID");
                             String UserID = response.get(i).get("UserID");
                             Intent intent = new Intent(getActivity(), GiveFeedback.class);
                             intent.putExtra("UserID", UserID);
-                            intent.putExtra("RepairmanID", RepairmanID);
-                            startActivity(intent);
-                            getActivity().finish();
-                        }
+                            intent.putExtra("RequestID", RequestID);
+                            startActivityForResult(intent,1);
+
+                                                    }
                     });
                 }else {
                     listView.setEmptyView(view.findViewById(R.id.empty));
                 }
 
+            }
+            else{
+                listView.setEmptyView(view.findViewById(R.id.empty));
             }
         }
         else{

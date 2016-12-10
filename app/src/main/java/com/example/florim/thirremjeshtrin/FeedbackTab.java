@@ -64,9 +64,10 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
         spec.setIndicator("Send Feedback");
         tabs.addTab(spec);
             SendFeedback list2=new SendFeedback();
-            list.RepairmanID=RepairmanID;
+            list2.RepairmanID=RepairmanID;
             list2.UserID=UserID;
-            ft.add(R.id.Tab2,list2,"").disallowAddToBackStack().commit();
+            FragmentTransaction ft2= getFragmentManager().beginTransaction();
+            ft2.add(R.id.Tab2,list2,"").disallowAddToBackStack().commit();
         }
 
 

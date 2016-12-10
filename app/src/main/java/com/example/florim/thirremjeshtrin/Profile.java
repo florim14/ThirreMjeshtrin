@@ -203,7 +203,7 @@ public class Profile extends AppCompatActivity {
                 UserID=accountData.get("UserID");
                 Intent i = new Intent(getApplicationContext(), FeedbackTab.class);
                 Log.d("Profile: ",UserID+" "+RepairmanID);
-                i.putExtra("RepairmanID", UserID );
+                i.putExtra("RepairmanID", RepairmanID );
                 i.putExtra("UserID",UserID);
                 startActivity(i);
                 finish();

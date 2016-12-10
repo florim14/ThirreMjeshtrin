@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +86,7 @@ public class ListFeedback extends android.app.Fragment {
 
         final Map<String, String> params = new HashMap<>();
         params.put("RepID", RepairmanID);
+        Log.d("ListFeedback:", RepairmanID);
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         final boolean connectivity = PermissionUtils.connectivityCheck(cm);
 
