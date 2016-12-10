@@ -38,11 +38,12 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.menu_main);
+        mBottomBar.setDefaultTabPosition(1);
         mBottomBar.setOnMenuTabClickListener(new com.roughike.bottombar.OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
-                    Intent i=new Intent(Main2Activity.this,Profile.class);
+                   Intent i=new Intent(Main2Activity.this,Profile.class);
                     i.putExtra("isUser",true);
                     startActivity(i);
                 }

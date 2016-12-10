@@ -11,56 +11,54 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.florim.thirremjeshtrin.Main2Activity">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="1">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_energy_lightning_power_electric_electricity_logo_b"
-            android:id="@+id/imgElectrician"
-            android:tag="3"
-            android:layout_alignTop="@+id/imgAuto"
-            android:layout_marginTop="68dp"
-            android:onClick="onImageClick" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_1f69e2541d499b6455e1b01a68d2926c"
+            android:layout_width="match_parent"
+            android:layout_height="133dp"
+            android:src="@drawable/ic_l3b0pvbcsp"
             android:id="@+id/imgAuto"
             android:tag="2"
+            android:onClick="onImageClick"
+            android:layout_below="@+id/frameLayout2"
+            android:background="@color/common_google_signin_btn_text_dark_disabled"
+            android:layout_margin="10dp" />
 
-            android:layout_alignParentEnd="true"
-            android:onClick="onImageClick" />
 
         <ImageView
-            android:layout_width="251dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_plumbing_logo"
-            android:id="@+id/imgPlumber"
-            android:tag="1"
-            android:baselineAlignBottom="true"
-            android:layout_below="@+id/imgAuto"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="29dp"
-            android:onClick="onImageClick" />
-
-    </FrameLayout>
-
+            android:layout_width="match_parent"
+            android:layout_height="137dp"
+            android:src="@drawable/ic_ki2w8ti5qa"
+            android:id="@+id/imgElectrician"
+            android:tag="3"
+            android:onClick="onImageClick"
+            android:layout_alignBottom="@+id/imgPlumber"
+            android:layout_alignEnd="@+id/imgPlumber"
+            android:layout_weight="0.36"
+            android:background="@color/common_google_signin_btn_text_dark_disabled"
+            android:layout_margin="10dp" />
 
 
+        <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="119dp"
+        android:src="@drawable/ic_yu02btddut"
+        android:id="@+id/imgPlumber"
+        android:tag="1"
+        android:baselineAlignBottom="true"
+        android:onClick="onImageClick"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+            android:background="@color/common_google_signin_btn_text_dark_disabled"
+            android:layout_margin="10dp" />
 
+    </LinearLayout>
 </RelativeLayout>

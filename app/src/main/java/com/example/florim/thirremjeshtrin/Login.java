@@ -227,6 +227,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             String Phone = "";
             String Category = "";
             String Location = "";
+            String Radius="";
 
             if (!response.isEmpty()) {
                 Map<String, String> data = response.get(0);
@@ -262,6 +263,9 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 if (data.get("Category") != null) {
                     Category = data.get("Category");
                 }
+                if(data.get("Radius")!=null){
+                    Radius=data.get("Radius");
+                }
 
             }
 
@@ -281,6 +285,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 data.putString("Phone", Phone);
                 data.putString("Location", Location);
                 data.putString("Category", Category);
+                data.putString("Radius",Radius);
 
 
                 //Make it an intent to be passed back to the Android Authenticator

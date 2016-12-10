@@ -12,6 +12,8 @@ import android.location.Geocoder;
 
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.provider.ContactsContract;
+import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
@@ -20,6 +22,7 @@ import android.os.Bundle;
 import android.test.mock.MockApplication;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ import java.security.Permission;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Profile extends AppCompatActivity {
@@ -43,35 +47,129 @@ public class Profile extends AppCompatActivity {
     String RepairmanID;
     AccountManager am;
     ConnectivityManager cm;
+    com.roughike.bottombar.BottomBar mBottomBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
+        mBottomBar.setItems(R.menu.menu_main);
+        mBottomBar.setDefaultTabPosition(1);
+        mBottomBar.setOnMenuTabClickListener(new com.roughike.bottombar.OnMenuTabClickListener() {
+            @Override
+            public void onMenuTabSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.profile) {
+                    Intent i=new Intent(Profile.this,Profile.class);
+                    i.putExtra("isUser",true);
+                    startActivity(i);
+                }
+            }
+
+            @Override
+            public void onMenuTabReSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.inbox) {
+                    // The user reselected item number one, scroll your content to top.
+                }
+            }
+        });
+
+        mBottomBar.mapColorForTab(0,"#F44346");
+        mBottomBar.mapColorForTab(1,"#795548");
+
+
         setContentView(R.layout.profile);
         am = AccountManager.get(this);
+        RepairmanID="";
+        String Username="";
+        String Email="";
+        String Phone="";
+        String Lat="";
+        String Lon="";
+        String Radius="";
+        String Category="";
+        String Location="";
         cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         accountData = Authenticator.findAccount(am, this);
-        String Username = getIntent().getStringExtra("Username");
-        String Email = getIntent().getStringExtra("Email");
-        String Phone = getIntent().getStringExtra("Phone");
-        String Lat = getIntent().getStringExtra("Lat");
-        String Lon = getIntent().getStringExtra("Lon");
-        String Radius = getIntent().getStringExtra("Radius");
-        RepairmanID = getIntent().getStringExtra("UserID");
+        boolean isUser=getIntent().getBooleanExtra("isUser",false);
+        if(!isUser) {
+            Username = getIntent().getStringExtra("Username");
+            Email = getIntent().getStringExtra("Email");
+            Phone = getIntent().getStringExtra("Phone");
+            Lat = getIntent().getStringExtra("Lat");
+            Lon = getIntent().getStringExtra("Lon");
+            Radius = getIntent().getStringExtra("Radius");
+            RepairmanID = getIntent().getStringExtra("UserID");
+            Location=getLocation(Lat, Lon);
+        }
+        else {
+            if (accountData.get("Name").equals("")) {
+                Username = accountData.get("Name");
+            }
+            if (accountData.get("Email").equals("")) {
+                Email = accountData.get("Email");
+            }
+            if (accountData.get("Phone").equals("")) {
+                Phone = accountData.get("Phone");
+            }
+            if (accountData.get("Location").equals("")) {
+                Location = accountData.get("Location");
+            }
+            if (accountData.get("Category").equals("")) {
+                Category = accountData.get("Category");
+            }
+            if(accountData.get("Radius").equals("")){
+                Radius=accountData.get("Radius");
+            }
+        }
+
         txtUser = (TextView) findViewById(R.id.txtUser);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
         txtLocation = (TextView) findViewById(R.id.txtLocation);
         txtTelefon = (TextView) findViewById(R.id.txtTelefon);
         txtRadius = (TextView) findViewById(R.id.txtRadius);
-
-        txtUser.setText(Username);
-        txtRadius.setText(Radius + " km");
-        txtTelefon.setText(Phone);
-        txtEmail.setText(Email);
-        txtLocation.setText(getLocation(Lat, Lon));
+        if(Username!=null) {
+            txtUser.setText(Username);
+        }
+        else{
+            txtUser.setVisibility(View.INVISIBLE);
+            ImageView imgUser=(ImageView) findViewById(R.id.imgProfile);
+            imgUser.setVisibility(View.INVISIBLE);
+        }
+        if(Radius!=null) {
+            txtRadius.setText(Radius + " km");
+        }
+        else{
+            txtRadius.setVisibility(View.INVISIBLE);
+            ImageView imgRadius=(ImageView) findViewById(R.id.imgRadius_icon);
+            imgRadius.setVisibility(View.INVISIBLE);
+        }
+        if(Phone!=null) {
+            txtTelefon.setText(Phone);
+        }
+        else{
+            txtTelefon.setVisibility(View.INVISIBLE);
+            ImageView imgTelefon=(ImageView) findViewById(R.id.imgTelefon_icon);
+            imgTelefon.setVisibility(View.INVISIBLE);
+        }
+        if(Email!=null) {
+            txtEmail.setText(Email);
+        }
+        else{
+            txtEmail.setVisibility(View.INVISIBLE);
+            ImageView imgEmail=(ImageView) findViewById(R.id.imgEmail_icon);
+            imgEmail.setVisibility(View.INVISIBLE);
+        }
+        if(Location!=null) {
+            txtLocation.setText(Location);
+        }
+        else{
+            txtLocation.setVisibility(View.INVISIBLE);
+            ImageView imgLocation=(ImageView) findViewById(R.id.imgLocation_icon);
+            imgLocation.setVisibility(View.INVISIBLE);
+        }
         btnRequest = (Button) findViewById(R.id.btnSendRequest);
-        if (RepairmanID.equals(accountData.get("UserID"))) {
+        if (RepairmanID.equals(accountData.get("UserID"))|| isUser) {
             btnRequest.setText(R.string.log_out);
             btnRequest.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -119,6 +217,14 @@ public class Profile extends AppCompatActivity {
             }
             });
         };
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Necessary to restore the BottomBar's state, otherwise we would
+        // lose the current tab on orientation change.
+        mBottomBar.onSaveInstanceState(outState);
     }
 
     private String getLocation(String Lat, String Lon) {

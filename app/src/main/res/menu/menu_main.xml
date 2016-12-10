@@ -6,7 +6,10 @@
         android:title="Profile"
         android:alphabeticShortcut="p">
         </item>
-
+    <item
+        android:id="@+id/ghost"
+        android:title="">
+    </item>
     <item
         android:id="@+id/inbox"
         android:icon="@drawable/ic_email_icon"

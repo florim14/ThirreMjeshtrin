@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
@@ -38,7 +39,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<LatLng> latlngs = new ArrayList<>();
     private String lat;
     private String lon;
-
+    com.roughike.bottombar.BottomBar mBottomBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,6 +50,32 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
         progressDialog.show();
         getDataFromServer(category, lat, lon);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fragment_conn);
+        mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
+        mBottomBar.setItems(R.menu.menu_main);
+        mBottomBar.setDefaultTabPosition(1);
+        mBottomBar.setOnMenuTabClickListener(new com.roughike.bottombar.OnMenuTabClickListener() {
+            @Override
+            public void onMenuTabSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.profile) {
+                    Intent i=new Intent(FragmentConn.this,Profile.class);
+                    i.putExtra("isUser",true);
+                    startActivity(i);
+                }
+            }
+
+            @Override
+            public void onMenuTabReSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.inbox) {
+                    // The user reselected item number one, scroll your content to top.
+                }
+            }
+        });
+
+        mBottomBar.mapColorForTab(0,"#F44346");
+        mBottomBar.mapColorForTab(1,"#795548");
+
+
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -56,6 +83,14 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         progressDialog.hide();
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Necessary to restore the BottomBar's state, otherwise we would
+        // lose the current tab on orientation change.
+        mBottomBar.onSaveInstanceState(outState);
     }
 
     private List<Map<String,String>> searchFromServer(String cat, String lat,String lon){
