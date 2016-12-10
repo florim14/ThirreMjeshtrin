@@ -134,6 +134,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
                     options.snippet("Phone number: " + results.get(countSize).get("Phone"));
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                     markers[countSize] = results.get(countSize).get("Username");
+                    googleMap.addMarker(options);
                 }
                 countSize++;
             }
