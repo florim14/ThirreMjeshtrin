@@ -23,6 +23,8 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -172,10 +174,10 @@ public class Chat extends CustomActivity {
         txt.setText(null);
         ConnectToServer connectToServer = new ConnectToServer();
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("userID", user.getUid());
-        parameters.put("otherID", buddy.getId());
+        parameters.put("userID", user.getEmail());
+        parameters.put("otherID", buddy.getEmail());
         parameters.put("message", s);
-        connectToServer.sendRequest(ConnectToServer.LOG_IN, parameters, true);
+        connectToServer.sendRequest(ConnectToServer.CHAT, parameters, true);
     }
 
     /**
