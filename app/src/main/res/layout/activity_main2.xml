@@ -32,7 +32,8 @@
                 android:layout_below="@+id/frameLayout2"
                 android:background="@color/common_google_signin_btn_text_dark_disabled"
                 android:layout_margin="10dp"
-                android:layout_height="140dp" />
+                android:layout_height="140dp"
+                android:contentDescription="Mechanic Logo" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -44,7 +45,8 @@
                 android:layout_alignEnd="@+id/imgPlumber"
                 android:background="@color/common_google_signin_btn_text_dark_disabled"
                 android:layout_margin="10dp"
-                android:layout_height="140dp" />
+                android:layout_height="140dp"
+                android:contentDescription="Electrician Logo" />
 
             <ImageView
             android:layout_width="match_parent"
@@ -58,7 +60,8 @@
                 android:background="@color/common_google_signin_btn_text_dark_disabled"
                 android:layout_margin="10dp"
                 android:layout_weight="0.40"
-                android:layout_height="140dp" />
+                android:layout_height="140dp"
+                android:contentDescription="Plumber Logo" />
         </LinearLayout>
     </ScrollView>
 
