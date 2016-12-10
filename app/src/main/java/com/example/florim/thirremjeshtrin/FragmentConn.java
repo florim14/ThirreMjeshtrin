@@ -113,37 +113,27 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        HashMap<String, String> hmap = new HashMap<>();
         int size = results.size();
-        String[] title = new String[size];
-        String[] description = new String[size];
 
-        for(int i = 0; i < size-1; i++)
+        final int position;
+
+        for(int i = 0; i < size; i++)
         {
-            hmap.put(results.get(i).get("Lat"), results.get(i).get("Lon"));
-            title[i] = results.get(i).get("Username");
-            description[i] = results.get(i).get("Phone");
+            latlngs.add(new LatLng(Double.parseDouble(results.get(i).get("Lat")),
+                    Double.parseDouble(results.get(i).get("Lon"))));
         }
-
-
-      /* Display content using Iterator*/
-        Set set = hmap.entrySet();
-        Iterator iterator = set.iterator();
-        while (iterator.hasNext()) {
-            Map.Entry mentry = (Map.Entry) iterator.next();
-            latlngs.add(new LatLng(Double.parseDouble(mentry.getKey().toString()),
-                    Double.parseDouble(mentry.getValue().toString())));
-        }
+        final String[] markers = new  String[size];
 
         int sizeLatLon = latlngs.size();
         int countSize = 0;
         for (LatLng point : latlngs) {
             if(countSize < sizeLatLon) {
                 options.position(point);
-                options.title(title[countSize]);
-                options.snippet("Phone number: " + description[countSize]);
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                options.title(results.get(countSize).get("Username"));
+                options.snippet("Phone number: " + results.get(countSize).get("Phone"));
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                 googleMap.addMarker(options);
+                markers[countSize] = results.get(countSize).get("Username");
             }
             countSize++;
         }
@@ -152,6 +142,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
                 CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon)));
         mMap.moveCamera(center);
 
+
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(4);
         mMap.animateCamera(zoom);
 
@@ -159,28 +150,37 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             public boolean onMarkerClick(Marker marker) {
-                // Check if there is an open info window
-                if (lastOpened[0] != null) {
-                    // Close the info window
-                    lastOpened[0].hideInfoWindow();
 
-                    // Is the marker the same marker that was already open
-                    if (lastOpened[0].equals(marker)) {
-                        // Nullify the lastOpened object
-                        lastOpened[0] = null;
-                        // Return so that the info window isn't opened again
-                        return true;
+                int position = -1;
+                String title = marker.getTitle();
+                for (int i=0; i< markers.length; i++)
+                {
+                    if(markers[i].equals(title))
+                    {
+                        position =i;
+                        break;
                     }
                 }
 
-                // Open the info window for the marker
-                marker.showInfoWindow();
-                // Re-assign the last opened such that we can close it later
-                lastOpened[0] = marker;
 
+                Intent intent = new Intent(getApplicationContext(), Profile.class );
 
-                Intent OpenProfile = new Intent(getApplicationContext(), Profile.class );
-                startActivity(OpenProfile);
+                String Username = results.get(position).get("Username");
+                String Email = results.get(position).get("Email");
+                String UserID = results.get(position).get("ID");
+                String Phone = results.get(position).get("Phone");
+                String Lat = results.get(position).get("Lat");
+                String Lon = results.get(position).get("Lon");
+                String Radius = results.get(position).get("Radius");
+
+                intent.putExtra("UserID", UserID);
+                intent.putExtra("Username", Username);
+                intent.putExtra("Lat", Lat);
+                intent.putExtra("Lon", Lon);
+                intent.putExtra("Radius", Radius);
+                intent.putExtra("Phone", Phone);
+                intent.putExtra("Email", Email);
+                startActivity(intent);
 
                 // Event was handled by our code do not launch default behaviour.
                 return true;
