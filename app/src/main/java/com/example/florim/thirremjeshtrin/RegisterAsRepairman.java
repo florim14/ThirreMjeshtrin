@@ -1,8 +1,6 @@
 package com.example.florim.thirremjeshtrin;
 
-import android.*;
 import android.Manifest;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +12,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,7 +25,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -234,30 +230,30 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                         }
 
 
-                            try {
-                                Geocoder gc = new Geocoder(RegisterAsRepairman.this);
-                                if(longitude==null && latitude==null) {
-                                    List<Address> addresses = gc.getFromLocationName(selectedCountry, 5);
-                                    Address address = addresses.get(0);
-                                    longitude = address.getLongitude();
-                                    latitude = address.getLatitude();
+                        try {
+                            Geocoder gc = new Geocoder(RegisterAsRepairman.this);
+                            if(longitude==null && latitude==null) {
+                                List<Address> addresses = gc.getFromLocationName(selectedCountry, 5);
+                                Address address = addresses.get(0);
+                                longitude = address.getLongitude();
+                                latitude = address.getLatitude();
 
-                                }
-
-
-
-                            } catch (IOException e) {
-                                Log.d("error", e.toString());
                             }
+
+
+
+                        } catch (IOException e) {
+                            Log.d("error", e.toString());
+                        }
                         ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                         boolean connectivity=PermissionUtils.connectivityCheck(cm);
 
-                            if(isDataValid && connectivity) {
-                                registerUser(name, email, password, latitude, longitude, radius, tel, selectedCat);
-                            }
-                            else {
-                                Toast.makeText(RegisterAsRepairman.this,R.string.no_connectivity,Toast.LENGTH_LONG).show();
-                            }
+                        if(isDataValid && connectivity) {
+                            registerUser(name, email, password, latitude, longitude, radius, tel, selectedCat);
+                        }
+                        else {
+                            Toast.makeText(RegisterAsRepairman.this,R.string.no_connectivity,Toast.LENGTH_LONG).show();
+                        }
 
 
                     }
@@ -352,16 +348,16 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                 longitude = mLocation.getLongitude();
                 Geocoder gc = new Geocoder(RegisterAsRepairman.this);
                 try{
-                List<Address> addresses = gc.getFromLocation(latitude,longitude,5);
-                Address address = addresses.get(0);
-                selectedCountry = address.getLocality();
-                spinner.setSelection(getIndex(spinner, selectedCountry));
+                    List<Address> addresses = gc.getFromLocation(latitude,longitude,5);
+                    Address address = addresses.get(0);
+                    selectedCountry = address.getLocality();
+                    spinner.setSelection(getIndex(spinner, selectedCountry));
                 } catch(IOException e){
 
                 }
 
 
-        } else {
+            } else {
                 Toast.makeText(this, R.string.no_provider_error, Toast.LENGTH_SHORT).show();
 
             }

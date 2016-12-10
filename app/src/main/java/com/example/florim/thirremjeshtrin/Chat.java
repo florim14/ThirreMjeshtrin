@@ -27,6 +27,10 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+<<<<<<< HEAD
+=======
+import android.widget.Toast;
+>>>>>>> origin/master
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +45,8 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -185,6 +191,12 @@ public class Chat extends CustomActivity {
         }
         adp.notifyDataSetChanged();
         txt.setText(null);
+        ConnectToServer connectToServer = new ConnectToServer();
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("userID", user.getEmail());
+        parameters.put("otherID", buddy.getEmail());
+        parameters.put("message", s);
+        connectToServer.sendRequest(ConnectToServer.CHAT, parameters, true);
     }
 
     /**

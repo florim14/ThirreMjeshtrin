@@ -1,10 +1,10 @@
 package com.example.florim.thirremjeshtrin;
 
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -27,17 +27,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
 
 public class FragmentConn extends AppCompatActivity implements OnMapReadyCallback{
 
    private List<Map<String,String>> results;
     private static String LIST_TAG="ListSearch";
-    ProgressDialog progressDialog;
 
     private GoogleMap mMap;
     private MarkerOptions options = new MarkerOptions();
@@ -51,8 +48,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
         String category = String.valueOf(getIntent().getIntExtra("category", -1));
         lat = String.valueOf(getIntent().getDoubleExtra("lat", -1));
         lon = String.valueOf(getIntent().getDoubleExtra("lon", -1));
-        progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+
         getDataFromServer(category, lat, lon);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_conn);
@@ -87,9 +83,9 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        progressDialog.hide();
+
     }
-    @Override
+
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -113,6 +109,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
     public List<Map<String,String>> getData(){
         return results;
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
