@@ -82,7 +82,7 @@ public class GiveFeedback extends AppCompatActivity {
                             } else {
                                 Toast.makeText(getApplicationContext(), R.string.no_connectivity, Toast.LENGTH_LONG).show();
                             }
-                        
+
                     } else {
                         Toast.makeText(getApplicationContext(), R.string.no_rating, Toast.LENGTH_LONG).show();
                     }

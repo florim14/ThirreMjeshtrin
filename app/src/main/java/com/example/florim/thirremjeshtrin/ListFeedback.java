@@ -92,7 +92,7 @@ public class ListFeedback extends android.app.Fragment {
 
         if (connectivity) {
             connectToServer = new ConnectToServer();
-            connectToServer.sendRequest(connectToServer.FEEDBACK, params, true);
+            connectToServer.sendRequest(connectToServer.FEEDBACK, params, false);
             List<Map<String, String>> response = connectToServer.results;
             if(response!=null){
                 adapter = new SimpleAdapter(getActivity(), response, android.R.layout.simple_expandable_list_item_2, new String[]{"Username", "Rating"},
