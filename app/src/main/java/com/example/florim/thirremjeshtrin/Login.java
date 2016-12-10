@@ -318,6 +318,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                                         UserList.user = new ChatUser(task.getResult().getUser().getUid(), task.getResult().getUser().getDisplayName(), task.getResult().getUser().getEmail(), true, defaultRoom);
                                         Intent i = new Intent(Login.this, Main2Activity.class);
                                         startActivity(i);
+                                        finish();
                                     }
 
                                 }
@@ -388,6 +389,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                                         task.getResult().getUser().getDisplayName(), task.getResult().getUser().getEmail(), true, defaultRoom);
                                 Intent i = new Intent(Login.this, Main2Activity.class);
                                 startActivity(i);
+                                finish();
                             }
                         }
                     });

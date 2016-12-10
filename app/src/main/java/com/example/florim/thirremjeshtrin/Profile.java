@@ -1,7 +1,5 @@
 package com.example.florim.thirremjeshtrin;
 
-import android.*;
-import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,30 +7,24 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-
 import android.net.ConnectivityManager;
 import android.os.Build;
-import android.provider.ContactsContract;
+import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.test.mock.MockApplication;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
-import java.security.Permission;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class Profile extends AppCompatActivity {
@@ -275,6 +267,7 @@ public class Profile extends AppCompatActivity {
             params.put("Token","NULL");
             ConnectToServer connectToServer= new ConnectToServer();
             connectToServer.sendRequest(ConnectToServer.UPDATETOKEN,params,true);
+            FirebaseAuth.getInstance().signOut();
             Intent intent=new Intent(this,Login.class);
             startActivity(intent);
         }
