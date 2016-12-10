@@ -122,5 +122,22 @@
         android:layout_below="@+id/imgLocation_icon"
         android:layout_alignStart="@+id/imgLocation_icon" />
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_alignStart="@+id/imgProfile"
+        android:id="@+id/txtCategory"
+        android:layout_alignEnd="@+id/txtRadius"
+        android:layout_alignTop="@+id/imgCategory_icon" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_category_icon"
+        android:id="@+id/imgCategory_icon"
+        android:layout_above="@+id/btnSendRequest"
+        android:layout_alignEnd="@+id/imgRadius_icon" />
+
 
 </RelativeLayout>

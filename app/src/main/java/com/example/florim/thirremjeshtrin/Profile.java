@@ -41,6 +41,7 @@ public class Profile extends AppCompatActivity {
     TextView txtTelefon;
     TextView txtLocation;
     TextView txtRadius;
+    TextView txtCategory;
     Button btnRequest;
     Button btnFeedback;
     Map<String ,String> accountData;
@@ -101,24 +102,25 @@ public class Profile extends AppCompatActivity {
             Radius = getIntent().getStringExtra("Radius");
             RepairmanID = getIntent().getStringExtra("UserID");
             Location=getLocation(Lat, Lon);
+            Category=getIntent().getStringExtra("Category");
         }
         else {
-            if (accountData.get("Name")!=null) {
+            if (!accountData.get("Name").equals("")) {
                 Username = accountData.get("Name");
             }
-            if (accountData.get("Email")!=null) {
+            if (!accountData.get("Email").equals("")) {
                 Email = accountData.get("Email");
             }
-            if (accountData.get("Phone")!=null) {
+            if (!accountData.get("Phone").equals("")) {
                 Phone = accountData.get("Phone");
             }
-            if (accountData.get("Location")!=null) {
+            if (!accountData.get("Location").equals("")) {
                 Location = accountData.get("Location");
             }
-            if (accountData.get("Category")!=null) {
+            if (!accountData.get("Category").equals("")) {
                 Category = accountData.get("Category");
             }
-            if(accountData.get("Radius")!=null){
+            if(!accountData.get("Radius").equals("")){
                 Radius=accountData.get("Radius");
             }
         }
@@ -128,7 +130,8 @@ public class Profile extends AppCompatActivity {
         txtLocation = (TextView) findViewById(R.id.txtLocation);
         txtTelefon = (TextView) findViewById(R.id.txtTelefon);
         txtRadius = (TextView) findViewById(R.id.txtRadius);
-        if(!Username.equals("")) {
+        txtCategory=(TextView)findViewById(R.id.txtCategory);
+        if(Username!="") {
             txtUser.setText(Username);
         }
         else{
@@ -136,7 +139,7 @@ public class Profile extends AppCompatActivity {
             ImageView imgUser=(ImageView) findViewById(R.id.imgProfile);
             imgUser.setVisibility(View.INVISIBLE);
         }
-        if(!Radius.equals("")) {
+        if(Radius!="") {
             txtRadius.setText(Radius + " km");
         }
         else{
@@ -144,7 +147,7 @@ public class Profile extends AppCompatActivity {
             ImageView imgRadius=(ImageView) findViewById(R.id.imgRadius_icon);
             imgRadius.setVisibility(View.INVISIBLE);
         }
-        if(!Phone.equals("")) {
+        if(Phone!="") {
             txtTelefon.setText(Phone);
         }
         else{
@@ -152,7 +155,7 @@ public class Profile extends AppCompatActivity {
             ImageView imgTelefon=(ImageView) findViewById(R.id.imgTelefon_icon);
             imgTelefon.setVisibility(View.INVISIBLE);
         }
-        if(!Email.equals("")) {
+        if(Email!="") {
             txtEmail.setText(Email);
         }
         else{
@@ -160,13 +163,21 @@ public class Profile extends AppCompatActivity {
             ImageView imgEmail=(ImageView) findViewById(R.id.imgEmail_icon);
             imgEmail.setVisibility(View.INVISIBLE);
         }
-        if(!Location.equals("")) {
+        if(Location!="") {
             txtLocation.setText(Location);
         }
         else{
             txtLocation.setVisibility(View.INVISIBLE);
             ImageView imgLocation=(ImageView) findViewById(R.id.imgLocation_icon);
             imgLocation.setVisibility(View.INVISIBLE);
+        }
+        if(Category!="") {
+            txtCategory.setText(Category);
+        }
+        else{
+            txtCategory.setVisibility(View.INVISIBLE);
+            ImageView imgCategory=(ImageView) findViewById(R.id.imgCategory_icon);
+            imgCategory.setVisibility(View.INVISIBLE);
         }
         btnRequest = (Button) findViewById(R.id.btnSendRequest);
         if (RepairmanID.equals(accountData.get("UserID"))|| isUser) {
@@ -224,7 +235,7 @@ public class Profile extends AppCompatActivity {
 
         // Necessary to restore the BottomBar's state, otherwise we would
         // lose the current tab on orientation change.
-        ///mBottomBar.onSaveInstanceState(outState);
+        mBottomBar.onSaveInstanceState(outState);
     }
 
     private String getLocation(String Lat, String Lon) {
@@ -256,6 +267,7 @@ public class Profile extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public void logOut(View v){
+        if (PermissionUtils.connectivityCheck(cm)) {
         if(ContextCompat.checkSelfPermission(Profile.this, android.Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
             am.removeAccountExplicitly(am.getAccountsByType(Authenticator.ACCOUNT_TYPE)[0]);
             Map<String,String> params=new HashMap<>();
@@ -265,6 +277,10 @@ public class Profile extends AppCompatActivity {
             connectToServer.sendRequest(ConnectToServer.UPDATETOKEN,params,true);
             Intent intent=new Intent(this,Login.class);
             startActivity(intent);
+        }
+        }
+        else{
+            Toast.makeText(Profile.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
         }
 
         
