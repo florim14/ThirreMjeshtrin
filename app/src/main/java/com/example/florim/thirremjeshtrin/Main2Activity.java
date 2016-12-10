@@ -7,6 +7,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +21,7 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
     private double locLat=-1;
     private LocationManager mLocationManager;
     private Location mLocation;
+    ConnectivityManager cm;
     com.roughike.bottombar.BottomBar mBottomBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
         mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.menu_main);
         mBottomBar.setDefaultTabPosition(1);
+        cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         mBottomBar.setOnMenuTabClickListener(new com.roughike.bottombar.OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
@@ -87,6 +90,7 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
 
     }
     public void onImageClick(View v){
+        if (PermissionUtils.connectivityCheck(cm)) {
         getLocation();
         if(locLat!=-1 && locLong!=-1){
             int category=Integer.valueOf(v.getTag().toString());
@@ -96,10 +100,11 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
             i.putExtra("lat", locLat);
             i.putExtra("lon", locLong);
            startActivity(i);
-
-
         }
-
+        }
+        else{
+            Toast.makeText(this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
+        }
     }
     private void getLocation(){
         if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {

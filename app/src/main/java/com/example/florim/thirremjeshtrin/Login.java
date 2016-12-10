@@ -74,8 +74,8 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 
-                boolean isAddingNewAccount=getIntent().getBooleanExtra(Login.IS_ADDING_NEW_ACCOUNT,false);
-                 if(isAddingNewAccount && ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED){
+
+                 if(ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED){
                      if(mAccountManager.getAccountsByType(Authenticator.ACCOUNT_TYPE).length==1) {
                          Toast.makeText(this, R.string.one_account_allowed, Toast.LENGTH_LONG).show();
                          finish();
