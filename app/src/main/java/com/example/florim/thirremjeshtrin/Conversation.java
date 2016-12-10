@@ -60,6 +60,8 @@ public class Conversation
         this.photoUrl = photoUrl;
     }
 
+    public Conversation(){}
+
     /**
      * Gets the msg.
      *
