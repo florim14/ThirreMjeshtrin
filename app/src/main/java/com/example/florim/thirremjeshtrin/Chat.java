@@ -8,9 +8,13 @@ package com.example.florim.thirremjeshtrin;/**
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.InputType;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -23,6 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +36,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.otto.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -74,6 +81,15 @@ public class Chat extends CustomActivity {
 
     private FirebaseAuth mAuth;
 
+    //This is the handler that will manager to process the broadcast intent
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("RECEIVER: ", "onReceive: Received a notify from Service!");
+            loadConversationList();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,17 +114,20 @@ public class Chat extends CustomActivity {
             actionBar.setTitle(buddy.getUsername());
         Log.d("BUDDY: ",buddy.getUsername()+" "+buddy.getId());
         mAuth = FirebaseAuth.getInstance();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("newMessage"));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         loadConversationList();
+        this.registerReceiver(mMessageReceiver, new IntentFilter("newMessage"));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        this.unregisterReceiver(mMessageReceiver);
     }
 
     @Override
@@ -118,8 +137,6 @@ public class Chat extends CustomActivity {
             sendMessage();
         }
     }
-
-
 
     /**
      * Call this method to Send message to opponent. It does nothing if the text
@@ -174,6 +191,7 @@ public class Chat extends CustomActivity {
      * Load the conversation list from Parse server and save the date of last
      * message that will be used to load only recent new messages
      */
+    @Subscribe
     private void loadConversationList() {
         FirebaseDatabase.getInstance().getReference("messages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
