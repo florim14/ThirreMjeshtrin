@@ -1,16 +1,12 @@
 package com.example.florim.thirremjeshtrin;
 
 
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-
 import android.media.RingtoneManager;
-import android.media.SoundPool;
-import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -40,37 +36,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String ID=remoteMessage.getData().get("ID");
         Intent intent;
         PendingIntent pIntent=null;
-        if(type!=null && ID!=null && from!=null) {
+        if(type!=null) {
             if (type.equals("request")) {
-
                 intent = new Intent(this, Request.class);
                 intent.putExtra("from", from);
                 intent.putExtra("ID", ID);
                 intent.putExtra("Message", remoteMessage.getNotification().getBody() + ID);
                 pIntent = PendingIntent.getActivity(this, Integer.valueOf(ID), intent, PendingIntent.FLAG_CANCEL_CURRENT);
             }
+            else if(type.equals("message")) {
+                newMessageToActivity();
+            }
         }
-
-
-
-
-// build notification
-// the addAction re-use the same intent to keep the example short
-        Notification n  = new Notification.Builder(this)
+        // build notification
+        // the addAction re-use the same intent to keep the example short
+        Notification n = new Notification.Builder(this)
                 .setContentTitle(remoteMessage.getNotification().getTitle())
-                .setContentText(remoteMessage.getNotification().getBody()+ID)
+                .setContentText(remoteMessage.getNotification().getBody() + ID)
                 .setSmallIcon(R.drawable.ic_wrench_png_19773)
                 .setContentIntent(pIntent)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setAutoCancel(true)
                 .build();
-
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, n);
     }
 
+    private void newMessageToActivity() {
+        Intent intent = new Intent("newMessage");
+        sendNewMessageBroadcast(intent);
     }
+
+    private void sendNewMessageBroadcast(Intent intent){
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+}
 
