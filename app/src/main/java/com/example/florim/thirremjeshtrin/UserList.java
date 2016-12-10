@@ -54,9 +54,7 @@ public class UserList extends CustomActivity
         setContentView(R.layout.user_list);
         // Get reference to the Firebase database
         database  = FirebaseDatabase.getInstance().getReference();
-
         //getActionBar().setDisplayHomeAsUpEnabled(false);
-
         updateUserStatus(true);
     }
 

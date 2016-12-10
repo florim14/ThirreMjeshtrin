@@ -380,10 +380,17 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                                 Logger.getLogger(Login.class.getName()).log(Level.ALL, "signInWithEmail", task.getException());
                                 Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                             }
+                            else{
+                                Log.d("FIREBASE AUTH: ", "onComplete: Succesfully logged into Firebase");
+                                ArrayList<String> defaultRoom = new ArrayList<String>();
+                                defaultRoom.add("home");
+                                UserList.user = new ChatUser(task.getResult().getUser().getUid(),
+                                        task.getResult().getUser().getDisplayName(), task.getResult().getUser().getEmail(), true, defaultRoom);
+                                Intent i = new Intent(Login.this, Main2Activity.class);
+                                startActivity(i);
+                            }
                         }
                     });
-            Intent i = new Intent(this, Main2Activity.class);
-            startActivity(i);
         }
 
     }
