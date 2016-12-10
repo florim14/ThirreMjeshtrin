@@ -14,6 +14,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,8 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import layout.ListFeedback;
-import layout.SendFeedback;
+
 
 public class Profile extends AppCompatActivity {
     TextView txtUser;
@@ -44,14 +44,16 @@ public class Profile extends AppCompatActivity {
     AccountManager am;
     ConnectivityManager cm;
     com.roughike.bottombar.BottomBar mBottomBar;
-
+    String UserID="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.profile);
+        /*
         mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.menu_main);
-        mBottomBar.setDefaultTabPosition(1);
+        mBottomBar.setDefaultTabPosition(0);
         mBottomBar.setOnMenuTabClickListener(new com.roughike.bottombar.OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
@@ -71,10 +73,10 @@ public class Profile extends AppCompatActivity {
         });
 
         mBottomBar.mapColorForTab(0,"#F44346");
-        mBottomBar.mapColorForTab(1,"#795548");
+        mBottomBar.mapColorForTab(1,"#795548");*/
 
 
-        setContentView(R.layout.profile);
+
         am = AccountManager.get(this);
         RepairmanID="";
         String Username="";
@@ -85,6 +87,7 @@ public class Profile extends AppCompatActivity {
         String Radius="";
         String Category="";
         String Location="";
+
         cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         accountData = Authenticator.findAccount(am, this);
         final boolean isUser=getIntent().getBooleanExtra("isUser",false);
@@ -189,52 +192,19 @@ public class Profile extends AppCompatActivity {
             btnRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (accountData != null) {
-                        String UserID = "";
-                        for (Map.Entry<String, String> entry : accountData.entrySet()) {
-                            if (entry.getKey().equals("UserID")) {
-                                UserID = entry.getValue();
-                            }
-                        }
-
-                        if (PermissionUtils.connectivityCheck(cm)) {
-
-                            Map<String, String> params = new HashMap<>();
-                            params.put("userID", UserID);
-                            params.put("otherID", RepairmanID);
-                            params.put("action", "request");
-                            ProgressDialog progressDialog = new ProgressDialog(Profile.this, ProgressDialog.STYLE_SPINNER);
-                            progressDialog.show();
-                            ConnectToServer connectToServer = new ConnectToServer();
-                            connectToServer.sendRequest(ConnectToServer.REQUEST, params, false);
-                            List<Map<String, String>> result = connectToServer.results;
-                            String ID = "";
-                            if (result.get(0).get("ID") != null) {
-                                ID = result.get(0).get("ID");
-                            }
-                            AlarmReceiver alarmReceiver = new AlarmReceiver();
-                            alarmReceiver.setAlarm(Profile.this, ID);
-                            progressDialog.hide();
-                        } else{
-                            Toast.makeText(Profile.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
-                        }
-                    }
-
+                   onRegisterClick(view);
                 }
             });
         };
+        btnFeedback=(Button) findViewById(R.id.btnFeedback);
         btnFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("RepairmanID", RepairmanID );
-                SendFeedback sendFeedback = new SendFeedback();
-                sendFeedback.setArguments(bundle);
-                ListFeedback listFeedback = new ListFeedback();
-                listFeedback.setArguments(bundle);
-
+                UserID=accountData.get("UserID");
                 Intent i = new Intent(getApplicationContext(), FeedbackTab.class);
-                i.putExtra("isUser", isUser);
+                Log.d("Profile: ",UserID+" "+RepairmanID);
+                i.putExtra("RepairmanID", UserID );
+                i.putExtra("UserID",UserID);
                 startActivity(i);
                 finish();
             }
@@ -248,7 +218,38 @@ public class Profile extends AppCompatActivity {
         // lose the current tab on orientation change.
         mBottomBar.onSaveInstanceState(outState);
     }
+    public void onRegisterClick(View v){
+        if (accountData != null) {
+            UserID = "";
+            for (Map.Entry<String, String> entry : accountData.entrySet()) {
+                if (entry.getKey().equals("UserID")) {
+                    UserID = entry.getValue();
+                }
+            }
 
+            if (PermissionUtils.connectivityCheck(cm)) {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", UserID);
+                params.put("otherID", RepairmanID);
+                params.put("action", "request");
+                ProgressDialog progressDialog = new ProgressDialog(Profile.this, ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                ConnectToServer connectToServer = new ConnectToServer();
+                connectToServer.sendRequest(ConnectToServer.REQUEST, params, false);
+                List<Map<String, String>> result = connectToServer.results;
+                String ID = "";
+                if (result.get(0).get("ID") != null) {
+                    ID = result.get(0).get("ID");
+                }
+                AlarmReceiver alarmReceiver = new AlarmReceiver();
+                alarmReceiver.setAlarm(Profile.this, ID);
+                progressDialog.hide();
+            } else{
+                Toast.makeText(Profile.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     private String getLocation(String Lat, String Lon) {
         Geocoder g = new Geocoder(this);
         try {

@@ -1,17 +1,10 @@
 package com.example.florim.thirremjeshtrin;
 
-import android.app.ProgressDialog;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -23,12 +16,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.roughike.bottombar.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 public class FragmentConn extends AppCompatActivity implements OnMapReadyCallback{
@@ -59,17 +51,30 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
-                    Intent i=new Intent(FragmentConn.this,Profile.class);
-                    i.putExtra("isUser",true);
+                    mBottomBar.setDefaultTabPosition(1);
+                    Intent i = new Intent(FragmentConn.this, Profile.class);
+                    i.putExtra("isUser", true);
                     startActivity(i);
+
+                } else if (menuItemId == R.id.inbox) {
+                    mBottomBar.setDefaultTabPosition(1);
+                    Intent i = new Intent(FragmentConn.this, UserList.class);
+                    startActivity(i);
+
                 }
             }
 
+            /**
+             * The method being called when currently visible {@link BottomBarTab} is
+             * reselected. Use this method for scrolling to the top of your content,
+             * as recommended by the Material Design spec
+             *
+             * @param menuItemId the reselected tab's id that was assigned in the menu
+             *                   xml resource file.
+             */
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.inbox) {
-                    // The user reselected item number one, scroll your content to top.
-                }
+
             }
         });
 
@@ -85,7 +90,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
-
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -109,7 +114,6 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
     public List<Map<String,String>> getData(){
         return results;
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

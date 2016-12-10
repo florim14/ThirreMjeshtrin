@@ -68,14 +68,11 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+
         isPermissionGranted = false;
         mAccountManager=AccountManager.get(this);
         cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                inputEmail = (EditText) findViewById(R.id.email);
-                inputPassword = (EditText) findViewById(R.id.password);
-                btnLogin = (Button) findViewById(R.id.btnLogin);
-                btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+
 
                 boolean isAddingNewAccount=getIntent().getBooleanExtra(Login.IS_ADDING_NEW_ACCOUNT,false);
                  if(isAddingNewAccount && ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED){
@@ -110,7 +107,11 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                    isUserRegistered();
 
 
-
+        setContentView(R.layout.activity_login);
+        inputEmail = (EditText) findViewById(R.id.email);
+        inputPassword = (EditText) findViewById(R.id.password);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
                 // Login button Click Event
                 btnLogin.setOnClickListener(new View.OnClickListener() {
 

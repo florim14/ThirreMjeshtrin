@@ -25,9 +25,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:design:25.0.1'
-
     compile 'com.roughike:bottom-bar:1.4.0.1'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.google.firebase:firebase-core:10.0.1'
@@ -39,5 +39,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:10.0.1'
     testCompile 'junit:junit:4.12'
 }
+
 
 apply plugin: 'com.google.gms.google-services'
