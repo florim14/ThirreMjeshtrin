@@ -302,6 +302,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                     setAccountAuthenticatorResult(data);
                     setResult(RESULT_OK, res);
                     // TODO: firebase login`
+                    Log.d("FIREBASE AUTH: ",Email + " " + password);
                     mAuth.signInWithEmailAndPassword(Email, password)
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                                 @Override
