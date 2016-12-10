@@ -103,22 +103,22 @@ public class Profile extends AppCompatActivity {
             Location=getLocation(Lat, Lon);
         }
         else {
-            if (accountData.get("Name").equals("")) {
+            if (accountData.get("Name")!=null) {
                 Username = accountData.get("Name");
             }
-            if (accountData.get("Email").equals("")) {
+            if (accountData.get("Email")!=null) {
                 Email = accountData.get("Email");
             }
-            if (accountData.get("Phone").equals("")) {
+            if (accountData.get("Phone")!=null) {
                 Phone = accountData.get("Phone");
             }
-            if (accountData.get("Location").equals("")) {
+            if (accountData.get("Location")!=null) {
                 Location = accountData.get("Location");
             }
-            if (accountData.get("Category").equals("")) {
+            if (accountData.get("Category")!=null) {
                 Category = accountData.get("Category");
             }
-            if(accountData.get("Radius").equals("")){
+            if(accountData.get("Radius")!=null){
                 Radius=accountData.get("Radius");
             }
         }
@@ -128,7 +128,7 @@ public class Profile extends AppCompatActivity {
         txtLocation = (TextView) findViewById(R.id.txtLocation);
         txtTelefon = (TextView) findViewById(R.id.txtTelefon);
         txtRadius = (TextView) findViewById(R.id.txtRadius);
-        if(Username!=null) {
+        if(!Username.equals("")) {
             txtUser.setText(Username);
         }
         else{
@@ -136,7 +136,7 @@ public class Profile extends AppCompatActivity {
             ImageView imgUser=(ImageView) findViewById(R.id.imgProfile);
             imgUser.setVisibility(View.INVISIBLE);
         }
-        if(Radius!=null) {
+        if(!Radius.equals("")) {
             txtRadius.setText(Radius + " km");
         }
         else{
@@ -144,7 +144,7 @@ public class Profile extends AppCompatActivity {
             ImageView imgRadius=(ImageView) findViewById(R.id.imgRadius_icon);
             imgRadius.setVisibility(View.INVISIBLE);
         }
-        if(Phone!=null) {
+        if(!Phone.equals("")) {
             txtTelefon.setText(Phone);
         }
         else{
@@ -152,7 +152,7 @@ public class Profile extends AppCompatActivity {
             ImageView imgTelefon=(ImageView) findViewById(R.id.imgTelefon_icon);
             imgTelefon.setVisibility(View.INVISIBLE);
         }
-        if(Email!=null) {
+        if(!Email.equals("")) {
             txtEmail.setText(Email);
         }
         else{
@@ -160,7 +160,7 @@ public class Profile extends AppCompatActivity {
             ImageView imgEmail=(ImageView) findViewById(R.id.imgEmail_icon);
             imgEmail.setVisibility(View.INVISIBLE);
         }
-        if(Location!=null) {
+        if(!Location.equals("")) {
             txtLocation.setText(Location);
         }
         else{
@@ -224,7 +224,7 @@ public class Profile extends AppCompatActivity {
 
         // Necessary to restore the BottomBar's state, otherwise we would
         // lose the current tab on orientation change.
-        mBottomBar.onSaveInstanceState(outState);
+        ///mBottomBar.onSaveInstanceState(outState);
     }
 
     private String getLocation(String Lat, String Lon) {
