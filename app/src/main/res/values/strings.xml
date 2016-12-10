@@ -18,6 +18,7 @@
     </string-array>
     <string-array name="array_city">
         <item>Select your city</item>
+        <item>Get my current location</item>
         <item>Arendal</item>
         <item>Bergen</item>
         <item>Bodø</item>
@@ -187,6 +188,11 @@
     <string name="btnRefuse">REFUSE</string>
     <string name="log_out">Log Out</string>
     <string name="btnRequest">Send Request</string>
+    <string name="title_activity_feedback_tab">FeedbackTab</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_Location">Get Location</string>
     <string name="no_results">No resource available</string>
     <string name="txtProfile">Profile</string>

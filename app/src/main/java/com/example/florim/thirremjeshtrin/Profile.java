@@ -27,6 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import layout.ListFeedback;
+import layout.SendFeedback;
+
 public class Profile extends AppCompatActivity {
     TextView txtUser;
     TextView txtEmail;
@@ -84,7 +87,7 @@ public class Profile extends AppCompatActivity {
         String Location="";
         cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         accountData = Authenticator.findAccount(am, this);
-        boolean isUser=getIntent().getBooleanExtra("isUser",false);
+        final boolean isUser=getIntent().getBooleanExtra("isUser",false);
         if(!isUser) {
             Username = getIntent().getStringExtra("Username");
             Email = getIntent().getStringExtra("Email");
@@ -215,11 +218,27 @@ public class Profile extends AppCompatActivity {
                         } else{
                             Toast.makeText(Profile.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
                         }
-                }
+                    }
 
-            }
+                }
             });
         };
+        btnFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("RepairmanID", RepairmanID );
+                SendFeedback sendFeedback = new SendFeedback();
+                sendFeedback.setArguments(bundle);
+                ListFeedback listFeedback = new ListFeedback();
+                listFeedback.setArguments(bundle);
+
+                Intent i = new Intent(getApplicationContext(), FeedbackTab.class);
+                i.putExtra("isUser", isUser);
+                startActivity(i);
+                finish();
+            }
+        });
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -276,7 +295,7 @@ public class Profile extends AppCompatActivity {
             Toast.makeText(Profile.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
         }
 
-        
+
     }
 
 }

@@ -1,10 +1,10 @@
 package com.example.florim.thirremjeshtrin;
 
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -27,11 +27,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
 
 public class FragmentConn extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -87,7 +85,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
-    @Override
+
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -111,6 +109,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
     public List<Map<String,String>> getData(){
         return results;
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

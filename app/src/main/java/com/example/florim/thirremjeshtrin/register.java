@@ -1,8 +1,5 @@
 package com.example.florim.thirremjeshtrin;
 
-import android.*;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -248,6 +244,4 @@ public class register extends AppCompatActivity implements ActivityCompat.OnRequ
             Toast.makeText(getApplicationContext(), R.string.no_connectivity, Toast.LENGTH_LONG).show();
         }
     }
-
-
 }
