@@ -37,7 +37,6 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
 
    private List<Map<String,String>> results;
     private static String LIST_TAG="ListSearch";
-    ProgressDialog progressDialog;
 
     private GoogleMap mMap;
     private MarkerOptions options = new MarkerOptions();
@@ -51,8 +50,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
         String category = String.valueOf(getIntent().getIntExtra("category", -1));
         lat = String.valueOf(getIntent().getDoubleExtra("lat", -1));
         lon = String.valueOf(getIntent().getDoubleExtra("lon", -1));
-        progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+
         getDataFromServer(category, lat, lon);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_conn);
@@ -87,7 +85,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        progressDialog.hide();
+
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
