@@ -34,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -168,6 +170,12 @@ public class Chat extends CustomActivity {
         }
         adp.notifyDataSetChanged();
         txt.setText(null);
+        ConnectToServer connectToServer = new ConnectToServer();
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("userID", user.getUid());
+        parameters.put("otherID", buddy.getId());
+        parameters.put("message", s);
+        connectToServer.sendRequest(ConnectToServer.LOG_IN, parameters, true);
     }
 
     /**

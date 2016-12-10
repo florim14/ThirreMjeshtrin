@@ -27,6 +27,7 @@ public class ConnectToServer {
     public static final String REQUEST = "http://200.6.254.247/thirremjeshtrin/request.php";
     public static final String CHECKREQUEST = "http://200.6.254.247/thirremjeshtrin/checkrequest.php";
     public static final String UPDATETOKEN = "http://200.6.254.247/thirremjeshtrin/updatetoken.php";
+    public static final String CHAT = "http://200.6.254.247/thirremjeshtrin/chat.php";
     /**
      * The url to initiate the HTTP connection to
      */
