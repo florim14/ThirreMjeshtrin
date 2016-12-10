@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -128,49 +130,49 @@ public class Profile extends AppCompatActivity {
             txtUser.setText(Username);
         }
         else{
-            txtUser.setVisibility(View.INVISIBLE);
+            txtUser.setVisibility(View.GONE);
             ImageView imgUser=(ImageView) findViewById(R.id.imgProfile);
-            imgUser.setVisibility(View.INVISIBLE);
+            imgUser.setVisibility(View.GONE);
         }
         if(Radius!="") {
             txtRadius.setText(Radius + " km");
         }
         else{
-            txtRadius.setVisibility(View.INVISIBLE);
+            txtRadius.setVisibility(View.GONE);
             ImageView imgRadius=(ImageView) findViewById(R.id.imgRadius_icon);
-            imgRadius.setVisibility(View.INVISIBLE);
+            imgRadius.setVisibility(View.GONE);
         }
         if(Phone!="") {
             txtTelefon.setText(Phone);
         }
         else{
-            txtTelefon.setVisibility(View.INVISIBLE);
+            txtTelefon.setVisibility(View.GONE);
             ImageView imgTelefon=(ImageView) findViewById(R.id.imgTelefon_icon);
-            imgTelefon.setVisibility(View.INVISIBLE);
+            imgTelefon.setVisibility(View.GONE);
         }
         if(Email!="") {
             txtEmail.setText(Email);
         }
         else{
-            txtEmail.setVisibility(View.INVISIBLE);
+            txtEmail.setVisibility(View.GONE);
             ImageView imgEmail=(ImageView) findViewById(R.id.imgEmail_icon);
-            imgEmail.setVisibility(View.INVISIBLE);
+            imgEmail.setVisibility(View.GONE);
         }
         if(Location!="") {
             txtLocation.setText(Location);
         }
         else{
-            txtLocation.setVisibility(View.INVISIBLE);
+            txtLocation.setVisibility(View.GONE);
             ImageView imgLocation=(ImageView) findViewById(R.id.imgLocation_icon);
-            imgLocation.setVisibility(View.INVISIBLE);
+            imgLocation.setVisibility(View.GONE);
         }
         if(Category!="") {
             txtCategory.setText(Category);
         }
         else{
-            txtCategory.setVisibility(View.INVISIBLE);
+            txtCategory.setVisibility(View.GONE);
             ImageView imgCategory=(ImageView) findViewById(R.id.imgCategory_icon);
-            imgCategory.setVisibility(View.INVISIBLE);
+            imgCategory.setVisibility(View.GONE);
         }
         btnRequest = (Button) findViewById(R.id.btnSendRequest);
         if (RepairmanID.equals(accountData.get("UserID"))|| isUser) {
@@ -277,16 +279,17 @@ public class Profile extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public void logOut(View v){
         if (PermissionUtils.connectivityCheck(cm)) {
-            if(ContextCompat.checkSelfPermission(Profile.this, android.Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
-                am.removeAccountExplicitly(am.getAccountsByType(Authenticator.ACCOUNT_TYPE)[0]);
-                Map<String,String> params=new HashMap<>();
-                params.put("UserID",accountData.get("UserID"));
-                params.put("Token","NULL");
-                ConnectToServer connectToServer= new ConnectToServer();
-                connectToServer.sendRequest(ConnectToServer.UPDATETOKEN,params,true);
-                Intent intent=new Intent(this,Login.class);
-                startActivity(intent);
-            }
+        if(ContextCompat.checkSelfPermission(Profile.this, android.Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+            am.removeAccountExplicitly(am.getAccountsByType(Authenticator.ACCOUNT_TYPE)[0]);
+            Map<String,String> params=new HashMap<>();
+            params.put("UserID",accountData.get("UserID"));
+            params.put("Token","NULL");
+            ConnectToServer connectToServer= new ConnectToServer();
+            connectToServer.sendRequest(ConnectToServer.UPDATETOKEN,params,true);
+            FirebaseAuth.getInstance().signOut();
+            Intent intent=new Intent(this,Login.class);
+            startActivity(intent);
+        }
         }
         else{
             Toast.makeText(Profile.this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
