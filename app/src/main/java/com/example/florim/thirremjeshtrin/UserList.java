@@ -54,9 +54,7 @@ public class UserList extends CustomActivity
         setContentView(R.layout.user_list);
         // Get reference to the Firebase database
         database  = FirebaseDatabase.getInstance().getReference();
-
-        getActionBar().setDisplayHomeAsUpEnabled(false);
-
+        //getActionBar().setDisplayHomeAsUpEnabled(false);
         updateUserStatus(true);
     }
 
@@ -97,8 +95,7 @@ public class UserList extends CustomActivity
      */
     private void loadUserList()
     {
-        final ProgressDialog dia = ProgressDialog.show(this, null,
-                getString(R.string.alert_loading));
+        final ProgressDialog dia = ProgressDialog.show(this, null, getString(R.string.alert_loading));
 
         // Pull the users list once no sync required.
         database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -106,9 +103,7 @@ public class UserList extends CustomActivity
             public void onDataChange(DataSnapshot dataSnapshot) {dia.dismiss();
                 long size  = dataSnapshot.getChildrenCount();
                 if(size == 0) {
-                    Toast.makeText(UserList.this,
-                            R.string.msg_no_user_found,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserList.this, R.string.msg_no_user_found, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 uList = new ArrayList<ChatUser>();
@@ -121,13 +116,10 @@ public class UserList extends CustomActivity
                 ListView list = (ListView) findViewById(R.id.list);
                 list.setAdapter(new UserAdapter());
                 list.setOnItemClickListener(new OnItemClickListener() {
-
                     @Override
-                    public void onItemClick(AdapterView<?> arg0,
-                                            View arg1, int pos, long arg3)
+                    public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3)
                     {
-                        startActivity(new Intent(UserList.this,Chat.class).putExtra(
-                                Const.EXTRA_DATA,  uList.get(pos)));
+                        startActivity(new Intent(UserList.this,Chat.class).putExtra(Const.EXTRA_DATA, uList.get(pos)));
                     }
                 });
             }
@@ -185,10 +177,7 @@ public class UserList extends CustomActivity
             ChatUser c = getItem(pos);
             TextView lbl = (TextView) v;
             lbl.setText(c.getUsername());
-            lbl.setCompoundDrawablesWithIntrinsicBounds(
-                    c.isOnline() ? R.drawable.ic_online
-                            : R.drawable.ic_offline, 0, R.drawable.arrow, 0);
-
+            lbl.setCompoundDrawablesWithIntrinsicBounds(c.isOnline() ? R.drawable.ic_online: R.drawable.ic_offline, 0, R.drawable.arrow, 0);
             return v;
         }
 

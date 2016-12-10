@@ -138,6 +138,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
                     accountData.put("Category",mAccountManager.getUserData(account,"Category"));
                     accountData.put("Location",mAccountManager.getUserData(account,"Location"));
                     accountData.put("Radius",mAccountManager.getUserData(account,"Radius"));
+                    accountData.put("Password",mAccountManager.getPassword(account));
                     return accountData;
                 }
         }

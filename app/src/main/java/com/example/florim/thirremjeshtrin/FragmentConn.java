@@ -5,11 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,9 +25,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -113,79 +118,116 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        int size = results.size();
+        if(results != null) {
+            int size = results.size();
 
-        final int position;
-
-        for(int i = 0; i < size; i++)
-        {
-            latlngs.add(new LatLng(Double.parseDouble(results.get(i).get("Lat")),
-                    Double.parseDouble(results.get(i).get("Lon"))));
-        }
-        final String[] markers = new  String[size];
-
-        int sizeLatLon = latlngs.size();
-        int countSize = 0;
-        for (LatLng point : latlngs) {
-            if(countSize < sizeLatLon) {
-                options.position(point);
-                options.title(results.get(countSize).get("Username"));
-                options.snippet("Phone number: " + results.get(countSize).get("Phone"));
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                googleMap.addMarker(options);
-                markers[countSize] = results.get(countSize).get("Username");
+            for (int i = 0; i < size; i++) {
+                latlngs.add(new LatLng(Double.parseDouble(results.get(i).get("Lat")),
+                        Double.parseDouble(results.get(i).get("Lon"))));
             }
-            countSize++;
-        }
+            final String[] markers = new String[size];
 
-        CameraUpdate center =
-                CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon)));
-        mMap.moveCamera(center);
+            int sizeLatLon = latlngs.size();
+            int countSize = 0;
+            for (LatLng point : latlngs) {
+                if (countSize < sizeLatLon) {
+                    options.position(point);
+                    options.draggable(true);
+                    options.title(results.get(countSize).get("Username"));
+                    options.snippet("Phone number: " + results.get(countSize).get("Phone"));
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                    markers[countSize] = results.get(countSize).get("Username");
+                }
+                countSize++;
+            }
 
 
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(4);
-        mMap.animateCamera(zoom);
+            options.position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon)));
+            options.title("You are here");
+            options.snippet("Your current location!");
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            googleMap.addMarker(options);
 
-        final Marker[] lastOpened = {null};
+            CameraUpdate center =
+                    CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon)), 13);
+            mMap.moveCamera(center);
 
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            public boolean onMarkerClick(Marker marker) {
 
-                int position = -1;
-                String title = marker.getTitle();
-                for (int i=0; i< markers.length; i++)
-                {
-                    if(markers[i].equals(title))
-                    {
-                        position =i;
-                        break;
+
+            mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                LatLng latLng = null;
+                int position=-1;
+                @Override
+                public void onMarkerDragStart(Marker arg0) {
+                    for (int i = 0; i < markers.length; i++) {
+                        if (markers[i].equals(arg0.getTitle())) {
+                            position = i;
+                            break;
+                        }
                     }
+                    latLng = arg0.getPosition();
+                    // TODO Auto-generated method stub
+                    arg0.showInfoWindow();
+                    //arg0.setDraggable(false);
                 }
 
+                @SuppressWarnings("unchecked")
+                @Override
+                public void onMarkerDragEnd(Marker arg0) {
+                    arg0.setPosition(latlngs.get(position));
+                }
 
-                Intent intent = new Intent(getApplicationContext(), Profile.class );
+                @Override
+                public void onMarkerDrag(Marker arg0) {
+                }
+            });
 
-                String Username = results.get(position).get("Username");
-                String Email = results.get(position).get("Email");
-                String UserID = results.get(position).get("ID");
-                String Phone = results.get(position).get("Phone");
-                String Lat = results.get(position).get("Lat");
-                String Lon = results.get(position).get("Lon");
-                String Radius = results.get(position).get("Radius");
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                public boolean onMarkerClick(Marker marker) {
 
-                intent.putExtra("UserID", UserID);
-                intent.putExtra("Username", Username);
-                intent.putExtra("Lat", Lat);
-                intent.putExtra("Lon", Lon);
-                intent.putExtra("Radius", Radius);
-                intent.putExtra("Phone", Phone);
-                intent.putExtra("Email", Email);
-                startActivity(intent);
+                    int position = -1;
+                    String title = marker.getTitle();
+                    for (int i = 0; i < markers.length; i++) {
+                        if (markers[i].equals(title)) {
+                            position = i;
+                            break;
+                        }
+                    }
 
-                // Event was handled by our code do not launch default behaviour.
-                return true;
-            }
-        });
+
+                    if (position != -1) {
+                        Intent intent = new Intent(getApplicationContext(), Profile.class);
+
+                        String Username = results.get(position).get("Username");
+                        String Email = results.get(position).get("Email");
+                        String UserID = results.get(position).get("ID");
+                        String Phone = results.get(position).get("Phone");
+                        String Lat = results.get(position).get("Lat");
+                        String Lon = results.get(position).get("Lon");
+                        String Radius = results.get(position).get("Radius");
+
+                        intent.putExtra("UserID", UserID);
+                        intent.putExtra("Username", Username);
+                        intent.putExtra("Lat", Lat);
+                        intent.putExtra("Lon", Lon);
+                        intent.putExtra("Radius", Radius);
+                        intent.putExtra("Phone", Phone);
+                        intent.putExtra("Email", Email);
+                        startActivity(intent);
+                    } else {
+                        marker.showInfoWindow();
+                    }
+
+
+                    // Event was handled by our code do not launch default behaviour.
+                    return true;
+                }
+            });
+        }
+        else
+        {
+            Toast.makeText(this,R.string.no_results, Toast.LENGTH_LONG).show();
+        }
 
     }
 }
