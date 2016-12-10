@@ -1,9 +1,7 @@
 package com.example.florim.thirremjeshtrin;
 
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -11,7 +9,6 @@ import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 /**
@@ -20,29 +17,24 @@ import android.widget.Toast;
 /**
  * Utility class for access to runtime permissions.
  */
-abstract class PermissionUtils  {
+public abstract class PermissionUtils  {
 
     public static final int ACCOUNTS_REQUEST_PERMISSION = 1;
     public static final int LOCATION_REQUEST_PERMISSION = 2;
 
 
-    public static boolean checkPermission(Context context, String permission, int requestId) {
+    public static boolean checkPermission(Activity activity, String permission, int requestId) {
 
-        if (ContextCompat.checkSelfPermission(context,
+        if (ContextCompat.checkSelfPermission(activity,
                 permission)
-                != PackageManager.PERMISSION_GRANTED && (Activity)context!=null) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity)context,permission)) {
-
-
-                Toast.makeText((Activity)context, R.string.permission_rationale, Toast.LENGTH_SHORT).show();
-
-            }
+                != PackageManager.PERMISSION_GRANTED ) {
 
             // Permission has not been granted yet, request it.
-            ActivityCompat.requestPermissions((Activity)context, new String[]{permission}, requestId);
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
             return false;
 
         }
+
         return true;
 
     }
@@ -57,14 +49,12 @@ abstract class PermissionUtils  {
 
     }
 
-    public static boolean connectivityCheck(ConnectivityManager cm, Activity app) {
+    public static boolean connectivityCheck(ConnectivityManager cm) {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         if (!isConnected) {
-
-            Toast.makeText(app, R.string.no_connectivity, Toast.LENGTH_SHORT).show();
 
             return false;
         }

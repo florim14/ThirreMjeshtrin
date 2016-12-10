@@ -30,7 +30,7 @@ public class RegisterAs extends AppCompatActivity {
         registerAsRepairman.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), register.class);
+                Intent i = new Intent(getApplicationContext(), RegisterAsRepairman.class);
                 startActivity(i);
                 finish();
             }
