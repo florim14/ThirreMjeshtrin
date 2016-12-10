@@ -1,16 +1,18 @@
 package com.example.florim.thirremjeshtrin;
 
+import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,11 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegisterAsRepairman extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
-
-    private SimpleLocation mLocation;
-
-
+public class RegisterAsRepairman extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, LocationListener {
+    private ImageButton btnLocation;
     private Button btnRegister;
     private Button btnLinkToLogin;
     private EditText inputFullName;
@@ -53,6 +52,9 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
     Double longitude;
     Double latitude;
     boolean isDataValid;
+    private LocationManager mLocationManager;
+    private Location mLocation;
+
 
 
 
@@ -62,10 +64,6 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_as_repairman);
-
-
-        mLocation = new SimpleLocation(this);
-
         inputFullName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
@@ -74,6 +72,9 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
         inputRadius = (EditText) findViewById(R.id.radius);
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
+        btnLocation= (ImageButton) findViewById(R.id.btnLocation);
+
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         spinner = (Spinner) findViewById(R.id.spin);
         array = getResources().getStringArray(R.array.array_city);
@@ -123,35 +124,6 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                             (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
                             .show();
                     selectedCountry = (String) adapterView.getItemAtPosition(i);
-                    if(selectedCountry.equals("Get my current location")){
-                        if (!mLocation.hasLocationEnabled()) {
-                            AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterAsRepairman.this);
-                            dialog.setMessage("GPS is not enabled! Click OK to go and enable it!");
-                            dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //this will navigate user to the device location settings screen
-                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                    startActivity(intent);
-                                }
-                            });
-                            dialog.setNegativeButton("Cancel!", new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                    selectSpinnerItemByValue(spinner, 0);
-                                }
-                            });
-                            dialog.setCancelable(false);
-                            AlertDialog alert = dialog.create();
-                            alert.show();
-                        }
-                        else {
-                            longitude = mLocation.getLongitude();
-                            latitude = mLocation.getLatitude();
-                        }
-                    }
                 }
             }
 
@@ -235,8 +207,6 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                 String tel = inputTelephone.getText().toString().trim();
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && !radius.isEmpty() && !tel.isEmpty()) {
                     if(password.equals(confirmPassword)) {
-                        if(!selectedCountry.equals("Get my current location")){
-                        if(Geocoder.isPresent()){
 
                         if(!Validation.validateData(name,Validation.USERNAME_REGEX)){
                             inputFullName.setError(getString(R.string.invalid_username));
@@ -260,41 +230,36 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                         }
 
 
-                            try {
-                                Geocoder gc = new Geocoder(RegisterAsRepairman.this);
-                                List<Address> addresses= gc.getFromLocationName(selectedCountry, 5);
-
+                        try {
+                            Geocoder gc = new Geocoder(RegisterAsRepairman.this);
+                            if(longitude==null && latitude==null) {
+                                List<Address> addresses = gc.getFromLocationName(selectedCountry, 5);
                                 Address address = addresses.get(0);
-
                                 longitude = address.getLongitude();
                                 latitude = address.getLatitude();
 
-                            } catch (IOException e) {
-                                Log.d("error", e.toString());
                             }
-                            ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                            boolean connectivity=PermissionUtils.connectivityCheck(cm);
 
-                            if(isDataValid && connectivity) {
-                                registerUser(name, email, password, latitude, longitude, radius, tel, selectedCat);
-                            }
-                            else {
-                                Toast.makeText(RegisterAsRepairman.this,R.string.no_connectivity,Toast.LENGTH_LONG).show();
-                            }
-                            registerUser(name, email, password, longitude, latitude, radius, tel, selectedCat);
+
+
+                        } catch (IOException e) {
+                            Log.d("error", e.toString());
+                        }
+                        ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                        boolean connectivity=PermissionUtils.connectivityCheck(cm);
+
+                        if(isDataValid && connectivity) {
+                            registerUser(name, email, password, latitude, longitude, radius, tel, selectedCat);
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Longitude and latitude could not be set, please try registering again!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterAsRepairman.this,R.string.no_connectivity,Toast.LENGTH_LONG).show();
                         }
-                        }
-                        else {
 
-                        }
+
                     }
                     else{
                         inputConfirmPassword.setError("Incorrect confirm password!");
                     }
-
 
                 } else {
                     if(name.isEmpty()){
@@ -363,14 +328,75 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                     successful, Toast.LENGTH_LONG).show();
         }
     }
+    public void onLocationClick(View v){
+        if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {
 
-    public static void selectSpinnerItemByValue(Spinner spnr, long value) {
-        SimpleCursorAdapter adapter = (SimpleCursorAdapter) spnr.getAdapter();
-        for (int position = 0; position < adapter.getCount(); position++) {
-            if(adapter.getItemId(position) == value) {
-                spnr.setSelection(position);
-                return;
+            mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            if (mLocation == null) {
+                Criteria c = new Criteria();
+                c.setAccuracy(Criteria.ACCURACY_COARSE);
+                c.setPowerRequirement(Criteria.POWER_LOW);
+                String bestProvider = mLocationManager.getBestProvider(c, true);
+                mLocation = mLocationManager.getLastKnownLocation(bestProvider);
+                mLocationManager.requestLocationUpdates(bestProvider, 5000, 100, this);
+            } else {
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, this);
+            }
+            if (mLocation != null) {
+                latitude = mLocation.getLatitude();
+                longitude = mLocation.getLongitude();
+                Geocoder gc = new Geocoder(RegisterAsRepairman.this);
+                try{
+                    List<Address> addresses = gc.getFromLocation(latitude,longitude,5);
+                    Address address = addresses.get(0);
+                    selectedCountry = address.getLocality();
+                    spinner.setSelection(getIndex(spinner, selectedCountry));
+                } catch(IOException e){
+
+                }
+
+
+            } else {
+                Toast.makeText(this, R.string.no_provider_error, Toast.LENGTH_SHORT).show();
+
             }
         }
+    }
+
+
+    private int getIndex(Spinner spinner, String myString)
+    {
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }

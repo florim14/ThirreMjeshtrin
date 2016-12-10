@@ -126,7 +126,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
     }
     public static Map<String,String> findAccount(AccountManager mAccountManager,Context context) {
         boolean hasPermission= ContextCompat.checkSelfPermission(context, android.Manifest.permission.GET_ACCOUNTS)== PackageManager.PERMISSION_GRANTED;
-        if(hasPermission) {
+        if(hasPermission&&mAccountManager.getAccounts()!=null ) {
             for (Account account : mAccountManager.getAccounts())
                 if (TextUtils.equals(account.type, Authenticator.ACCOUNT_TYPE)) {
                     Map<String,String> accountData=new HashMap<>();
@@ -134,6 +134,10 @@ public class Authenticator extends AbstractAccountAuthenticator {
                     accountData.put("Token",mAccountManager.getUserData(account,KEY_AUTHTOKEN));
                     accountData.put("UserID",mAccountManager.getUserData(account,KEY_USERDATA));
                     accountData.put("Email",mAccountManager.getUserData(account,"Email"));
+                    accountData.put("Phone",mAccountManager.getUserData(account,"Phone"));
+                    accountData.put("Category",mAccountManager.getUserData(account,"Category"));
+                    accountData.put("Location",mAccountManager.getUserData(account,"Location"));
+                    accountData.put("Radius",mAccountManager.getUserData(account,"Radius"));
                     return accountData;
                 }
         }

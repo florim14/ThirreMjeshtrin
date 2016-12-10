@@ -31,6 +31,8 @@ public class FeedbackTab extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    static String isUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,8 @@ public class FeedbackTab extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        isUser = getIntent().getStringExtra("isUser");
     }
 
 
@@ -101,14 +105,13 @@ public class FeedbackTab extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            if(getArguments().getInt(ARG_SECTION_NUMBER) ==1 ) {
-                View rootView = inflater.inflate(R.layout.fragment_list_feedback, container, false);
-                return rootView;
-            }
-            else {
-                View rootView = inflater.inflate(R.layout.fragment_send_feedback, container, false);
-                return rootView;
-            }
+                if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
+                    View rootView = inflater.inflate(R.layout.fragment_list_feedback, container, false);
+                    return rootView;
+                } else {
+                    View rootView = inflater.inflate(R.layout.fragment_send_feedback, container, false);
+                    return rootView;
+                }
         }
     }
 
@@ -131,8 +134,11 @@ public class FeedbackTab extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
-            return 2;
+            // Show 2 or 1 total pages.
+            if(FeedbackTab.isUser.equals("false"))
+                return 2;
+            else
+                return 1;
         }
 
         @Override

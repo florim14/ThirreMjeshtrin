@@ -9,12 +9,15 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
+import com.roughike.bottombar.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,15 +29,46 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
     private double locLat=-1;
     private LocationManager mLocationManager;
     private Location mLocation;
-
+    com.roughike.bottombar.BottomBar mBottomBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
+        mBottomBar.setItems(R.menu.menu_main);
+        mBottomBar.setDefaultTabPosition(1);
+        mBottomBar.setOnMenuTabClickListener(new com.roughike.bottombar.OnMenuTabClickListener() {
+            @Override
+            public void onMenuTabSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.profile) {
+                   Intent i=new Intent(Main2Activity.this,Profile.class);
+                    i.putExtra("isUser",true);
+                    startActivity(i);
+                }
+            }
+
+            @Override
+            public void onMenuTabReSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.inbox) {
+                    // The user reselected item number one, scroll your content to top.
+                }
+            }
+        });
+
+        mBottomBar.mapColorForTab(0,"#F44346");
+        mBottomBar.mapColorForTab(1,"#795548");
 
     }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        // Necessary to restore the BottomBar's state, otherwise we would
+        // lose the current tab on orientation change.
+        mBottomBar.onSaveInstanceState(outState);
+    }
     @Override
     public void onLocationChanged(Location loc) {
         locLat = loc.getLatitude();

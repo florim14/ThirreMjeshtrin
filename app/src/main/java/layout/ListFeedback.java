@@ -1,14 +1,24 @@
 package layout;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
+import com.example.florim.thirremjeshtrin.ConnectToServer;
+import com.example.florim.thirremjeshtrin.PermissionUtils;
 import com.example.florim.thirremjeshtrin.R;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +39,11 @@ public class ListFeedback extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    SimpleAdapter adapter;
+    ListView listView;
+    ConnectToServer connectToServer;
+    String RepairmanID;
 
     public ListFeedback() {
         // Required empty public constructor
@@ -65,7 +80,35 @@ public class ListFeedback extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_feedback, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_feedback, container, false);
+        listView = (ListView) getView().findViewById(R.id.lstFeedback);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            RepairmanID = bundle.getString("RepairmanID");
+        }
+        final Map<String, String> params = new HashMap<>();
+        params.put("RepID", RepairmanID);
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        final boolean connectivity = PermissionUtils.connectivityCheck(cm);
+
+        if (connectivity) {
+            connectToServer = new ConnectToServer();
+            connectToServer.sendRequest(connectToServer.FEEDBACK, params, true);
+            List<Map<String, String>> response = connectToServer.results;
+            if(!response.isEmpty()){
+                adapter = new SimpleAdapter(getActivity(), response, android.R.layout.simple_expandable_list_item_2, new String[]{"Username", "Rating"},
+                        new int[]{android.R.id.text1, android.R.id.text2});
+                if(adapter != null){
+                listView.setAdapter(adapter);
+                }else {
+                    listView.setEmptyView(view.findViewById(R.id.empty));
+                }
+            }
+        }
+        else {
+            Toast.makeText(getActivity(), R.string.no_connectivity, Toast.LENGTH_LONG).show();
+        }
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

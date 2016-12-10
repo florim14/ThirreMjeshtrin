@@ -4,10 +4,19 @@
     android:layout_height="match_parent"
     tools:context="layout.ListFeedback">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/lstFeedback"/>
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:text="@string/no_data_available"
+        android:textColor="@android:color/black"
+        android:visibility="gone" />
 
 </FrameLayout>
