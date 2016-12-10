@@ -127,49 +127,49 @@ public class Profile extends AppCompatActivity {
             txtUser.setText(Username);
         }
         else{
-            txtUser.setVisibility(View.INVISIBLE);
+            txtUser.setVisibility(View.GONE);
             ImageView imgUser=(ImageView) findViewById(R.id.imgProfile);
-            imgUser.setVisibility(View.INVISIBLE);
+            imgUser.setVisibility(View.GONE);
         }
         if(Radius!="") {
             txtRadius.setText(Radius + " km");
         }
         else{
-            txtRadius.setVisibility(View.INVISIBLE);
+            txtRadius.setVisibility(View.GONE);
             ImageView imgRadius=(ImageView) findViewById(R.id.imgRadius_icon);
-            imgRadius.setVisibility(View.INVISIBLE);
+            imgRadius.setVisibility(View.GONE);
         }
         if(Phone!="") {
             txtTelefon.setText(Phone);
         }
         else{
-            txtTelefon.setVisibility(View.INVISIBLE);
+            txtTelefon.setVisibility(View.GONE);
             ImageView imgTelefon=(ImageView) findViewById(R.id.imgTelefon_icon);
-            imgTelefon.setVisibility(View.INVISIBLE);
+            imgTelefon.setVisibility(View.GONE);
         }
         if(Email!="") {
             txtEmail.setText(Email);
         }
         else{
-            txtEmail.setVisibility(View.INVISIBLE);
+            txtEmail.setVisibility(View.GONE);
             ImageView imgEmail=(ImageView) findViewById(R.id.imgEmail_icon);
-            imgEmail.setVisibility(View.INVISIBLE);
+            imgEmail.setVisibility(View.GONE);
         }
         if(Location!="") {
             txtLocation.setText(Location);
         }
         else{
-            txtLocation.setVisibility(View.INVISIBLE);
+            txtLocation.setVisibility(View.GONE);
             ImageView imgLocation=(ImageView) findViewById(R.id.imgLocation_icon);
-            imgLocation.setVisibility(View.INVISIBLE);
+            imgLocation.setVisibility(View.GONE);
         }
         if(Category!="") {
             txtCategory.setText(Category);
         }
         else{
-            txtCategory.setVisibility(View.INVISIBLE);
+            txtCategory.setVisibility(View.GONE);
             ImageView imgCategory=(ImageView) findViewById(R.id.imgCategory_icon);
-            imgCategory.setVisibility(View.INVISIBLE);
+            imgCategory.setVisibility(View.GONE);
         }
         btnRequest = (Button) findViewById(R.id.btnSendRequest);
         if (RepairmanID.equals(accountData.get("UserID"))|| isUser) {
