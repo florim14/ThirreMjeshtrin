@@ -56,33 +56,6 @@ public class Profile extends Fragment {
 
     DatabaseReference database;
 
-    private String getProfileId() {
-        final String[] test = {""};
-        // Pull the users list once no sync required.
-        database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                long size = dataSnapshot.getChildrenCount();
-                if(size == 0) {
-                    Log.d("FIREBASE: ", "onDataChange: No users");
-                    return;
-                }
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.d("FIREBASE: ", "onDataChange: Users!");
-                    ChatUser user = ds.getValue(ChatUser.class);
-                    Logger.getLogger(UserList.class.getName()).log(Level.ALL,user.getUsername());
-                    if(user.getEmail().contentEquals(Email))
-                        test[0] = user.getId();
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        return test[0];
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -222,15 +195,27 @@ public class Profile extends Fragment {
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("btnChat: ", "onClick: Clicked!");
-//                startActivity(new Intent(getActivity(),Chat.class).putExtra(Const.EXTRA_DATA, !BUDDYID!));
-                Toast.makeText(getActivity(),"FirebaseID: "+getProfileId(),Toast.LENGTH_LONG).show();
+                database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        long size = dataSnapshot.getChildrenCount();
+                        if (size == 0) {
+                            Log.d("FIREBASE: ", "onDataChange: No users!");
+                            return;
+                        }
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            ChatUser user = ds.getValue(ChatUser.class);
+                            Logger.getLogger(UserList.class.getName()).log(Level.ALL, user.getUsername());
+                            if (user.getEmail().contentEquals(Email))
+                                startActivity(new Intent(getActivity(), Chat.class).putExtra(Const.EXTRA_DATA, user));
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
             }
         });
-
-
-
-
         return view;
     }
 

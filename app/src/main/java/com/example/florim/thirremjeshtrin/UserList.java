@@ -9,7 +9,6 @@ package com.example.florim.thirremjeshtrin;/**
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -123,7 +122,6 @@ public class UserList extends CustomActivity
                     public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3)
                     {
                         startActivity(new Intent(UserList.this,Chat.class).putExtra(Const.EXTRA_DATA, uList.get(pos)));
-                        Log.d("ACTIVITY: ", "onItemClick: "+uList.get(pos));
                     }
                 });
             }

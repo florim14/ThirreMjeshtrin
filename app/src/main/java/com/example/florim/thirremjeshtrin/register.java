@@ -225,7 +225,6 @@ public class register extends AppCompatActivity implements ActivityCompat.OnRequ
                                                 // Setup link to users database
                                                 FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(UserList.user);
                                                 // startActivity(new Intent(register.this, UserList.class));
-
                                                 Intent i = new Intent(register.this, Login.class);
                                                 startActivity(i);
                                                 finish();
