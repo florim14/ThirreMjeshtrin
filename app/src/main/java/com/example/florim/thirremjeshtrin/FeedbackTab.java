@@ -1,10 +1,12 @@
 package com.example.florim.thirremjeshtrin;
 
+import android.accounts.AccountManager;
 import android.app.FragmentTransaction;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import java.util.Map;
+
 
 public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFragmentInteractionListener, ListFeedback.OnFragmentInteractionListener{
 
@@ -29,65 +33,109 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-
+    private AccountManager am;
     private String RepairmanID;
     private String UserID;
-
+    private Map<String,String> accountData;
+    com.roughike.bottombar.BottomBar mBottomBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback_tab);
-
-        RepairmanID= getIntent().getStringExtra("RepairmanID");
-        UserID=getIntent().getStringExtra("UserID");
-        Log.d("FeedbackTab: ",UserID+" "+RepairmanID);
-
-
+        am = AccountManager.get(this);
+        accountData = Authenticator.findAccount(am, this);
+        UserID=accountData.get("UserID");
         TabHost tabs=(TabHost)findViewById(R.id.TabHost); //Id of tab host
 
         tabs.setup();
-
-        TabHost.TabSpec spec=tabs.newTabSpec("tag1");//make a new tab
-
-        spec.setContent(R.id.Tab1);  //What is in the tab (not an activity but rather a view)
-        spec.setIndicator("Reviews"); //Name of tab
-        tabs.addTab(spec); //Add it
-        ListFeedback list=new ListFeedback();
-        list.RepairmanID=RepairmanID;
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(R.id.Tab1,list,"").disallowAddToBackStack().commit();
-
-
-        if(!RepairmanID.equals(UserID)){
-        spec=tabs.newTabSpec("tag2"); //Same thing here
-        spec.setContent(R.id.Tab2);
-        spec.setIndicator("Send Feedback");
-        tabs.addTab(spec);
-            SendFeedback list2=new SendFeedback();
-            list2.RepairmanID=RepairmanID;
-            list2.UserID=UserID;
-            FragmentTransaction ft2= getFragmentManager().beginTransaction();
-            ft2.add(R.id.Tab2,list2,"").disallowAddToBackStack().commit();
+        mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
+        mBottomBar.setItems(R.menu.menu_main);
+        if(getIntent().getBooleanExtra("isUser",false)){
+            mBottomBar.setDefaultTabPosition(0);
         }
-
-
-
-
-        tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+        else{
+            mBottomBar.setDefaultTabPosition(1);
+        }
+        mBottomBar.setOnMenuTabClickListener(new com.roughike.bottombar.OnMenuTabClickListener() {
             @Override
-            public void onTabChanged(String s) {
+            public void onMenuTabSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.profile) {
+                    if(!getIntent().getBooleanExtra("isUser",false)) {
+                        Intent i = new Intent(FeedbackTab.this, FeedbackTab.class);
+                        i.putExtra("isUser", true);
+                        startActivity(i);
+                    }
 
-                if(s.equals("tag1")){
 
                 }
-                else if(s.equals("tag2")){
+            }
 
+            @Override
+            public void onMenuTabReSelected(@IdRes int menuItemId) {
+                if (menuItemId == R.id.inbox) {
+                    mBottomBar.setDefaultTabPosition(2);
+                    // The user reselected item number one, scroll your content to top.
                 }
             }
         });
 
-    }
+        mBottomBar.mapColorForTab(0,"#F44346");
+        mBottomBar.mapColorForTab(2,"#795548");
+        RepairmanID= getIntent().getStringExtra("RepairmanID");
 
+
+
+
+
+
+
+        TabHost.TabSpec spec=tabs.newTabSpec("Profile");//make a new tab
+
+        spec.setContent(R.id.Tab1);  //What is in the tab (not an activity but rather a view)
+        spec.setIndicator("Profile"); //Name of tab
+        tabs.addTab(spec); //Add it
+        Profile profile=new Profile();
+        profile.accountData=accountData;
+        FragmentTransaction ftProfile = getFragmentManager().beginTransaction();
+        ftProfile.add(R.id.Tab1,profile,"").disallowAddToBackStack().commit();
+
+
+        if(RepairmanID!=null) {
+            spec = tabs.newTabSpec("Reviews");//make a new tab
+
+            spec.setContent(R.id.Tab2);  //What is in the tab (not an activity but rather a view)
+            spec.setIndicator("Reviews"); //Name of tab
+            tabs.addTab(spec); //Add it
+            ListFeedback list = new ListFeedback();
+            list.RepairmanID = RepairmanID;
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.Tab2, list, "").disallowAddToBackStack().commit();
+
+
+            if (!RepairmanID.equals(UserID)) {
+                spec = tabs.newTabSpec("Feedback"); //Same thing here
+                spec.setContent(R.id.Tab3);
+                spec.setIndicator("Send Feedback");
+                tabs.addTab(spec);
+                SendFeedback list2 = new SendFeedback();
+                list2.RepairmanID = RepairmanID;
+                Log.d("FeedbackTab: ",UserID+" "+RepairmanID);
+                list2.UserID = UserID;
+                FragmentTransaction ft2 = getFragmentManager().beginTransaction();
+                ft2.add(R.id.Tab3, list2, "").disallowAddToBackStack().commit();
+            }
+        }
+
+
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Necessary to restore the BottomBar's state, otherwise we would
+        // lose the current tab on orientation change.
+        mBottomBar.onSaveInstanceState(outState);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
