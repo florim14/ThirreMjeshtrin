@@ -11,7 +11,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,10 +28,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RegisterAsRepairman extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, LocationListener {
     private ImageButton btnLocation;
@@ -54,6 +67,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
     boolean isDataValid;
     private LocationManager mLocationManager;
     private Location mLocation;
+    private FirebaseAuth mAuth;
 
 
 
@@ -75,6 +89,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
         btnLocation= (ImageButton) findViewById(R.id.btnLocation);
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mAuth = FirebaseAuth.getInstance();
 
         spinner = (Spinner) findViewById(R.id.spin);
         array = getResources().getStringArray(R.array.array_city);
@@ -320,9 +335,49 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
 
         if(successful.equals("Successful")){
             Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-            Intent i = new Intent(this, Login.class);
-            startActivity(i);
-            finish();
+            // firebase
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+//                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(RegisterAsRepairman.this, "Auth failed", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // TODO: Create a ASyncTask for this do not use the GUI Process
+                                final ArrayList<String> defaultRoom = new ArrayList<String>();
+                                defaultRoom.add("home");
+
+                                // Update the user profile information
+                                final FirebaseUser user = task.getResult().getUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(username)
+                                        .setPhotoUri(Uri.parse("http://1.bp.blogspot.com/-GKLGUFqEMZw/Tq8bXvXqzBI/AAAAAAAAAA0/0RTAmj2IfVU/s1600/250608_213063775394201_201787589855153_659638_3960990_n.jpg"))
+                                        .build();
+                                user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Logger.getLogger(register.class.getName()).log(Level.ALL, "User profile updated.");
+                                            // Construct the ChatUser
+                                            UserList.user = new ChatUser(user.getUid(), username, email, true, defaultRoom);
+                                            // Setup link to users database
+                                            FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(UserList.user);
+                                            // startActivity(new Intent(register.this, UserList.class));
+
+                                            Intent i = new Intent(RegisterAsRepairman.this, Login.class);
+                                            startActivity(i);
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
         }else{
             Toast.makeText(getApplicationContext(),
                     successful, Toast.LENGTH_LONG).show();
