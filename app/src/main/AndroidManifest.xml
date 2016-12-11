@@ -104,7 +104,6 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-        <activity android:name=".Profile" />
 
         <receiver
             android:name=".AlarmReceiver"
@@ -119,12 +118,17 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".Request" />
-        <activity android:name=".Feedback" />
         <activity
             android:name=".FeedbackTab"
             android:exported="true"
             android:label="@string/title_activity_feedback_tab"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+        <intent-filter>
+            <action android:name="@string/Profile_action" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        </activity>
         <activity android:name=".GiveFeedback"></activity>
 
     </application>

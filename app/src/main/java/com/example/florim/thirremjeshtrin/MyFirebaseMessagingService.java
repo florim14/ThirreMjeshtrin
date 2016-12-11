@@ -20,7 +20,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static String TAG="FirebaseMsgService";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // TODO(developer): Handle FCM messages here.
+
         // If the application is in the foreground handle both data and notification messages here.
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -50,6 +50,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 String status = remoteMessage.getData().get("status");
                 if (status.equals("ACCEPTED")) {
                     intent = new Intent(this, FeedbackTab.class);
+                    intent.setAction(getString(R.string.Profile_action));
                     String Username = remoteMessage.getData().get("Username");
                     String Email = remoteMessage.getData().get("Email");
                     String UserID = remoteMessage.getData().get("ID");
@@ -58,7 +59,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String Lon = remoteMessage.getData().get("Lon");
                     String Radius = remoteMessage.getData().get("Radius");
                     String Category = remoteMessage.getData().get("Category");
-
+                    Log.d("Firebase IM: ",Lat+" "+Lon);
                     intent.putExtra("RepairmanID", UserID);
                     intent.putExtra("Username", Username);
                     intent.putExtra("Lat", Lat);
@@ -67,7 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra("Phone", Phone);
                     intent.putExtra("Email", Email);
                     intent.putExtra("Category", Category);
-                    pIntent = PendingIntent.getActivity(this, Integer.valueOf(ID), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    pIntent = PendingIntent.getActivity(this, 2, intent, PendingIntent.FLAG_CANCEL_CURRENT);
                 }
             }
             // build notification

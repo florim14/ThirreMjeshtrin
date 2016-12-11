@@ -267,7 +267,7 @@ public class Profile extends Fragment {
     private String getLocation(String Lat, String Lon) {
         Geocoder g = new Geocoder(getActivity());
         try {
-            List<Address> address = g.getFromLocation(Double.valueOf(Lat), Double.valueOf(Lon), 1);
+            List<Address> address = g.getFromLocation(Double.valueOf(Lat), Double.valueOf(Lon), 5);
             if (address.isEmpty()) {
                 return "";
             }

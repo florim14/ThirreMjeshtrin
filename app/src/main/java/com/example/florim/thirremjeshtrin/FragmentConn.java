@@ -120,7 +120,8 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         if(results != null) {
-            int size = results.size();
+
+                        int size = results.size();
 
             for (int i = 0; i < size; i++) {
                 latlngs.add(new LatLng(Double.parseDouble(results.get(i).get("Lat")),
@@ -157,7 +158,6 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
 
 
             mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-                LatLng latLng = null;
                 int position=-1;
                 @Override
                 public void onMarkerDragStart(Marker arg0) {
@@ -167,10 +167,9 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
                             break;
                         }
                     }
-                    latLng = arg0.getPosition();
-                    // TODO Auto-generated method stub
+
+
                     arg0.showInfoWindow();
-                    //arg0.setDraggable(false);
                 }
 
                 @SuppressWarnings("unchecked")
