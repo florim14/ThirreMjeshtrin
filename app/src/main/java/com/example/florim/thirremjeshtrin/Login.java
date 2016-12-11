@@ -384,7 +384,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                                 defaultRoom.add("home");
                                 UserList.user = new ChatUser(task.getResult().getUser().getUid(),
                                         task.getResult().getUser().getDisplayName(), task.getResult().getUser().getEmail(), true, defaultRoom);
-                                Intent i = new Intent(Login.this, Main2Activity.class);
+                                Intent i = new Intent(Login.this, MainActivity.class);
                                 startActivity(i);
                                 finish();
                             }

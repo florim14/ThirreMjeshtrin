@@ -243,7 +243,7 @@ public class Profile extends Fragment {
                     ID = result.get(0).get("ID");
                 }
                 AlarmReceiver alarmReceiver = new AlarmReceiver();
-                alarmReceiver.setAlarm(getActivity(), ID);
+                alarmReceiver.setAlarm(getActivity(), ID,60);
             } else{
                 Toast.makeText(getActivity(), R.string.no_connectivity, Toast.LENGTH_LONG).show();
             }

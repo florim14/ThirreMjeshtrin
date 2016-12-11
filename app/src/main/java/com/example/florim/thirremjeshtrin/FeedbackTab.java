@@ -104,7 +104,7 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
         ftProfile.add(R.id.Tab1,profile,"").disallowAddToBackStack().commit();
 
 
-        if(RepairmanID!=null) {
+        if(accountData.get("Category")!=null) {
             spec = tabs.newTabSpec("Reviews");//make a new tab
 
             spec.setContent(R.id.Tab2);  //What is in the tab (not an activity but rather a view)
