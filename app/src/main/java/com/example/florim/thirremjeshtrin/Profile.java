@@ -206,8 +206,15 @@ public class Profile extends Fragment {
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                             ChatUser user = ds.getValue(ChatUser.class);
                             Logger.getLogger(UserList.class.getName()).log(Level.ALL, user.getUsername());
-                            if (user.getEmail().contentEquals(Email))
+                            if (user.getEmail().contentEquals(Email)) {
                                 startActivity(new Intent(getActivity(), Chat.class).putExtra(Const.EXTRA_DATA, user));
+                                // TODO: Add buddies in db
+                                ConnectToServer objCTS = new ConnectToServer();
+                                Map<String,String> params=new HashMap<>();
+                                params.put("userID",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                params.put("otherID",user.getId());
+                                objCTS.sendRequest(ConnectToServer.BUDDIES,params,true);
+                            }
                         }
                     }
                     @Override
