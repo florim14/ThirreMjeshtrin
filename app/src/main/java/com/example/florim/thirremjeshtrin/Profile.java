@@ -2,7 +2,6 @@ package com.example.florim.thirremjeshtrin;
 
 import android.accounts.AccountManager;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,11 +10,8 @@ import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +22,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Profile extends Fragment {
@@ -50,11 +52,41 @@ public class Profile extends Fragment {
     ConnectivityManager cm;
 
     String UserID="";
+    String Email="";
+
+    DatabaseReference database;
+
+    private String getProfileId() {
+        final String[] test = {""};
+        // Pull the users list once no sync required.
+        database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long size = dataSnapshot.getChildrenCount();
+                if(size == 0) {
+                    Log.d("FIREBASE: ", "onDataChange: No users");
+                    return;
+                }
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d("FIREBASE: ", "onDataChange: Users!");
+                    ChatUser user = ds.getValue(ChatUser.class);
+                    Logger.getLogger(UserList.class.getName()).log(Level.ALL,user.getUsername());
+                    if(user.getEmail().contentEquals(Email))
+                        test[0] = user.getId();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        return test[0];
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        database  = FirebaseDatabase.getInstance().getReference();
     }
 
     // Inflate the layout for this fragment @Override
@@ -65,7 +97,7 @@ public class Profile extends Fragment {
 
         RepairmanID="";
         String Username="";
-        String Email="";
+        Email="";
         String Phone="";
         String Lat="";
         String Lon="";
@@ -187,6 +219,15 @@ public class Profile extends Fragment {
             });
         }
 
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("btnChat: ", "onClick: Clicked!");
+//                startActivity(new Intent(getActivity(),Chat.class).putExtra(Const.EXTRA_DATA, !BUDDYID!));
+                Toast.makeText(getActivity(),"FirebaseID: "+getProfileId(),Toast.LENGTH_LONG).show();
+            }
+        });
+
 
 
 
@@ -254,6 +295,7 @@ public class Profile extends Fragment {
     public void logOut(View v){
         if (PermissionUtils.connectivityCheck(cm)) {
         if(ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+            am = AccountManager.get(getActivity());
             am.removeAccountExplicitly(am.getAccountsByType(Authenticator.ACCOUNT_TYPE)[0]);
             Map<String,String> params=new HashMap<>();
             params.put("UserID",accountData.get("UserID"));
