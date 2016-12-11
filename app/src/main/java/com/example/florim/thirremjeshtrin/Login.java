@@ -98,8 +98,9 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                         // [END_EXCLUDE]
                     }
                 };
-                   isUserRegistered();
-
+        if(mAccountManager!=null) {
+            isUserRegistered();
+        }
 
         setContentView(R.layout.activity_login);
         inputEmail = (EditText) findViewById(R.id.email);
@@ -351,8 +352,9 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             // Permission has not been granted yet, request it.
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.GET_ACCOUNTS}, 1);
         }
-
-
+        if(mAccountManager!=null) {
+            mAccountManager = AccountManager.get(this);
+        }
         accountData = Authenticator.findAccount(mAccountManager, this);
         if (accountData != null) {
 
