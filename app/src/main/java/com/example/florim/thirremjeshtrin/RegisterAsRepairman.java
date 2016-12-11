@@ -3,6 +3,7 @@ package com.example.florim.thirremjeshtrin;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -383,8 +385,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
         }
     }
     public void onLocationClick(View v){
-        if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {
-
+            checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             if (mLocation == null) {
@@ -415,7 +416,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                 Toast.makeText(this, R.string.no_provider_error, Toast.LENGTH_SHORT).show();
 
             }
-        }
+
     }
 
 
@@ -451,6 +452,17 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
 
     @Override
     public void onProviderDisabled(String s) {
+
+    }
+
+    private void checkPermission(String permission) {
+        if (ContextCompat.checkSelfPermission(this,
+                permission)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission has not been granted yet, request it.
+            ActivityCompat.requestPermissions(this, new String[]{permission}, 1);
+        }
 
     }
 }

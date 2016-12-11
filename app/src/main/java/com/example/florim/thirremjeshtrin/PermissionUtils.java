@@ -23,31 +23,8 @@ public abstract class PermissionUtils  {
     public static final int LOCATION_REQUEST_PERMISSION = 2;
 
 
-    public static boolean checkPermission(Activity activity, String permission, int requestId) {
-
-        if (ContextCompat.checkSelfPermission(activity,
-                permission)
-                != PackageManager.PERMISSION_GRANTED ) {
-
-            // Permission has not been granted yet, request it.
-            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
-            return false;
-
-        }
-
-        return true;
-
-    }
 
 
-    public static boolean isGPSEnabled(LocationManager lm, Activity app) {
-        boolean isLocationEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!isLocationEnabled) {
-            Toast.makeText(app, R.string.request_enable_gps, Toast.LENGTH_SHORT).show();
-        }
-        return isLocationEnabled;
-
-    }
 
     public static boolean connectivityCheck(ConnectivityManager cm) {
 

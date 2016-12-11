@@ -1,8 +1,10 @@
 package com.example.florim.thirremjeshtrin;
 
 import android.Manifest;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,18 +13,22 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 public class Main2Activity extends AppCompatActivity implements LocationListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private double locLong=-1;
-    private double locLat=-1;
+    private double locLong = -1;
+    private double locLat = -1;
     private LocationManager mLocationManager;
     private Location mLocation;
+    private AccountManager am;
     ConnectivityManager cm;
     com.roughike.bottombar.BottomBar mBottomBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,35 +38,48 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
         mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.menu_main);
         mBottomBar.setDefaultTabPosition(1);
-        cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         mBottomBar.setOnMenuTabClickListener(new com.roughike.bottombar.OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
                     mBottomBar.setDefaultTabPosition(1);
-                   Intent i=new Intent(Main2Activity.this,FeedbackTab.class);
-                    i.putExtra("isUser",true);
+                    Intent i = new Intent(Main2Activity.this, FeedbackTab.class);
+                    i.putExtra("isUser", true);
                     startActivity(i);
 
-                }
-                else if(menuItemId == R.id.inbox){
+                } else if (menuItemId == R.id.inbox) {
                     mBottomBar.setDefaultTabPosition(1);
                     Intent i = new Intent(Main2Activity.this, UserList.class);
                     startActivity(i);
 
                 }
             }
+
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
 
             }
         });
 
-        mBottomBar.mapColorForTab(0,"#F44346");
-        mBottomBar.mapColorForTab(1,"#795548");
+        mBottomBar.mapColorForTab(0, "#F44346");
+        mBottomBar.mapColorForTab(1, "#795548");
 
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (am == null) {
+            am = AccountManager.get(this);
+        }
+        if (Authenticator.findAccount(am, this) == null) {
+            Intent i = new Intent(this, Login.class);
+            startActivity(i);
+        }
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -69,6 +88,7 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
         // lose the current tab on orientation change.
         mBottomBar.onSaveInstanceState(outState);
     }
+
     @Override
     public void onLocationChanged(Location loc) {
         locLat = loc.getLatitude();
@@ -89,25 +109,27 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
     public void onProviderDisabled(String s) {
 
     }
-    public void onImageClick(View v){
-        if (PermissionUtils.connectivityCheck(cm)) {
-        getLocation();
-        if(locLat!=-1 && locLong!=-1){
-            int category=Integer.valueOf(v.getTag().toString());
 
-           Intent i= new Intent(this,FragmentConn.class);
-            i.putExtra("category", category);
-            i.putExtra("lat", locLat);
-            i.putExtra("lon", locLong);
-           startActivity(i);
-        }
-        }
-        else{
+    public void onImageClick(View v) {
+        if (PermissionUtils.connectivityCheck(cm)) {
+            getLocation();
+            if (locLat != -1 && locLong != -1) {
+                int category = Integer.valueOf(v.getTag().toString());
+
+                Intent i = new Intent(this, FragmentConn.class);
+                i.putExtra("category", category);
+                i.putExtra("lat", locLat);
+                i.putExtra("lon", locLong);
+                startActivity(i);
+            }
+        } else {
             Toast.makeText(this, R.string.no_connectivity, Toast.LENGTH_LONG).show();
         }
     }
-    private void getLocation(){
-        if (PermissionUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionUtils.LOCATION_REQUEST_PERMISSION)) {
+
+    private void getLocation() {
+
+            checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
 
             mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -130,6 +152,17 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
 
             }
         }
-    }
 
+
+    private void checkPermission(String permission) {
+        if (ContextCompat.checkSelfPermission(this,
+                permission)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission has not been granted yet, request it.
+            ActivityCompat.requestPermissions(this, new String[]{permission}, 1);
+        }
+
+    }
 }
+

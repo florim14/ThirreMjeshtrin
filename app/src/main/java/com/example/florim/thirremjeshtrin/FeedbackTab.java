@@ -136,6 +136,17 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
         // lose the current tab on orientation change.
         mBottomBar.onSaveInstanceState(outState);
     }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(am==null){
+            am=AccountManager.get(this);
+        }
+        if(Authenticator.findAccount(am,this)==null){
+            Intent i =new Intent(this, Login.class);
+            startActivity(i);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,6 +1,7 @@
 package com.example.florim.thirremjeshtrin;
 
 
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -33,6 +34,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<LatLng> latlngs = new ArrayList<>();
     private String lat;
     private String lon;
+    private AccountManager am;
     com.roughike.bottombar.BottomBar mBottomBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,17 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
         // Necessary to restore the BottomBar's state, otherwise we would
         // lose the current tab on orientation change.
         mBottomBar.onSaveInstanceState(outState);
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(am==null){
+            am= AccountManager.get(this);
+        }
+        if(Authenticator.findAccount(am,this)==null){
+            Intent i =new Intent(this, Login.class);
+            startActivity(i);
+        }
     }
 
     private List<Map<String,String>> searchFromServer(String cat, String lat,String lon){
