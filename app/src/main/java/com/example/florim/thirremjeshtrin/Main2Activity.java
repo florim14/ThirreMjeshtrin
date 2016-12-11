@@ -67,7 +67,7 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
 
         // Necessary to restore the BottomBar's state, otherwise we would
         // lose the current tab on orientation change.
-        //mBottomBar.onSaveInstanceState(outState);
+        mBottomBar.onSaveInstanceState(outState);
     }
     @Override
     public void onLocationChanged(Location loc) {

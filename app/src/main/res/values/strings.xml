@@ -197,4 +197,5 @@
     <string name="no_results">No resource available</string>
     <string name="txtProfile">Profile</string>
     <string name="no_rating">Please choose a rating value!</string>
+    <string name="user_not_available">The user is not currently  available.</string>
 </resources>
