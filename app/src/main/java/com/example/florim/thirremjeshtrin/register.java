@@ -43,8 +43,7 @@ public class register extends AppCompatActivity implements ActivityCompat.OnRequ
     private static final String TAG = register.class.getSimpleName();
     private boolean isDataValid;
 
-    IResult mResultCallback = null;
-    VolleyService mVolleyService;
+
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;

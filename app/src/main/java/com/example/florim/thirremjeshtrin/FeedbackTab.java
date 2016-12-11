@@ -38,6 +38,7 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
     private String UserID;
     private Map<String,String> accountData;
     com.roughike.bottombar.BottomBar mBottomBar;
+    boolean isUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +46,13 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
         am = AccountManager.get(this);
         accountData = Authenticator.findAccount(am, this);
         UserID=accountData.get("UserID");
+        isUser=getIntent().getBooleanExtra("isUser",false);
         TabHost tabs=(TabHost)findViewById(R.id.TabHost); //Id of tab host
 
         tabs.setup();
         mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.menu_main);
-        if(getIntent().getBooleanExtra("isUser",false)){
+        if(isUser){
             mBottomBar.setDefaultTabPosition(0);
         }
         else{
@@ -60,11 +62,12 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
-                    if(!getIntent().getBooleanExtra("isUser",false)) {
+                    if (!isUser) {
                         Intent i = new Intent(FeedbackTab.this, FeedbackTab.class);
                         i.putExtra("isUser", true);
                         startActivity(i);
                     }
+                }
                     else if(menuItemId==R.id.inbox){
                         Intent i = new Intent(FeedbackTab.this, UserList.class);
                         startActivity(i);
@@ -72,7 +75,7 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
 
 
                 }
-            }
+
 
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
@@ -93,6 +96,8 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
 
 
 
+
+
         TabHost.TabSpec spec=tabs.newTabSpec("Profile");//make a new tab
 
         spec.setContent(R.id.Tab1);  //What is in the tab (not an activity but rather a view)
@@ -104,19 +109,21 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
         ftProfile.add(R.id.Tab1,profile,"").disallowAddToBackStack().commit();
 
 
-        if(accountData.get("Category")!=null) {
+        if(RepairmanID!=null || accountData.get("Category")!=null) {
             spec = tabs.newTabSpec("Reviews");//make a new tab
 
             spec.setContent(R.id.Tab2);  //What is in the tab (not an activity but rather a view)
             spec.setIndicator("Reviews"); //Name of tab
             tabs.addTab(spec); //Add it
             ListFeedback list = new ListFeedback();
+            if(isUser){
+                RepairmanID=UserID;
+            }
             list.RepairmanID = RepairmanID;
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(R.id.Tab2, list, "").disallowAddToBackStack().commit();
 
-
-            if (!RepairmanID.equals(UserID)) {
+            if (!isUser) {
                 spec = tabs.newTabSpec("Feedback"); //Same thing here
                 spec.setContent(R.id.Tab3);
                 spec.setIndicator("Send Feedback");
