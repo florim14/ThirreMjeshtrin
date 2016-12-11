@@ -22,6 +22,10 @@ import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_USERDATA;
 
+/**
+ * Subclass of AbstractAccountAuthenticator that deals with the authentication
+ * of this app's accounts with AccountManager
+ */
 public class Authenticator extends AbstractAccountAuthenticator {
 
     public static  String ACCOUNT_TYPE="com.example.florim.thirremjeshtrin";
@@ -56,13 +60,6 @@ public class Authenticator extends AbstractAccountAuthenticator {
         Log.d(TAG,"Thirremjeshtirin " + "> getAuthToken");
 
 
-        // If the caller requested an authToken type we don't support, then
-        // return an error
-        if (!authTokenType.equals(AUTHTOKEN_TYPE)) {
-            final Bundle result = new Bundle();
-            result.putString(AccountManager.KEY_ERROR_MESSAGE, "invalid authTokenType");
-            return result;
-        }
 
         // Extract the username and password from the Account Manager, and ask
         // the server for an appropriate AuthToken.

@@ -229,7 +229,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 if (data.get("error") != null) {
                     switch (Integer.valueOf(data.get("error"))) {
                         case 0:
-                            message = "Incorrect password!";
+                            message = "Incorrect credentials or user already logged in on another device!";
                             break;
                         case 1:
                             message = "User doesn't exist!";

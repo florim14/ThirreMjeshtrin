@@ -53,13 +53,13 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
-                    mBottomBar.setDefaultTabPosition(1);
+
                     Intent i = new Intent(FragmentConn.this, FeedbackTab.class);
                     i.putExtra("isUser", true);
                     startActivity(i);
 
                 } else if (menuItemId == R.id.inbox) {
-                    mBottomBar.setDefaultTabPosition(1);
+
                     Intent i = new Intent(FragmentConn.this, UserList.class);
                     startActivity(i);
 

@@ -11,17 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Ahmet on 08-Dec-16.
+ * Created by Gresa on 08-Dec-16.
  */
-     /** When the alarm fires, this WakefulBroadcastReceiver receives the broadcast Intent
-     * and then starts the IntentService {@code DataUpdaterService} to do some work.
+     /** When the alarm fires, this BroadcastReceiver receives the broadcast Intent
+     * and then checks a certain request's status in the server if there's connectivity, or just sets another alarm to check 30 min later.
      */
     public class AlarmReceiver extends BroadcastReceiver {
 
         /**
          * Callback method when the alarm is fired
          * @param context the context that has set the alarm
-         * @param intent
+         * @param intent the intent that was sent to the BroadcastReceiver
          */
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -31,7 +31,7 @@ import java.util.Map;
             String ID=intent.getStringExtra("ID");
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            //Check if the device has connectivity,if so execute service
+            //Check if the device has connectivity,if so send request to server
             if(PermissionUtils.connectivityCheck(cm)) {
                 Map<String,String> params=new HashMap<>();
                 params.put("ReqID",ID);
@@ -43,22 +43,21 @@ import java.util.Map;
             }
             else{
                 AlarmReceiver alarmReceiver=new AlarmReceiver();
-                alarmReceiver.setAlarm(context,ID);
+                alarmReceiver.setAlarm(context,ID,30);
             }
         }
 
 
 
     /**
-     * Sets an alarm that runs 30 min after it is created. When the
+     * Sets an alarm that runs given min after it is created. When the
      * alarm fires, the app broadcasts an Intent to this BroadcastReceiver.
      * @param context The context of the activity that sets the alarm
      */
-    public void setAlarm(Context context,String ID) {
-
-            /*
-      The app's AlarmManager, which provides access to the system alarm services.
-     */
+    public void setAlarm(Context context,String ID, int min) {
+        /**
+         *The app's AlarmManager, which provides access to the system alarm services.
+      */
         AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("ID",ID);
@@ -77,10 +76,10 @@ import java.util.Map;
 
 
 
-        // Set the alarm to fire after 30 minutes, according to the device's
+        // Set the alarm to fire after the given minutes, according to the device's
         // clock.
         alarmMgr.set(AlarmManager.RTC,
-                System.currentTimeMillis() + 60*(60*1000), alarmIntent);
+                System.currentTimeMillis() + min*(60*1000), alarmIntent);
 
 
     }

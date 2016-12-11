@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -34,22 +35,23 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.menu_main);
         mBottomBar.setDefaultTabPosition(1);
-        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
         mBottomBar.setOnMenuTabClickListener(new com.roughike.bottombar.OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
-                    mBottomBar.setDefaultTabPosition(1);
+
                     Intent i = new Intent(Main2Activity.this, FeedbackTab.class);
                     i.putExtra("isUser", true);
                     startActivity(i);
 
                 } else if (menuItemId == R.id.inbox) {
-                    mBottomBar.setDefaultTabPosition(1);
+
                     Intent i = new Intent(Main2Activity.this, UserList.class);
                     startActivity(i);
 

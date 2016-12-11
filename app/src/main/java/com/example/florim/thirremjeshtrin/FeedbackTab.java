@@ -65,6 +65,10 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
                         i.putExtra("isUser", true);
                         startActivity(i);
                     }
+                    else if(menuItemId==R.id.inbox){
+                        Intent i = new Intent(FeedbackTab.this, UserList.class);
+                        startActivity(i);
+                    }
 
 
                 }
@@ -73,7 +77,7 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.inbox) {
-                    mBottomBar.setDefaultTabPosition(2);
+
                     // The user reselected item number one, scroll your content to top.
                 }
             }
