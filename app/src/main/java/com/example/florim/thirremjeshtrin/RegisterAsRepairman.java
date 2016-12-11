@@ -348,7 +348,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                             if (!task.isSuccessful()) {
                                 Toast.makeText(RegisterAsRepairman.this, "Auth failed", Toast.LENGTH_SHORT).show();
                             } else {
-                                // TODO: Create a ASyncTask for this do not use the GUI Process
+                                // TODO: Create a ASyncTask for this do not use the GUI Thread
                                 final ArrayList<String> defaultRoom = new ArrayList<String>();
                                 defaultRoom.add("home");
 
@@ -368,7 +368,6 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                                             // Setup link to users database
                                             FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(UserList.user);
                                             // startActivity(new Intent(register.this, UserList.class));
-
                                             Intent i = new Intent(RegisterAsRepairman.this, Login.class);
                                             startActivity(i);
                                             finish();
