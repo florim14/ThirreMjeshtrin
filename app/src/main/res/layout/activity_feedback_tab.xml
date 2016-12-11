@@ -17,14 +17,16 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/btn_login_bg">
 
             <ImageView
                 android:layout_width="107dp"
                 android:layout_height="134dp"
                 android:src="@drawable/ic_image2vector"
                 android:id="@+id/imgThirreMjeshtrin"
-                android:layout_marginStart="140dp" />
+                android:layout_marginStart="140dp"
+                android:contentDescription="Logo" />
         </LinearLayout>
 
         <TabHost
@@ -49,13 +51,6 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:id="@+id/Tab1"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/common_google_signin_btn_text_dark_disabled"></LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/Tab2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -72,6 +67,13 @@
 
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/Tab1"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/common_google_signin_btn_text_dark_disabled"></LinearLayout>
 
                 </FrameLayout>
             </LinearLayout>
