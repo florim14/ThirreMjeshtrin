@@ -7,7 +7,6 @@ package com.example.florim.thirremjeshtrin;/**
  **/
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -122,8 +121,8 @@ public class UserList extends CustomActivity
                     @Override
                     public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3)
                     {
-                        startActivity(new Intent(UserList.this,Chat.class).putExtra(Const.EXTRA_DATA, uList.get(pos)));
-                        Log.d("ACTIVITY: ", "onItemClick: "+uList.get(pos));
+//                        startActivity(new Intent(UserList.this,Chat.class).putExtra(Const.EXTRA_DATA, uList.get(pos)));
+                        Log.d("ACTIVITY: ", "onItemClick: "+pos);
                     }
                 });
             }
