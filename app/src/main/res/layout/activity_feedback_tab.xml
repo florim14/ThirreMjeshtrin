@@ -9,44 +9,74 @@
     tools:context="com.example.florim.thirremjeshtrin.FeedbackTab">
 
 
-    <TabHost
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/TabHost">
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/Tab1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/Tab2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-                </LinearLayout>
-
-            </FrameLayout>
+            <ImageView
+                android:layout_width="107dp"
+                android:layout_height="134dp"
+                android:src="@drawable/ic_image2vector"
+                android:id="@+id/imgThirreMjeshtrin"
+                android:layout_marginStart="140dp" />
         </LinearLayout>
 
-    </TabHost>
+        <TabHost
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/TabHost">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/btn_login_bg">
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/Tab1"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/common_google_signin_btn_text_dark_disabled"></LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/Tab2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="@color/common_google_signin_btn_text_dark_disabled">
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/Tab3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="@color/common_google_signin_btn_text_dark_disabled">
+
+
+                    </LinearLayout>
+
+                </FrameLayout>
+            </LinearLayout>
+
+        </TabHost>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

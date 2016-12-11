@@ -38,7 +38,7 @@ public class Main2Activity extends AppCompatActivity implements LocationListener
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
                     mBottomBar.setDefaultTabPosition(1);
-                   Intent i=new Intent(Main2Activity.this,Profile.class);
+                   Intent i=new Intent(Main2Activity.this,FeedbackTab.class);
                     i.putExtra("isUser",true);
                     startActivity(i);
 

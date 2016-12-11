@@ -13,79 +13,50 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="15dp"
-                android:weightSum="1"
-                android:layout_weight="0.13"
-                android:background="@color/btn_login_bg">
-
-                <ImageView
-                    android:src="@drawable/ic_image2vector"
-                    android:id="@+id/imgProfile"
-                    android:layout_alignParentTop="true"
-                    android:layout_height="122dp"
-                    android:layout_width="100dp"
-                    android:paddingBottom="20dp"
-                    android:layout_gravity="center_vertical|clip_horizontal"
-                    android:layout_weight="0.08"
-                    android:layout_marginStart="60dp"
-                    android:layout_marginTop="20dp"
-                    android:contentDescription="Profile Logo" />
-
-                <TextView
-                    android:text="@string/txtProfile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtProfile"
-                    android:layout_weight="0.08"
-                    android:textAllCaps="false"
-                    android:textSize="@dimen/pad_30dp"
-                    android:textColor="@color/btn_logut_bg"
-                    android:textStyle="normal|bold"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_marginTop="60dp" />
-            </LinearLayout>
+            android:weightSum="1"
+            android:background="@color/common_google_signin_btn_text_dark_disabled">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="15dp"
-                android:background="@color/btn_login_bg">
+                android:background="@color/main_color_gray_lt">
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_profile_icon"
                     android:id="@+id/imgUser_icon"
-                    android:layout_marginLeft="0dp"
                     android:layout_below="@+id/imgProfile"
                     android:layout_marginBottom="20dp"
-                    android:contentDescription="User Icon" />
+                    android:contentDescription="User Icon"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="30dp" />
                 <TextView
                     android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtUser"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="24sp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="15dp"
-                android:background="@color/btn_login_bg">
+                android:background="@color/main_color_gray_lt">
                 <ImageView
                     android:layout_width="30dp"
                     android:src="@drawable/ic_email_icon"
                     android:id="@+id/imgEmail_icon"
                     android:layout_height="30dp"
                     android:layout_marginBottom="20dp"
-                    android:contentDescription="Email Icon" />
+                    android:contentDescription="Email Icon"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="30dp" />
                 <TextView
                     android:text=""
                     android:layout_width="wrap_content"
@@ -93,15 +64,18 @@
                     android:layout_alignTop="@+id/imgEmail_icon"
                     android:layout_alignStart="@+id/txtUser"
                     android:id="@+id/txtEmail"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="24sp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="15dp"
-                android:background="@color/btn_login_bg">
+                android:background="@color/main_color_gray_lt">
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -109,7 +83,9 @@
                     android:id="@+id/imgTelefon_icon"
                     android:layout_below="@+id/imgEmail_icon"
                     android:layout_marginBottom="20dp"
-                    android:contentDescription="Phone Icon" />
+                    android:contentDescription="Phone Icon"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="30dp" />
 
                 <TextView
                     android:text=""
@@ -118,8 +94,11 @@
                     android:layout_alignTop="@+id/imgTelefon_icon"
                     android:layout_alignStart="@+id/txtEmail"
                     android:id="@+id/txtTelefon"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="24sp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -128,14 +107,16 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_margin="15dp"
-                android:background="@color/btn_login_bg">
+                android:background="@color/main_color_gray_lt">
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_location_icon"
                     android:id="@+id/imgLocation_icon"
                     android:layout_marginBottom="20dp"
-                    android:contentDescription="Location Icon" />
+                    android:contentDescription="Location Icon"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="30dp" />
 
                 <TextView
                     android:text=""
@@ -144,15 +125,18 @@
                     android:layout_alignTop="@+id/imgLocation_icon"
                     android:layout_alignStart="@+id/txtTelefon"
                     android:id="@+id/txtLocation"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="24sp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="15dp"
-                android:background="@color/btn_login_bg">
+                android:background="@color/main_color_gray_lt">
 
 
 
@@ -164,21 +148,27 @@
                     android:id="@+id/imgRadius_icon"
                     android:layout_below="@+id/imgLocation_icon"
                     android:layout_alignStart="@+id/imgLocation_icon"
-                    android:contentDescription="Radius Icon" />
+                    android:contentDescription="Radius Icon"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="30dp" />
                 <TextView
                     android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:id="@+id/txtRadius"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="24sp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:background="@color/btn_login_bg">
+                android:background="@color/main_color_gray_lt">
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -186,14 +176,20 @@
                     android:id="@+id/imgCategory_icon"
                     android:layout_above="@+id/btnSendRequest"
                     android:layout_alignEnd="@+id/imgRadius_icon"
-                    android:contentDescription="Category Icon" />
+                    android:contentDescription="Category Icon"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="30dp" />
                 <TextView
                     android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:id="@+id/txtCategory"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="24sp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black" />
 
 
             </LinearLayout>
@@ -205,25 +201,21 @@
                 android:layout_margin="15dp">
                 <Button
                     android:text="Send Request"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginBottom="27dp"
                     android:id="@+id/btnSendRequest"
-                    android:background="@color/bg_login" />
+                    android:background="@color/bg_login"
+                    android:layout_weight="0.5"
+                    android:layout_margin="10dp" />
 
                 <Button
-                    android:text="Feedback"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/btnFeedback"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="30dp"/>
-
-                <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:id="@+id/btnChat"
                     android:text="Chat"
-                    android:layout_marginLeft="30dp"/>
+                    android:layout_weight="0.5"
+                    android:background="@color/bg_main"
+                    android:layout_margin="10dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

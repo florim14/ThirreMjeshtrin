@@ -52,7 +52,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
                     mBottomBar.setDefaultTabPosition(1);
-                    Intent i = new Intent(FragmentConn.this, Profile.class);
+                    Intent i = new Intent(FragmentConn.this, FeedbackTab.class);
                     i.putExtra("isUser", true);
                     startActivity(i);
 
@@ -198,7 +198,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
 
 
                     if (position != -1) {
-                        Intent intent = new Intent(getApplicationContext(), Profile.class);
+                        Intent intent = new Intent(getApplicationContext(), FeedbackTab.class);
 
                         String Username = results.get(position).get("Username");
                         String Email = results.get(position).get("Email");
@@ -207,14 +207,16 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
                         String Lat = results.get(position).get("Lat");
                         String Lon = results.get(position).get("Lon");
                         String Radius = results.get(position).get("Radius");
+                        String Category=results.get(position).get("Category");
 
-                        intent.putExtra("UserID", UserID);
+                        intent.putExtra("RepairmanID", UserID);
                         intent.putExtra("Username", Username);
                         intent.putExtra("Lat", Lat);
                         intent.putExtra("Lon", Lon);
                         intent.putExtra("Radius", Radius);
                         intent.putExtra("Phone", Phone);
                         intent.putExtra("Email", Email);
+                        intent.putExtra("Category", Category);
                         startActivity(intent);
                     } else {
                         marker.showInfoWindow();

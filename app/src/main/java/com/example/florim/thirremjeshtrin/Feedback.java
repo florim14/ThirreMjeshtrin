@@ -40,7 +40,7 @@ public class Feedback extends AppCompatActivity {
         accountData = Authenticator.findAccount(am, this);
 
         feedback = (EditText) findViewById(R.id.txtFeedback);
-        btnSendFeedback = (Button) findViewById(R.id.btnFeedback);
+        btnSendFeedback = (Button) findViewById(R.id.btnSendFeedback);
         info = (TextView) findViewById(R.id.txtInfo);
         rb = (RatingBar) findViewById(R.id.ratingBar);
 

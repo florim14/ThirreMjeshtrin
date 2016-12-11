@@ -2,12 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="layout.ListFeedback">
+    >
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lstFeedback"/>
+        android:id="@+id/lstFeedback"
+        android:padding="0dp" />
     <TextView
         android:id="@+id/empty"
         android:layout_width="match_parent"
