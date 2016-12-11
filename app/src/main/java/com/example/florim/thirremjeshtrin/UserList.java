@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,25 +22,28 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 
 /**
  * The Class UserList is the Activity class. It shows a list of all users of
  * this app. It also shows the Offline/Online status of users.
  */
-public class UserList extends CustomActivity
-{
+public class UserList extends CustomActivity {
 
     /** Users database reference */
     DatabaseReference database;
     /** The Chat list. */
     private ArrayList<ChatUser> uList;
+    private ArrayList<Conversation> cList;
 
     /** The user. */
     public static ChatUser user;
@@ -50,8 +52,7 @@ public class UserList extends CustomActivity
      * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_list);
         // Get reference to the Firebase database
@@ -64,8 +65,7 @@ public class UserList extends CustomActivity
      * @see android.support.v4.app.FragmentActivity#onDestroy()
      */
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         updateUserStatus(false);
     }
@@ -74,8 +74,7 @@ public class UserList extends CustomActivity
      * @see android.support.v4.app.FragmentActivity#onResume()
      */
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         loadUserList();
 
@@ -87,20 +86,19 @@ public class UserList extends CustomActivity
      * @param online
      *            true if user is online
      */
-    private void updateUserStatus(boolean online)
-    {
+    private void updateUserStatus(boolean online) {
         // TODO: Add user status updates
     }
 
     /**
+
      * Load list of users.
      */
     private void loadUserList()
     {
         final ProgressDialog dia = ProgressDialog.show(this, null, getString(R.string.alert_loading));
-
         // Pull the users list once no sync required.
-        database.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child("users") .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {dia.dismiss();
                 long size  = dataSnapshot.getChildrenCount();
@@ -112,15 +110,32 @@ public class UserList extends CustomActivity
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     ChatUser user = ds.getValue(ChatUser.class);
                     Logger.getLogger(UserList.class.getName()).log(Level.ALL,user.getUsername());
-                    if(!user.getId().contentEquals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                        uList.add(user);
+                    Query objQuery = database.child("messages").orderByChild("receiver").equalTo(user.getId());
+                    if(!user.getId().contentEquals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        ConnectToServer objCTS = new ConnectToServer();
+                        Map<String,String> params=new HashMap<>();
+                        params.put("userID",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        objCTS.sendRequest(ConnectToServer.BUDDIES,params,false);
+                        List<Map<String,String>> lBuddies = objCTS.results;
+
+                        if (lBuddies!=null) {
+                            for (Map<String, String> row : lBuddies) {
+                                if (row.get("Buddy1").equals(user.getId()))
+                                    uList.add(user);
+                                else if (row.get("Buddy2").equals(user.getId()))
+                                    uList.add(user);
+                            }
+                        }
+                        else
+                            Toast.makeText(UserList.this, "You have no messages!", Toast.LENGTH_SHORT).show();
+                    }
                 }
+                // Generate ListView
                 ListView list = (ListView) findViewById(R.id.list);
                 list.setAdapter(new UserAdapter());
-                list.setOnItemClickListener(new OnItemClickListener() {
+                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3)
-                    {
+                    public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
                         startActivity(new Intent(UserList.this,Chat.class).putExtra(Const.EXTRA_DATA, uList.get(pos)));
                     }
                 });
