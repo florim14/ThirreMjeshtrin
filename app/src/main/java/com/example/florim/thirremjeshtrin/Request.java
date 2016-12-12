@@ -24,7 +24,6 @@ public class Request extends AppCompatActivity {
         setContentView(R.layout.activity_request);
         String message=getIntent().getStringExtra("Message");
         ID=getIntent().getStringExtra("ID");
-        Toast.makeText(this,ID,Toast.LENGTH_LONG).show();
         txtRequest= (TextView) findViewById(R.id.txtRequest);
         txtRequest.setText(message);
 
@@ -44,7 +43,6 @@ public class Request extends AppCompatActivity {
         params.put("status","0");
         ConnectToServer connectToServer=new ConnectToServer();
         connectToServer.sendRequest(ConnectToServer.CHECKREQUEST,params,true);
-        Toast.makeText(Request.this,ID,Toast.LENGTH_LONG).show();
         finish();
     }
 
