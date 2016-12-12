@@ -385,34 +385,35 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
         }
     }
     public void onLocationClick(View v){
-            checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-            if (mLocation == null) {
-                Criteria c = new Criteria();
-                c.setAccuracy(Criteria.ACCURACY_COARSE);
-                c.setPowerRequirement(Criteria.POWER_LOW);
-                String bestProvider = mLocationManager.getBestProvider(c, true);
-                mLocation = mLocationManager.getLastKnownLocation(bestProvider);
-                mLocationManager.requestLocationUpdates(bestProvider, 5000, 100, this);
-            } else {
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, this);
-            }
-            if (mLocation != null) {
-                latitude = mLocation.getLatitude();
-                longitude = mLocation.getLongitude();
-                Geocoder gc = new Geocoder(RegisterAsRepairman.this);
-                try{
-                    List<Address> addresses = gc.getFromLocation(latitude,longitude,5);
-                    Address address = addresses.get(0);
-                    selectedCountry = address.getLocality();
-                    spinner.setSelection(getIndex(spinner, selectedCountry));
-                } catch(IOException e){
+                if (mLocation == null) {
+                    Criteria c = new Criteria();
+                    c.setAccuracy(Criteria.ACCURACY_COARSE);
+                    c.setPowerRequirement(Criteria.POWER_LOW);
+                    String bestProvider = mLocationManager.getBestProvider(c, true);
+                    mLocation = mLocationManager.getLastKnownLocation(bestProvider);
+                    mLocationManager.requestLocationUpdates(bestProvider, 5000, 100, this);
+                } else {
+                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, this);
+                }
+                if (mLocation != null) {
+                    latitude = mLocation.getLatitude();
+                    longitude = mLocation.getLongitude();
+                    Geocoder gc = new Geocoder(RegisterAsRepairman.this);
+                    try {
+                        List<Address> addresses = gc.getFromLocation(latitude, longitude, 5);
+                        Address address = addresses.get(0);
+                        selectedCountry = address.getLocality();
+                        spinner.setSelection(getIndex(spinner, selectedCountry));
+                    } catch (IOException e) {
+
+                    }
+
 
                 }
-
-
-            } else {
+            }else {
                 Toast.makeText(this, R.string.no_provider_error, Toast.LENGTH_SHORT).show();
 
             }
@@ -455,14 +456,15 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
 
     }
 
-    private void checkPermission(String permission) {
+    private boolean checkPermission(String permission) {
         if (ContextCompat.checkSelfPermission(this,
                 permission)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Permission has not been granted yet, request it.
             ActivityCompat.requestPermissions(this, new String[]{permission}, 1);
+            return false;
         }
-
+        return true;
     }
 }

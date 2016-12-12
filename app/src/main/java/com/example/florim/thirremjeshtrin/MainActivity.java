@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     private void getLocation() {
 
-            checkPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
 
             mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -156,14 +156,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         }
 
 
-    private void checkPermission(String permission) {
+    }
+
+
+    private boolean checkPermission(String permission) {
         if (ContextCompat.checkSelfPermission(this,
                 permission)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Permission has not been granted yet, request it.
             ActivityCompat.requestPermissions(this, new String[]{permission}, 1);
+            return false;
         }
+        return true;
 
     }
 }
