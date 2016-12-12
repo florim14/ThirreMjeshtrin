@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class register extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class RegisterAsCustomUser extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
 
     private Button btnRegister;
@@ -40,7 +40,7 @@ public class register extends AppCompatActivity implements ActivityCompat.OnRequ
     private EditText inputPassword;
     private EditText inputConfirmPassword;
     private ProgressDialog pDialog;
-    private static final String TAG = register.class.getSimpleName();
+    private static final String TAG = RegisterAsCustomUser.class.getSimpleName();
     private boolean isDataValid;
 
 
@@ -170,7 +170,7 @@ public class register extends AppCompatActivity implements ActivityCompat.OnRequ
 
     /**
      * Function to store user in MySQL database will post params(tag, name,
-     * email, password) to register url
+     * email, password) to RegisterAsCustomUser url
      * */
 
     private void registerUser(final String username, final String email, final String password) {
@@ -202,7 +202,7 @@ public class register extends AppCompatActivity implements ActivityCompat.OnRequ
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(register.this, "Auth failed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterAsCustomUser.this, "Auth failed", Toast.LENGTH_SHORT).show();
                                 } else {
                                     // TODO: Create a ASyncTask for this do not use the GUI Process
                                     final ArrayList<String> defaultRoom = new ArrayList<String>();
@@ -218,13 +218,13 @@ public class register extends AppCompatActivity implements ActivityCompat.OnRequ
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Logger.getLogger(register.class.getName()).log(Level.ALL, "User profile updated.");
+                                                Logger.getLogger(RegisterAsCustomUser.class.getName()).log(Level.ALL, "User profile updated.");
                                                 // Construct the ChatUser
                                                 UserList.user = new ChatUser(user.getUid(), username, email, true, defaultRoom);
                                                 // Setup link to users database
                                                 FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(UserList.user);
-                                                // startActivity(new Intent(register.this, UserList.class));
-                                                Intent i = new Intent(register.this, Login.class);
+                                                // startActivity(new Intent(RegisterAsCustomUser.this, UserList.class));
+                                                Intent i = new Intent(RegisterAsCustomUser.this, Login.class);
                                                 startActivity(i);
                                                 finish();
                                             }

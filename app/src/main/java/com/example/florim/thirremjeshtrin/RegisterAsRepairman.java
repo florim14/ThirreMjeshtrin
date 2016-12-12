@@ -316,7 +316,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
     private void registerUser(final String username, final String email,
                               final String password, final Double latitude, final Double longitude, String radius, String tel,int category) {
 
-        Map<String,String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<String, String>();
         params.put("password", password);
         params.put("email", email);
         params.put("username", username);
@@ -326,62 +326,63 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
         params.put("Radius", radius);
         params.put("Category", String.valueOf(category));
 
-        ConnectToServer connectToServer=new ConnectToServer();
+        ConnectToServer connectToServer = new ConnectToServer();
 
-        connectToServer.sendRequest(ConnectToServer.REGISTER, params,false);
+        connectToServer.sendRequest(ConnectToServer.REGISTER, params, false);
 
-        List<Map<String,String>> response=connectToServer.results;
+        List<Map<String, String>> response = connectToServer.results;
+        if (response != null) {
+            Map<String, String> success = response.get(0);
+            String successful = success.get("registration");
 
-        Map<String, String> success = response.get(0);
-        String successful = success.get("registration");
-
-        if(successful.equals("Successful")){
-            Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-            // firebase
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+            if (successful.equals("Successful")) {
+                Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+                // firebase
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 //                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(RegisterAsRepairman.this, "Auth failed", Toast.LENGTH_SHORT).show();
-                            } else {
-                                // TODO: Create a ASyncTask for this do not use the GUI Thread
-                                final ArrayList<String> defaultRoom = new ArrayList<String>();
-                                defaultRoom.add("home");
+                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // the auth state listener will be notified and logic to handle the
+                                // signed in user can be handled in the listener.
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(RegisterAsRepairman.this, "Auth failed", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // TODO: Create a ASyncTask for this do not use the GUI Thread
+                                    final ArrayList<String> defaultRoom = new ArrayList<String>();
+                                    defaultRoom.add("home");
 
-                                // Update the user profile information
-                                final FirebaseUser user = task.getResult().getUser();
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(username)
-                                        .setPhotoUri(Uri.parse("http://1.bp.blogspot.com/-GKLGUFqEMZw/Tq8bXvXqzBI/AAAAAAAAAA0/0RTAmj2IfVU/s1600/250608_213063775394201_201787589855153_659638_3960990_n.jpg"))
-                                        .build();
-                                user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Logger.getLogger(register.class.getName()).log(Level.ALL, "User profile updated.");
-                                            // Construct the ChatUser
-                                            UserList.user = new ChatUser(user.getUid(), username, email, true, defaultRoom);
-                                            // Setup link to users database
-                                            FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(UserList.user);
-                                            // startActivity(new Intent(register.this, UserList.class));
-                                            Intent i = new Intent(RegisterAsRepairman.this, Login.class);
-                                            startActivity(i);
-                                            finish();
+                                    // Update the user profile information
+                                    final FirebaseUser user = task.getResult().getUser();
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(username)
+                                            .setPhotoUri(Uri.parse("http://1.bp.blogspot.com/-GKLGUFqEMZw/Tq8bXvXqzBI/AAAAAAAAAA0/0RTAmj2IfVU/s1600/250608_213063775394201_201787589855153_659638_3960990_n.jpg"))
+                                            .build();
+                                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Logger.getLogger(RegisterAsCustomUser.class.getName()).log(Level.ALL, "User profile updated.");
+                                                // Construct the ChatUser
+                                                UserList.user = new ChatUser(user.getUid(), username, email, true, defaultRoom);
+                                                // Setup link to users database
+                                                FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(UserList.user);
+                                                // startActivity(new Intent(RegisterAsCustomUser.this, UserList.class));
+                                                Intent i = new Intent(RegisterAsRepairman.this, Login.class);
+                                                startActivity(i);
+                                                finish();
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
-                        }
-                    });
-        }else{
-            Toast.makeText(getApplicationContext(),
-                    successful, Toast.LENGTH_LONG).show();
+                        });
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        successful, Toast.LENGTH_LONG).show();
+            }
         }
     }
     public void onLocationClick(View v){

@@ -229,7 +229,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                 if (data.get("error") != null) {
                     switch (Integer.valueOf(data.get("error"))) {
                         case 0:
-                            message = "Incorrect credentials or user already logged in on another device!";
+                            message = "Incorrect credentials! ";
                             break;
                         case 1:
                             message = "User doesn't exist!";
@@ -237,6 +237,10 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                         case 2:
                             message = "Credentials missing.";
                             break;
+                        case 3:
+                            message="User already logged in on another device!";
+                            break;
+                        default: break;
 
                     }
                 }
@@ -324,6 +328,9 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                     Log.d(TAG, "Account NOT added");
                 }
 
+            }
+            else{
+                Toast.makeText(this,message,Toast.LENGTH_LONG).show();
             }
         }
         else{

@@ -12,11 +12,9 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -34,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
 
-                    Intent i = new Intent(MainActivity.this, FeedbackTab.class);
+                    Intent i = new Intent(MainActivity.this, UserInfo.class);
                     i.putExtra("isUser", true);
                     startActivity(i);
 
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             if (locLat != -1 && locLong != -1) {
                 int category = Integer.valueOf(v.getTag().toString());
 
-                Intent i = new Intent(this, FragmentConn.class);
+                Intent i = new Intent(this, MapActivity.class);
                 i.putExtra("category", category);
                 i.putExtra("lat", locLat);
                 i.putExtra("lon", locLong);

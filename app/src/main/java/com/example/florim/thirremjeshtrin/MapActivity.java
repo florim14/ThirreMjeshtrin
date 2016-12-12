@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FragmentConn extends AppCompatActivity implements OnMapReadyCallback{
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback{
 
    private List<Map<String,String>> results;
     private static String LIST_TAG="ListSearch";
@@ -45,7 +45,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
 
         getDataFromServer(category, lat, lon);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment_conn);
+        setContentView(R.layout.activity_map);
         mBottomBar = com.roughike.bottombar.BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.menu_main);
         mBottomBar.setDefaultTabPosition(1);
@@ -54,13 +54,13 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
 
-                    Intent i = new Intent(FragmentConn.this, FeedbackTab.class);
+                    Intent i = new Intent(MapActivity.this, UserInfo.class);
                     i.putExtra("isUser", true);
                     startActivity(i);
 
                 } else if (menuItemId == R.id.inbox) {
 
-                    Intent i = new Intent(FragmentConn.this, UserList.class);
+                    Intent i = new Intent(MapActivity.this, UserList.class);
                     startActivity(i);
 
                 }
@@ -210,7 +210,7 @@ public class FragmentConn extends AppCompatActivity implements OnMapReadyCallbac
 
 
                     if (position != -1) {
-                        Intent intent = new Intent(getApplicationContext(), FeedbackTab.class);
+                        Intent intent = new Intent(getApplicationContext(), UserInfo.class);
 
                         String Username = results.get(position).get("Username");
                         String Email = results.get(position).get("Email");

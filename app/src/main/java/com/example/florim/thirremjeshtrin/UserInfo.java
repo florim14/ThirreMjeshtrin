@@ -2,31 +2,21 @@ package com.example.florim.thirremjeshtrin;
 
 import android.accounts.AccountManager;
 import android.app.FragmentTransaction;
-import android.app.TabActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TabHost;
-import android.widget.Toast;
 
 import java.util.Map;
 
 
-public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFragmentInteractionListener, ListFeedback.OnFragmentInteractionListener{
+public class UserInfo extends AppCompatActivity implements SendFeedback.OnFragmentInteractionListener, ListFeedback.OnFragmentInteractionListener{
 
 
     /**
@@ -42,7 +32,7 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feedback_tab);
+        setContentView(R.layout.activity_userinfo);
         am = AccountManager.get(this);
         accountData = Authenticator.findAccount(am, this);
         UserID=accountData.get("UserID");
@@ -63,13 +53,13 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.profile) {
                     if (!isUser) {
-                        Intent i = new Intent(FeedbackTab.this, FeedbackTab.class);
+                        Intent i = new Intent(UserInfo.this, UserInfo.class);
                         i.putExtra("isUser", true);
                         startActivity(i);
                     }
                 }
                     else if(menuItemId==R.id.inbox){
-                        Intent i = new Intent(FeedbackTab.this, UserList.class);
+                        Intent i = new Intent(UserInfo.this, UserList.class);
                         startActivity(i);
                     }
 
@@ -80,8 +70,6 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.inbox) {
-
-                    // The user reselected item number one, scroll your content to top.
                 }
             }
         });
@@ -130,7 +118,7 @@ public class FeedbackTab extends AppCompatActivity implements SendFeedback.OnFra
                 tabs.addTab(spec);
                 SendFeedback list2 = new SendFeedback();
                 list2.RepairmanID = RepairmanID;
-                Log.d("FeedbackTab: ",UserID+" "+RepairmanID);
+                Log.d("UserInfo: ",UserID+" "+RepairmanID);
                 list2.UserID = UserID;
                 FragmentTransaction ft2 = getFragmentManager().beginTransaction();
                 ft2.add(R.id.Tab3, list2, "").disallowAddToBackStack().commit();

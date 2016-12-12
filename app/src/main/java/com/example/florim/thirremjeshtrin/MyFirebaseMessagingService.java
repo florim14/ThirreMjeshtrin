@@ -49,7 +49,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 String status = remoteMessage.getData().get("status");
                 if (status.equals("ACCEPTED")) {
-                    intent = new Intent(this, FeedbackTab.class);
+                    intent = new Intent(this, UserInfo.class);
                     intent.setAction(getString(R.string.Profile_action));
                     String Username = remoteMessage.getData().get("Username");
                     String Email = remoteMessage.getData().get("Email");

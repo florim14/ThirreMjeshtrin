@@ -22,7 +22,7 @@ public class RegisterAs extends AppCompatActivity {
         registerAsUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), register.class);
+                Intent i = new Intent(getApplicationContext(), RegisterAsCustomUser.class);
                 startActivity(i);
                 finish();
             }

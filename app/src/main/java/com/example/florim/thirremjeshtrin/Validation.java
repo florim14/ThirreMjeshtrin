@@ -3,7 +3,7 @@ package com.example.florim.thirremjeshtrin;
 import java.util.regex.Pattern;
 
 /**
- * Created by Ahmet on 06-Dec-16.
+ * Created by Gresa on 06-Dec-16.
  */
 
 public class Validation {
