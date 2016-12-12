@@ -199,4 +199,5 @@
     <string name="no_rating">Please choose a rating value!</string>
     <string name="user_not_available">The user is not currently  available.</string>
     <string name="Profile_action">com.example.florim.thirremjeshtrin.Profile</string>
+    <string name="Inbox_action">com.example.florim.thirremjeshtrin.UserList</string>
 </resources>

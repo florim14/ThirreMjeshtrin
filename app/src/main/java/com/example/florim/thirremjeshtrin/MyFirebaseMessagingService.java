@@ -45,6 +45,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 pIntent = PendingIntent.getActivity(this, Integer.valueOf(ID), intent, PendingIntent.FLAG_CANCEL_CURRENT);
             } else if (type.equals("message")) {
                 newMessageToActivity();
+                intent=new Intent(this,UserList.class);
+                intent.setAction(getString(R.string.Inbox_action));
+                pIntent=PendingIntent.getActivity(this,3,intent,PendingIntent.FLAG_CANCEL_CURRENT);
             } else if (type.equals("answer")) {
 
                 String status = remoteMessage.getData().get("status");

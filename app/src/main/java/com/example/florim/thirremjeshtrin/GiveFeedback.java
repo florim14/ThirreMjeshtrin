@@ -20,7 +20,6 @@ public class GiveFeedback extends AppCompatActivity {
 
     EditText feedback;
     Button btnSendFeedback;
-    TextView info;
     RatingBar rb;
 
     String RequestID;
@@ -47,7 +46,6 @@ public class GiveFeedback extends AppCompatActivity {
 
         feedback = (EditText)findViewById(R.id.txtFeedback);
         btnSendFeedback = (Button)findViewById(R.id.btnSendFeedback);
-        info = (TextView)findViewById(R.id.txtInfo);
         rb = (RatingBar)findViewById(R.id.ratingBar);
             rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override

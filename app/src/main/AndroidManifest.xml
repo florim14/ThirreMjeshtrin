@@ -49,7 +49,11 @@
             android:name="UserList"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        <intent-filter>
+            <action android:name="@string/Inbox_action" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".RegisterAsCustomUser"
             android:exported="true"
