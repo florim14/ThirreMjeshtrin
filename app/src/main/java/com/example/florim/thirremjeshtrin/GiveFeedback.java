@@ -4,12 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -21,7 +19,6 @@ public class GiveFeedback extends AppCompatActivity {
     EditText feedback;
     Button btnSendFeedback;
     RatingBar rb;
-
     String RequestID;
     String UserID;
     ConnectToServer connectToServer;
@@ -67,9 +64,9 @@ public class GiveFeedback extends AppCompatActivity {
 
                             if (connectivity) {
                                 connectToServer = new ConnectToServer();
-                                connectToServer.sendRequest(connectToServer.FEEDBACK, params, false);
+                                connectToServer.sendRequest(ConnectToServer.FEEDBACK, params, false);
                                 List<Map<String, String>> response = connectToServer.results;
-                                Map<String, String> result = new HashMap<String, String>();
+                                Map<String, String> result = new HashMap<>();
                                 result = response.get(0);
                                 if (result.get("message").equals("INSERTED")) {
                                     Toast.makeText(getApplicationContext(), "SENT!", Toast.LENGTH_LONG).show();

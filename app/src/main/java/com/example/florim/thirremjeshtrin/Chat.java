@@ -1,7 +1,4 @@
-package com.example.florim.thirremjeshtrin;/**
- * Created by GentR on 03-Dec-16
- */
-
+package com.example.florim.thirremjeshtrin;
 /**
  * * Created by GentR on 03-Dec-16
  **/
@@ -96,7 +93,7 @@ public class Chat extends CustomActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
-        convList = new ArrayList<Conversation>();
+        convList = new ArrayList<>();
         ListView list = (ListView) findViewById(R.id.list);
         adp = new ChatAdapter();
         list.setAdapter(adp);
@@ -187,7 +184,7 @@ public class Chat extends CustomActivity {
         adp.notifyDataSetChanged();
         txt.setText(null);
         ConnectToServer connectToServer = new ConnectToServer();
-        Map<String, String> parameters = new HashMap<String, String>();
+        Map<String, String> parameters = new HashMap<>();
         parameters.put("userID", user.getEmail());
         parameters.put("otherID", buddy.getEmail());
         parameters.put("message", s);

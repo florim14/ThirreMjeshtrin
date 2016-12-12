@@ -39,8 +39,6 @@ import java.util.logging.Logger;
 
 public class Login extends AccountAuthenticatorActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private Button btnLogin;
-    private Button btnLinkToRegister;
     private EditText inputEmail;
     private EditText inputPassword;
     private AccountManager mAccountManager;
@@ -93,9 +91,6 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                             // User is signed out
                             Log.d(TAG, "onAuthStateChanged:signed_out");
                         }
-                        // [START_EXCLUDE]
-                        // TODO updateUI(user);
-                        // [END_EXCLUDE]
                     }
                 };
         if(mAccountManager!=null) {
@@ -105,8 +100,8 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
         setContentView(R.layout.activity_login);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+        Button btnLogin = (Button) findViewById(R.id.btnLogin);
+        Button btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
                 // Login button Click Event
                 btnLogin.setOnClickListener(new View.OnClickListener() {
 
@@ -207,7 +202,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
             authtoken = FirebaseInstanceId.getInstance().getToken();
             accountType = Authenticator.ACCOUNT_TYPE;
             ConnectToServer connectToServer = new ConnectToServer();
-            Map<String, String> parameters = new HashMap<String, String>();
+            Map<String, String> parameters = new HashMap<>();
             parameters.put("account", accountName);
             parameters.put("password", password);
             parameters.put("token", authtoken);
@@ -301,7 +296,6 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                     mAccountManager.setAuthToken(account, accountType, authtoken);
                     setAccountAuthenticatorResult(data);
                     setResult(RESULT_OK, res);
-                    // TODO: firebase login`
                     Log.d("FIREBASE AUTH: ",Email + " " + password);
                     mAuth.signInWithEmailAndPassword(Email, password)
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -313,7 +307,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                                         Logger.getLogger(Login.class.getName()).log(Level.ALL, "signInWithEmail", task.getException());
                                         Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        ArrayList<String> defaultRoom = new ArrayList<String>();
+                                        ArrayList<String> defaultRoom = new ArrayList<>();
                                         defaultRoom.add("home");
                                         UserList.user = new ChatUser(task.getResult().getUser().getUid(), task.getResult().getUser().getDisplayName(), task.getResult().getUser().getEmail(), true, defaultRoom);
                                         Intent i = new Intent(Login.this, MainActivity.class);
@@ -374,7 +368,6 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                     }
                 }
             }
-            // TODO: firebase login`
             mAuth.signInWithEmailAndPassword(accountData.get("Email"), accountData.get("Password"))
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -387,7 +380,7 @@ public class Login extends AccountAuthenticatorActivity implements ActivityCompa
                             }
                             else{
                                 Log.d("FIREBASE AUTH: ", "onComplete: Succesfully logged into Firebase");
-                                ArrayList<String> defaultRoom = new ArrayList<String>();
+                                ArrayList<String> defaultRoom = new ArrayList<>();
                                 defaultRoom.add("home");
                                 UserList.user = new ChatUser(task.getResult().getUser().getUid(),
                                         task.getResult().getUser().getDisplayName(), task.getResult().getUser().getEmail(), true, defaultRoom);

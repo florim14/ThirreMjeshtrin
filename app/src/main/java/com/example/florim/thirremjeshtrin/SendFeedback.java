@@ -16,12 +16,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.example.florim.thirremjeshtrin.Authenticator;
-import com.example.florim.thirremjeshtrin.ConnectToServer;
-import com.example.florim.thirremjeshtrin.GiveFeedback;
-import com.example.florim.thirremjeshtrin.PermissionUtils;
-import com.example.florim.thirremjeshtrin.R;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +29,9 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class SendFeedback extends android.app.Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     SimpleAdapter adapter;
     ListView listView;
@@ -67,7 +56,6 @@ public class SendFeedback extends android.app.Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment SendFeedback.
      */
-    // TODO: Rename and change types and number of parameters
     public static SendFeedback newInstance(String param1, String param2) {
         SendFeedback fragment = new SendFeedback();
         Bundle args = new Bundle();
@@ -81,8 +69,8 @@ public class SendFeedback extends android.app.Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -103,7 +91,7 @@ public class SendFeedback extends android.app.Fragment {
 
         if (connectivity) {
             connectToServer = new ConnectToServer();
-            connectToServer.sendRequest(connectToServer.FEEDBACK, params, false);
+            connectToServer.sendRequest(ConnectToServer.FEEDBACK, params, false);
             final List<Map<String, String>> response = connectToServer.results;
             if(!response.isEmpty()){
                 adapter = new SimpleAdapter(getActivity(), response, android.R.layout.simple_expandable_list_item_2, new String[]{"Timestamp"},
@@ -149,7 +137,6 @@ public class SendFeedback extends android.app.Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

@@ -33,7 +33,7 @@
                 android:layout_below="@+id/frameLayout2"
                 android:layout_margin="10dp"
                 android:layout_height="140dp"
-                android:contentDescription="Mechanic Logo"
+                android:contentDescription="@string/mechanisIconDes"
                 android:background="@color/common_google_signin_btn_text_dark_default" />
 
             <ImageView
@@ -46,7 +46,7 @@
                 android:layout_alignEnd="@+id/imgPlumber"
                 android:layout_margin="10dp"
                 android:layout_height="140dp"
-                android:contentDescription="Electrician Logo"
+                android:contentDescription="@string/electricianIconDes"
                 android:background="@color/common_google_signin_btn_text_dark_default" />
 
             <ImageView
@@ -61,7 +61,7 @@
                 android:layout_margin="10dp"
                 android:layout_weight="0.40"
                 android:layout_height="140dp"
-                android:contentDescription="Plumber Logo"
+                android:contentDescription="@string/plumberIconDes"
                 android:background="@color/common_google_signin_btn_text_dark_default" />
         </LinearLayout>
     </ScrollView>

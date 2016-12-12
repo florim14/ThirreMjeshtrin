@@ -1,6 +1,4 @@
-package com.example.florim.thirremjeshtrin;/**
- * Created by GentR on 03-Dec-16
- */
+package com.example.florim.thirremjeshtrin;
 
 /**
  * * Created by GentR on 03-Dec-16

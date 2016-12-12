@@ -29,7 +29,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
    private List<Map<String,String>> results;
     private static String LIST_TAG="ListSearch";
 
-    private GoogleMap mMap;
     private MarkerOptions options = new MarkerOptions();
     private ArrayList<LatLng> latlngs = new ArrayList<>();
     private String lat;
@@ -130,7 +129,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        GoogleMap mMap = googleMap;
 
         if(results != null) {
 

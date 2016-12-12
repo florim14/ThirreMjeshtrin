@@ -26,7 +26,7 @@
                 android:src="@drawable/ic_image2vector"
                 android:id="@+id/imgThirreMjeshtrin"
                 android:layout_marginStart="140dp"
-                android:contentDescription="Logo" />
+                android:contentDescription="@string/logoDescription" />
         </LinearLayout>
 
         <TabHost

@@ -24,9 +24,6 @@ public class UserInfo extends AppCompatActivity implements SendFeedback.OnFragme
      */
     private ViewPager mViewPager;
     private AccountManager am;
-    private String RepairmanID;
-    private String UserID;
-    private Map<String,String> accountData;
     com.roughike.bottombar.BottomBar mBottomBar;
     boolean isUser;
     @Override
@@ -34,8 +31,8 @@ public class UserInfo extends AppCompatActivity implements SendFeedback.OnFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userinfo);
         am = AccountManager.get(this);
-        accountData = Authenticator.findAccount(am, this);
-        UserID=accountData.get("UserID");
+        Map<String, String> accountData = Authenticator.findAccount(am, this);
+        String userID = accountData.get("UserID");
         isUser=getIntent().getBooleanExtra("isUser",false);
         TabHost tabs=(TabHost)findViewById(R.id.TabHost); //Id of tab host
 
@@ -76,7 +73,7 @@ public class UserInfo extends AppCompatActivity implements SendFeedback.OnFragme
 
         mBottomBar.mapColorForTab(0,"#F44346");
         mBottomBar.mapColorForTab(2,"#795548");
-        RepairmanID= getIntent().getStringExtra("RepairmanID");
+        String repairmanID = getIntent().getStringExtra("RepairmanID");
 
 
 
@@ -92,12 +89,12 @@ public class UserInfo extends AppCompatActivity implements SendFeedback.OnFragme
         spec.setIndicator("Profile"); //Name of tab
         tabs.addTab(spec); //Add it
         Profile profile=new Profile();
-        profile.accountData=accountData;
+        Profile.accountData = accountData;
         FragmentTransaction ftProfile = getFragmentManager().beginTransaction();
         ftProfile.add(R.id.Tab1,profile,"").disallowAddToBackStack().commit();
 
 
-        if(RepairmanID!=null || !accountData.get("Category").equals("")) {
+        if(repairmanID !=null || !accountData.get("Category").equals("")) {
             spec = tabs.newTabSpec("Reviews");//make a new tab
 
             spec.setContent(R.id.Tab2);  //What is in the tab (not an activity but rather a view)
@@ -105,9 +102,9 @@ public class UserInfo extends AppCompatActivity implements SendFeedback.OnFragme
             tabs.addTab(spec); //Add it
             ListFeedback list = new ListFeedback();
             if(isUser){
-                RepairmanID=UserID;
+                repairmanID = userID;
             }
-            list.RepairmanID = RepairmanID;
+            list.RepairmanID = repairmanID;
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(R.id.Tab2, list, "").disallowAddToBackStack().commit();
 
@@ -117,9 +114,9 @@ public class UserInfo extends AppCompatActivity implements SendFeedback.OnFragme
                 spec.setIndicator("Send Feedback");
                 tabs.addTab(spec);
                 SendFeedback list2 = new SendFeedback();
-                list2.RepairmanID = RepairmanID;
-                Log.d("UserInfo: ",UserID+" "+RepairmanID);
-                list2.UserID = UserID;
+                SendFeedback.RepairmanID = repairmanID;
+                Log.d("UserInfo: ", userID +" "+ repairmanID);
+                list2.UserID = userID;
                 FragmentTransaction ft2 = getFragmentManager().beginTransaction();
                 ft2.add(R.id.Tab3, list2, "").disallowAddToBackStack().commit();
             }

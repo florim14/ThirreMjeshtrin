@@ -3,19 +3,13 @@ package com.example.florim.thirremjeshtrin;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Request extends AppCompatActivity {
-    private Button btnAccept;
-    private Button btnRefuse;
-    private TextView txtRequest;
     private String ID;
 
     @Override
@@ -24,7 +18,7 @@ public class Request extends AppCompatActivity {
         setContentView(R.layout.activity_request);
         String message=getIntent().getStringExtra("Message");
         ID=getIntent().getStringExtra("ID");
-        txtRequest= (TextView) findViewById(R.id.txtRequest);
+        TextView txtRequest = (TextView) findViewById(R.id.txtRequest);
         txtRequest.setText(message);
 
 

@@ -5,7 +5,7 @@
     android:drawableRight="@drawable/arrow"
     android:orientation="horizontal"
     android:padding="@dimen/pad_10dp"
-    android:text="TextView"
+    android:text="@string/textview"
     android:textColor="@color/main_color_gray_dk"
     android:textSize="@dimen/txt_18sp"
     android:drawableLeft="@drawable/ic_online"

@@ -47,9 +47,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RegisterAsRepairman extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, LocationListener {
-    private ImageButton btnLocation;
-    private Button btnRegister;
-    private Button btnLinkToLogin;
     private EditText inputFullName;
     private EditText inputEmail;
     private EditText inputPassword;
@@ -57,18 +54,12 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
     private EditText inputTelephone;
     private EditText inputRadius;
     private Spinner spinner;
-    private Spinner spinnerCat;
-    private ArrayAdapter<String> adapter;
-    private ArrayAdapter<String> adapterCat;
-    private String[] array;
-    private String[] arrayCat;
     String selectedCountry;
     int selectedCat;
     Double longitude;
     Double latitude;
     boolean isDataValid;
     private LocationManager mLocationManager;
-    private Location mLocation;
     private FirebaseAuth mAuth;
 
 
@@ -86,27 +77,24 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
         inputConfirmPassword = (EditText) findViewById(R.id.confirmpassword);
         inputTelephone = (EditText) findViewById(R.id.tel);
         inputRadius = (EditText) findViewById(R.id.radius);
-        btnRegister = (Button) findViewById(R.id.btnRegister);
-        btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
-        btnLocation= (ImageButton) findViewById(R.id.btnLocation);
+        Button btnRegister = (Button) findViewById(R.id.btnRegister);
+        Button btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
+        ImageButton btnLocation = (ImageButton) findViewById(R.id.btnLocation);
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mAuth = FirebaseAuth.getInstance();
 
         spinner = (Spinner) findViewById(R.id.spin);
-        array = getResources().getStringArray(R.array.array_city);
+        String[] array = getResources().getStringArray(R.array.array_city);
 
-        adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, array){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, array) {
             @Override
             public boolean isEnabled(int position) {
-                if(position == 0)
-                {
+                if (position == 0) {
                     // Disable the first item from Spinner
                     // First item will be use for hint
                     return false;
-                }
-                else
-                {
+                } else {
                     return true;
                 }
             }
@@ -115,11 +103,10 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView tv = (TextView) view;
-                if(position == 0){
+                if (position == 0) {
                     // Set the hint text color gray
                     tv.setTextColor(Color.GRAY);
-                }
-                else {
+                } else {
                     tv.setTextColor(Color.BLACK);
                 }
                 return view;
@@ -150,20 +137,17 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
             }
         });
 
-        spinnerCat = (Spinner) findViewById(R.id.spinCategory);
-        arrayCat = getResources().getStringArray(R.array.array_category);
+        Spinner spinnerCat = (Spinner) findViewById(R.id.spinCategory);
+        String[] arrayCat = getResources().getStringArray(R.array.array_category);
 
-        adapterCat = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, arrayCat){
+        ArrayAdapter<String> adapterCat = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, arrayCat) {
             @Override
             public boolean isEnabled(int position) {
-                if(position == 0)
-                {
+                if (position == 0) {
                     // Disable the first item from Spinner
                     // First item will be use for hint
                     return false;
-                }
-                else
-                {
+                } else {
                     return true;
                 }
             }
@@ -172,11 +156,10 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView tv = (TextView) view;
-                if(position == 0){
+                if (position == 0) {
                     // Set the hint text color gray
                     tv.setTextColor(Color.GRAY);
-                }
-                else {
+                } else {
                     tv.setTextColor(Color.BLACK);
                 }
                 return view;
@@ -316,7 +299,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
     private void registerUser(final String username, final String email,
                               final String password, final Double latitude, final Double longitude, String radius, String tel,int category) {
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("password", password);
         params.put("email", email);
         params.put("username", username);
@@ -350,8 +333,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(RegisterAsRepairman.this, "Auth failed", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    // TODO: Create a ASyncTask for this do not use the GUI Thread
-                                    final ArrayList<String> defaultRoom = new ArrayList<String>();
+                                    final ArrayList<String> defaultRoom = new ArrayList<>();
                                     defaultRoom.add("home");
 
                                     // Update the user profile information
@@ -387,7 +369,7 @@ public class RegisterAsRepairman extends AppCompatActivity implements ActivityCo
     }
     public void onLocationClick(View v){
             if(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Location mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                 if (mLocation == null) {
                     Criteria c = new Criteria();

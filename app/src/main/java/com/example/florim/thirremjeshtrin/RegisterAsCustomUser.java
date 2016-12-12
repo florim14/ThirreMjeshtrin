@@ -33,13 +33,10 @@ import java.util.logging.Logger;
 public class RegisterAsCustomUser extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
 
-    private Button btnRegister;
-    private Button btnLinkToLogin;
     private EditText inputFullName;
     private EditText inputEmail;
     private EditText inputPassword;
     private EditText inputConfirmPassword;
-    private ProgressDialog pDialog;
     private static final String TAG = RegisterAsCustomUser.class.getSimpleName();
     private boolean isDataValid;
 
@@ -62,8 +59,8 @@ public class RegisterAsCustomUser extends AppCompatActivity implements ActivityC
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         inputConfirmPassword = (EditText) findViewById(R.id.confirmpassword);
-        btnRegister = (Button) findViewById(R.id.btnRegister);
-        btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
+        Button btnRegister = (Button) findViewById(R.id.btnRegister);
+        Button btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -78,15 +75,13 @@ public class RegisterAsCustomUser extends AppCompatActivity implements ActivityC
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // [START_EXCLUDE]
-                // TODO updateUI(user);
-                // [END_EXCLUDE]
+
             }
         };
 
         
         // Progress dialog
-        pDialog = new ProgressDialog(this);
+        ProgressDialog pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
 
@@ -174,7 +169,7 @@ public class RegisterAsCustomUser extends AppCompatActivity implements ActivityC
      * */
 
     private void registerUser(final String username, final String email, final String password) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("password", password);
         params.put("email", email);
         params.put("username", username);
@@ -204,8 +199,7 @@ public class RegisterAsCustomUser extends AppCompatActivity implements ActivityC
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(RegisterAsCustomUser.this, "Auth failed", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    // TODO: Create a ASyncTask for this do not use the GUI Process
-                                    final ArrayList<String> defaultRoom = new ArrayList<String>();
+                                    final ArrayList<String> defaultRoom = new ArrayList<>();
                                     defaultRoom.add("home");
 
                                     // Update the user profile information

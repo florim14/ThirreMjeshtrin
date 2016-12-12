@@ -11,7 +11,7 @@
     tools:context="com.example.florim.thirremjeshtrin.GiveFeedback">
 
     <Button
-    android:text="Send Feedback"
+    android:text="@string/btn_send_feedback"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/btnSendFeedback"
@@ -24,7 +24,7 @@
         android:layout_height="149dp"
         android:ems="10"
         android:id="@+id/txtFeedback"
-        android:hint="Feedback..."
+        android:hint="@string/txt_feedback"
         android:background="@drawable/shape"
         android:gravity="top"
         android:inputType="textMultiLine"

@@ -1,15 +1,10 @@
 package com.example.florim.thirremjeshtrin;
 
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
 
 /**
  * Created by Gresa on 30-Nov-16.

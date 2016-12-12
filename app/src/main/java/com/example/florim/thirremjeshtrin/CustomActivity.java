@@ -1,7 +1,4 @@
-package com.example.florim.thirremjeshtrin;/**
- * Created by GentR on 03-Dec-16
- */
-
+package com.example.florim.thirremjeshtrin;
 /**
  * * Created by GentR on 03-Dec-16
  **/
@@ -16,8 +13,7 @@ import android.view.View.OnClickListener;
  * inherit the common behaviors like implementing a common interface that can be
  * used in all child activities.
  */
-public class CustomActivity extends FragmentActivity implements OnClickListener
-{
+public class CustomActivity extends FragmentActivity implements OnClickListener {
 
     /**
      * Apply this Constant as touch listener for views to provide alpha touch
@@ -29,8 +25,7 @@ public class CustomActivity extends FragmentActivity implements OnClickListener
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
     @Override
-    public void setContentView(int layoutResID)
-    {
+    public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         setupActionBar();
     }
@@ -41,8 +36,7 @@ public class CustomActivity extends FragmentActivity implements OnClickListener
      * can override this method to change the behavior of ActionBar for
      * particular Activity
      */
-    protected void setupActionBar()
-    {
+    protected void setupActionBar() {
         final ActionBar actionBar = getActionBar();
         if (actionBar == null)
             return;

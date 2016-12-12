@@ -1,6 +1,4 @@
-package com.example.florim.thirremjeshtrin;/**
- * Created by GentR on 03-Dec-16
- */
+package com.example.florim.thirremjeshtrin;
 
 import java.util.Date;
 
@@ -182,14 +180,7 @@ public class Conversation
      *
      * @param photoUrl
      */
-    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
 
-    /**
-     * Get the photo URL
-     *
-     * @return photoUrl
-     */
-    public String getPhotoUrl() { return this.photoUrl; }
 
 
 }

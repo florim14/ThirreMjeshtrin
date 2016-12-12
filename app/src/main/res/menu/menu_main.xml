@@ -3,7 +3,7 @@
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_profile_icon"
-        android:title="Profile"
+        android:title="@string/profile"
         android:alphabeticShortcut="p">
         </item>
     <item
@@ -13,7 +13,7 @@
     <item
         android:id="@+id/inbox"
         android:icon="@drawable/ic_email_icon"
-        android:title="Inbox"
+        android:title="@string/inbox"
         android:alphabeticShortcut="m">
     </item>
 

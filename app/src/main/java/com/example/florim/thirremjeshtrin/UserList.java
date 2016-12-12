@@ -1,7 +1,4 @@
-package com.example.florim.thirremjeshtrin;/**
- * Created by GentR on 03-Dec-16
- */
-
+package com.example.florim.thirremjeshtrin;
 /**
  * * Created by GentR on 03-Dec-16
  **/
@@ -87,7 +84,6 @@ public class UserList extends CustomActivity {
      *            true if user is online
      */
     private void updateUserStatus(boolean online) {
-        // TODO: Add user status updates
     }
 
     /**

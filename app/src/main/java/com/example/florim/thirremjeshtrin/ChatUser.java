@@ -1,9 +1,5 @@
 package com.example.florim.thirremjeshtrin;
 /**
- * Created by GentR on 03-Dec-16
- */
-
-/**
  * * Created by GentR on 03-Dec-16
  **/
 
@@ -31,7 +27,7 @@ public class ChatUser implements Serializable {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.online = online;
+        this.online = true;
         this.room = room;
     }
 

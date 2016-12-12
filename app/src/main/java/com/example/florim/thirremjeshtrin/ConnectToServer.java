@@ -133,7 +133,7 @@ public class ConnectToServer {
                     while (jsonReader.hasNext()) {
                         String name=jsonReader.nextName();
                         jsonReader.beginObject();
-                        row = new HashMap<String, String>();
+                        row = new HashMap<>();
                         while (jsonReader.hasNext()) {
                             row.put(jsonReader.nextName(), jsonReader.nextString());
                         }

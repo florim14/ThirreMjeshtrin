@@ -1,6 +1,4 @@
-package com.example.florim.thirremjeshtrin;/**
- * Created by GentR on 03-Dec-16
- */
+package com.example.florim.thirremjeshtrin;
 
 /**
  * * Created by GentR on 03-Dec-16
@@ -245,7 +243,7 @@ public class Utils
      * @param ctx
      *            the ctx
      */
-    public static final void hideKeyboard(Activity ctx)
+    public static void hideKeyboard(Activity ctx)
     {
 
         if (ctx.getCurrentFocus() != null)
@@ -265,7 +263,7 @@ public class Utils
      * @param v
      *            the v
      */
-    public static final void hideKeyboard(Activity ctx, View v)
+    public static void hideKeyboard(Activity ctx, View v)
     {
 
         try

@@ -121,6 +121,7 @@
         <item>Åndalsnes</item>
     </string-array>
 
+
     <string name="txtSearch1">Search</string>
     <string name="profile">Profile</string>
     <string name="message">Message</string>
@@ -132,6 +133,25 @@
     <string name="hint_radius">Radius(km)</string>
     <string name="hint_location">Location</string>
     <string name="hint_name">Username</string>
+    <string name="inbox">Inbox</string>
+    <string name="textview">TextView</string>
+    <string name="btn_send_feedback">Send Feedback</string>
+    <string name="txt_feedback">Feedback...</string>
+    <string name="logoDescription">Logo</string>
+    <string name="text">text</string>
+    <string name="userIconDes">User Icon</string>
+    <string name="mechanisIconDes">Mechanic Logo</string>
+    <string name="textvdv">textvdv</string>
+    <string name="electricianIconDes">Electrician Logo</string>
+    <string name="emailIconDes">Email Icon</string>
+    <string name="plumberIconDes">Plumber Icon</string>
+    <string name="phoneIconDes">Phone Icon</string>
+    <string name="locationIconDes">Location Icon</string>
+    <string name="radiusIconDes">Radius Icon</string>
+    <string name="categoryIconDes">Category Icon</string>
+    <string name="btnSendRequest">Send Request</string>
+    <string name="btnChat">Chat</string>
+    <string name="sd">sd</string>
     <string name="btn_login">LOGIN</string>
     <string name="btn_registerAsUser">REGISTER AS A USER</string>
     <string name="btn_registerAsRepairman">REGISTER AS A REPAIRMAN</string>
@@ -191,7 +211,6 @@
     <string name="title_activity_feedback_tab">FeedbackTab</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_Location">Get Location</string>
     <string name="no_results">No resource available</string>
@@ -200,4 +219,5 @@
     <string name="user_not_available">The user is not currently  available.</string>
     <string name="Profile_action">com.example.florim.thirremjeshtrin.Profile</string>
     <string name="Inbox_action">com.example.florim.thirremjeshtrin.UserList</string>
+
 </resources>
