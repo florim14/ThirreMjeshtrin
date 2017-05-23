@@ -2,17 +2,17 @@
 
 ## ThirreMjeshtrin
 
-## IMT3672 Mobile Development Practice
+#### IMT3672 Mobile Development Practice
 
-## KOSOVARS
+#### KOSOVARS
 
-## Project Work
+#### Project Work
 
-### November - December 2016
+##### November - December 2016
 
-### Mariusz Nowostawski
+##### Mariusz Nowostawski
 
-### Weekly tasks: https://docs.google.com/spreadsheets/d/1Paz-UezNhM6qfkp4MoK_c17lucJSGpycpnv15FcFQSk/edit?usp=sharing
+##### Weekly tasks: https://docs.google.com/spreadsheets/d/1Paz-UezNhM6qfkp4MoK_c17lucJSGpycpnv15FcFQSk/edit?usp=sharing
 
 # Contents
 
@@ -20,25 +20,25 @@
 
 #### 1.1 Brief application description . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-2 Application core
+### 2 Application core
 
-2.1 Application architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+#### 2.1 Application architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-2.1.1 Tools used . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+##### 2.1.1 Tools used . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-2.1.2 General Client-server discussion . . . . . . . . . . . . . . . . . . . . . . . . . .
+##### 2.1.2 General Client-server discussion . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-2.2 Basic activity layouts and workﬂow . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+#### 2.2 Basic activity layouts and workﬂow . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-3 Conclusion, Issues, Diﬃculties, and what comes next?
+### 3 Conclusion, Issues, Diﬃculties, and what comes next?
 
-INTRODUCTIONIntroduction
+# INTRODUCTION
 
 1.1 Brief application description
 
 Our idea was based on a personal experience where the oven stopped working one day and wehad to get through the struggle of googling for possible reasons why the oven didn’t work anymore,ﬁnding and calling a repairman in the area of Gjovik through Norwegian websites and then toﬁnally setting an appointment with said repairman. After which event we thought that all of thisinformation and work could be done in one place to make our and the repairman’s life easier.ThirreMjeshtrin (translated from Albanian Call a repairman) is a complex Android and ServerSide application which does exactly what it says. It allows the user to both register as a user andreceive services from other users who are registred as repairman in their area, and to register as arepairman and receive request on behalf of other users who require their services in their own setworking radius. The application also makes it possible to instantly call a repairman, ask a repairmanfor advice through the aplication online chat, discover repairman in their surrounding, rate thoserepairman and give them feedback after having received their work.
 
-2 APPLICATION CORE2 Application core
+# 2 APPLICATION CORE
 
 2.1 Application architecture
 
@@ -68,7 +68,7 @@ Figure 1: Technologies used
 
 ![Im6](images/Im6)
 
-2.1 Application architecture
+## 2.1 Application architecture
 
 2 APPLICATION CORE2.1.2 General Client-server discussion
 
@@ -96,7 +96,7 @@ Contact to the server is realised by the ConnectToServer class, which contains:
 
 ![Im7](images/Im7)
 
-2.2 Basic activity layouts and workﬂow
+## 2.2 Basic activity layouts and workﬂow
 
 2 APPLICATION CORE sendRequest method that takes a URL, parameters and a boolean indicator of whether theNetwork Connection can be asynchronously executed (in the background) or a result of thiscommunication is needed.
 
@@ -126,7 +126,7 @@ This activity consists of two buttons, and each of them is used depending on how
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREIf a user wants to register in the app as a Repairman, they’d be asked to give their info as shownin the activity:
+If a user wants to register in the app as a Repairman, they’d be asked to give their info as shownin the activity:
 
 Figure 5: Register as a Repairman
 
