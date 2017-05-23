@@ -1,30 +1,24 @@
-![Im1](images/Im1)
+# Norwegian University of Science and Technology (NTNU)
 
-Norwegian University of Science and Technology (NTNU)ThirreMjeshtrin
+## ThirreMjeshtrin
 
-IMT3672 Mobile Development Practice
+## IMT3672 Mobile Development Practice
 
-KOSOVARS
+## KOSOVARS
 
-Project Work
+## Project Work
 
-November - December 2016
+### November - December 2016
 
-Mariusz Nowostawski
+### Mariusz Nowostawski
 
-https://github.com/florim14/ThirreMjeshtrin.git
+### Weekly tasks: https://docs.google.com/spreadsheets/d/1Paz-UezNhM6qfkp4MoK_c17lucJSGpycpnv15FcFQSk/edit?usp=sharing
 
-Weekly tasks: https://docs.google.com/spreadsheets/d/1Paz-UezNhM6qfkp4MoK_c17lucJSGpycpnv15FcFQSk/edit?usp=sharing
+# Contents
 
-Much of the code taken as a reference from: https://developers.android.com
+### 1 Introduction
 
-![Im2](images/Im2)
-
-Contents
-
-1 Introduction
-
-1.1 Brief application description . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+#### 1.1 Brief application description . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 2 Application core
 
