@@ -70,7 +70,7 @@ Figure 1: Technologies used
 
 ## 2.1 Application architecture
 
-2 APPLICATION CORE2.1.2 General Client-server discussion
+2.1.2 General Client-server discussion
 
 Communication with the server is essential to the work of the app, considering that users canrequest immediate service from active repairmen.
 
@@ -98,7 +98,7 @@ Contact to the server is realised by the ConnectToServer class, which contains:
 
 ## 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION CORE sendRequest method that takes a URL, parameters and a boolean indicator of whether theNetwork Connection can be asynchronously executed (in the background) or a result of thiscommunication is needed.
+sendRequest method that takes a URL, parameters and a boolean indicator of whether theNetwork Connection can be asynchronously executed (in the background) or a result of thiscommunication is needed.
 
  results List of HashMaps of Strings which contains the parsed response from the server.The server always sends formatted responses in JSON, which are parsed and the extractedinformation is put in the results variable of the ConnectToServer object. If the connection is requiredto be synchronous, the UI thread waits until a response is returned as a result, otherwise thenetwork communication is only initiated in the UI thread, while the actual execution happens inthe background. The network communication is done in a NetworkTask object. NetworkTask is asubclass of AsyncTask where the response is also parsed from JSON.
 
@@ -114,7 +114,7 @@ Figure 3: Login activity
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREIf we suppose that the user enters our app for the ﬁrst time, they’d need to be registered, andthe Registration activity looks like this:
+If we suppose that the user enters our app for the ﬁrst time, they’d need to be registered, andthe Registration activity looks like this:
 
 Figure 4: Register activity
 
@@ -142,7 +142,7 @@ The Category chosen, is related to what kind of Repairman is the user. There alt
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREThe registration activity for a simple user is much more simpler, requiring only the username,the email, and the password.
+The registration activity for a simple user is much more simpler, requiring only the username,the email, and the password.
 
 Here is what it looks like:
 
@@ -154,7 +154,7 @@ After clicking the Register button, the user will be created and they will be se
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREAfter logging in successfully, the user would be sent to an activity where they could choose forwhat kind of Repairman they’re searching, and this by clicking on the clickable image views, whereeach of them represents a diﬀerent category of Repairman.
+After logging in successfully, the user would be sent to an activity where they could choose forwhat kind of Repairman they’re searching, and this by clicking on the clickable image views, whereeach of them represents a diﬀerent category of Repairman.
 
 Figure 7: Search for a repairman
 
@@ -164,7 +164,7 @@ Down there is a bottom bar, helping the user to go to their proﬁle and inbox.
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREImmediately after clicking on of the imageviews, a user will be sent at a map, telling their locationand some other markers (with diﬀerent color) representing the locations of the repairmans of thatcategory with the operation area including the users location where the search comes from. Notethat, if the repairman is not online, meaning, logged in the app, there won’t be a marker tellingtheir location, even if they are able to handle a service.
+Immediately after clicking on of the imageviews, a user will be sent at a map, telling their locationand some other markers (with diﬀerent color) representing the locations of the repairmans of thatcategory with the operation area including the users location where the search comes from. Notethat, if the repairman is not online, meaning, logged in the app, there won’t be a marker tellingtheir location, even if they are able to handle a service.
 
 Those markers are clickable, so after clicking on them, the repairman proﬁle would open.Figure 8: The map view
 
@@ -172,7 +172,7 @@ Those markers are clickable, so after clicking on them, the repairman proﬁle w
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREThis is what a repairman proﬁle would look like.
+This is what a repairman proﬁle would look like.
 
 This layout is organized with tabs, so that the ﬁrst tab presents the repairmans proﬁle, thesecond tab is the Reviews tab, where you can ﬁnd the rating from diﬀerent users on that repairman,and the third tab is the Send Feedback tab, where you can send a feedback to the repairman, butonly if there is at least one deal between the user and the repairman, in which deal the user can givefeedback.
 
@@ -192,7 +192,7 @@ If the user goes at the Send Feedback tab, there will be a list of the accepted 
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREAfter clicking on one of the items, the Feedback activity will open, where the user can writea feedback comment, a rating via a rating bar, and all these data after being processed and sentsuccessfully will be shown in the Reviews tab of the Repairman proﬁle and all this would looksomewhat like:
+After clicking on one of the items, the Feedback activity will open, where the user can writea feedback comment, a rating via a rating bar, and all these data after being processed and sentsuccessfully will be shown in the Reviews tab of the Repairman proﬁle and all this would looksomewhat like:
 
 (a) Repairman feedback tab
 
@@ -204,7 +204,7 @@ If the user goes at the Send Feedback tab, there will be a list of the accepted 
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREA Send requests button is there if the user wants to send a request to the chosen repairman,and from there will be a push notiﬁcation in the repairmans side app, notifying them that there isa request from a user for a service.
+A Send requests button is there if the user wants to send a request to the chosen repairman,and from there will be a push notiﬁcation in the repairmans side app, notifying them that there isa request from a user for a service.
 
 (a) Repairman getting a push notiﬁcation
 
@@ -220,7 +220,7 @@ The repairman can accept or deny the request. If the repairman accepts the reque
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION CORE(a) Client getting a push notiﬁcation
+(a) Client getting a push notiﬁcation
 
 (b) The repairman proﬁle with the chat option enabledFigure 12: Client side while getting a positive request for a service
 
@@ -232,7 +232,7 @@ As we can see, from the client side, immediately after a positive request conﬁ
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION CORENow back at the bottom bar, being shown in almost each activity, with the proﬁle and the inboxoptions to select. As shown in the ﬁgure, the proﬁle button in the bottom bar sends the user to theirproﬁle (so does to the repairman too), and the inbox button will just open the inbox of the userwith the chatroooms (name of the repairman) that this particular user has opened with diﬀerentrepairmans. The same chatroom is used for all requests between a particular user and a repairman.(a) Client proﬁle view
+Now back at the bottom bar, being shown in almost each activity, with the proﬁle and the inboxoptions to select. As shown in the ﬁgure, the proﬁle button in the bottom bar sends the user to theirproﬁle (so does to the repairman too), and the inbox button will just open the inbox of the userwith the chatroooms (name of the repairman) that this particular user has opened with diﬀerentrepairmans. The same chatroom is used for all requests between a particular user and a repairman.(a) Client proﬁle view
 
 (b) Users inbox
 
@@ -244,7 +244,7 @@ Figure 13: Bottom bar functionality from the Client side
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREFrom the repairmans aspect of view, things seem to be a bit diﬀerent, since if a repairman clickson the proﬁle button in the bottom bar, their proﬁle is being opened with the proﬁle tab, and thereview tab.
+From the repairmans aspect of view, things seem to be a bit diﬀerent, since if a repairman clickson the proﬁle button in the bottom bar, their proﬁle is being opened with the proﬁle tab, and thereview tab.
 
 NOTE! The send feedback tab here will be missing because, as simple as it is, a repairmancannot send feedback to themselves.
 
@@ -260,7 +260,7 @@ Figure 14: Bottom bar functionality from the Repairman side
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREAnd the Inbox layout will just list all the roomchats available for that particular repairman, so,there are listed all the clients that created chatrooms and whose requests have been accepted by therepairman.
+And the Inbox layout will just list all the roomchats available for that particular repairman, so,there are listed all the clients that created chatrooms and whose requests have been accepted by therepairman.
 
 Figure 15: Repairman inbox
 
@@ -268,7 +268,7 @@ Figure 15: Repairman inbox
 
 2.2 Basic activity layouts and workﬂow
 
-2 APPLICATION COREIf the user or the repairman clicks on one of those chatrooms, the chat activity will be opened,linking that speciﬁc user with the repairman. Same thing is generated, if a user, after accepting apositive reply from a repairman, clicks on the chat button in the repairmans proﬁle.
+If the user or the repairman clicks on one of those chatrooms, the chat activity will be opened,linking that speciﬁc user with the repairman. Same thing is generated, if a user, after accepting apositive reply from a repairman, clicks on the chat button in the repairmans proﬁle.
 
 Figure 16: Inside chatroom
 
